@@ -20,7 +20,7 @@ To build the sources into corresponding packages, run:
 $ gulp
 ```
 
-The `/dist` folder is created.
+The `/build` folder and `/dist` folder are created. All built files are placed in the `build` folder, and the distribution ready packages are placed in `dist` folder.
 
 Distribution
 -
@@ -30,7 +30,7 @@ Once the changes are in-place and ready for distribution, update `package.json` 
 $ gulp
 ```
 
-The `/dist` folder will contain ready to distribute packages.
+The `/dist` folder will contain distribution ready packages.
 
 Dependencies
 -
