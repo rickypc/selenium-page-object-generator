@@ -1,0 +1,133 @@
+@font-face {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: normal;
+    src: url(../fonts/fontawesome-webfont.eot?v=4.0.3);
+    src: url(../fonts/fontawesome-webfont.eot?#iefix&v=4.0.3) format('embedded-opentype'), url(../fonts/fontawesome-webfont.woff?v=4.0.3) format('woff'), url(../fonts/fontawesome-webfont.ttf?v=4.0.3) format('truetype'), url(../fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular) format('svg');
+}
+body {
+    color: #545454;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 10px;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 0;
+    width: 800px;
+}
+button.save,
+:enabled:hover:-webkit-any(button) {
+    background: #2196f3;
+    border-radius: 2px;
+    border-width: 0;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    color: #fff;
+    padding: 5px 10px;
+    text-shadow: none;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+:enabled:hover:-webkit-any(button) {
+    background: #1e88e5;
+}
+:enabled:active:-webkit-any(button) {
+    background: #1976d2;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+}
+button.save span {
+    margin-right: 7px;
+}
+.fa {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+.fa-save:before {
+    content: "\f0c7";
+}
+fieldset {
+    border: 1px solid #ddd;
+    clear: both;
+    font-size: 14px;
+    margin: 10px 0;
+    padding: 10px;
+    width: 765px;
+}
+fieldset input[type=number],
+fieldset input[type=text] {
+    border: none;
+    border-bottom: 1px solid #bfbfbf;
+    outline: none;
+    width: 50px;
+}
+fieldset input[type=text][id='copyright.claimant'],
+fieldset input[type=text][id='model.namespace'],
+fieldset input[type=text][id='nodes.selector'] {
+    width: 280px;
+}
+fieldset input[type=number][id='copyright.year'] {
+    width: 60px;
+}
+fieldset label {
+    display: inline-block;
+    width: 80px;
+}
+fieldset label[for='model.include'],
+fieldset label[for^='operations.fill'],
+fieldset label[for='operations.submit'],
+fieldset label[for^='operations.verify'] {
+    width: 300px;
+}
+fieldset .left {
+    float: left;
+    width: 50%;
+}
+fieldset .right {
+    float: right;
+    margin: 0;
+    width: 50%;
+}
+fieldset select {
+    background: 0 0;
+    border: none;
+    border-bottom: 1px solid #bfbfbf;
+    box-shadow: none;
+    color: #545454;
+    outline: none;
+    padding: 5px 0;
+    -webkit-appearance: menulist;
+}
+fieldset :enabled:hover:-webkit-any(select) {
+    background: 0 0;
+    border-bottom: 1px solid #bfbfbf;
+    box-shadow: none;
+    color: #545454;
+}
+fieldset select#target {
+    width: 765px;
+}
+fieldset textarea {
+    height: 300px;
+    width: 765px;
+}
+.notify {
+    font-weight: bold;
+    margin-left: 15px;
+}
+.preloader {
+    height: 1px;
+    margin: -3px 0px 10px 0px;
+    width: 787px;
+}
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul li, fieldset .valign {
+    margin: 5px 0;
+}

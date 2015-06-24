@@ -1,0 +1,57 @@
+{{#if copyright.claimant}}
+# All the code that follow is
+# Copyright (c) {{copyright.year}}, {{copyright.claimant}}. All Rights Reserved.
+# Not for reuse without permission.
+{{/if}}
+*** Settings ***
+Documentation  {{#if model.namespace}}{{model.namespace}}.{{/if}}{{model.name}} web application page object.
+
+*** Variables ***
+{{#attributes}}
+${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} } =  {{indent}}{{#if attribute.strategy}}{{attribute.strategy}}={{/if}}{{attribute.value}}
+{{/attributes}}
+
+*** Keywords ***
+{{#operations}}
+{{operation.name}}
+{{#if argument}}
+    [Arguments]  ${ {{~argument.name~}} }=${DATA['{{argument.key}}']}
+{{/if}}
+    [Documentation]  {{operation.documentation}}
+{{#equals type 'button'}}
+    Click Button  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }
+{{/equals}}
+{{#equals type 'checkbox'}}
+    {{#if negate}}Uns{{else}}S{{/if}}elect Checkbox  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }
+{{/equals}}
+{{#equals type 'fill'}}
+{{#fill}}
+    {{#if @root.model.namespace}}{{@root.model.namespace}}.{{/if}}{{@root.model.name}}.{{operation.name}}
+{{/fill}}
+{{/equals}}
+{{#equals type 'fill.submit'}}
+    {{#if @root.model.namespace}}{{@root.model.namespace}}.{{/if}}{{@root.model.name}}.Fill
+    {{#if @root.model.namespace}}{{@root.model.namespace}}.{{/if}}{{@root.model.name}}.Submit
+{{/equals}}
+{{#equals type 'link'}}
+    Click Link  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }
+{{/equals}}
+{{#equals type 'radio'}}
+    Select Radio Button  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }  ${ {{~argument.name~}} }
+{{/equals}}
+{{#equals type 'select'}}
+    {{#if negate}}Uns{{else}}S{{/if}}elect From List By Label  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }  ${ {{~argument.name~}} }
+{{/equals}}
+{{#equals type 'submit'}}
+    {{#if @root.model.namespace}}{{@root.model.namespace}}.{{/if}}{{@root.model.name}}.{{target.name}}
+{{/equals}}
+{{#equals type 'text'}}
+    Input Text  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }  ${ {{~argument.name~}} }
+{{/equals}}
+{{#equals type 'verify.loaded'}}
+    Wait Until Page Contains  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }
+{{/equals}}
+{{#equals type 'verify.url'}}
+    Location Should Contain  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }
+{{/equals}}
+{{/operations}}

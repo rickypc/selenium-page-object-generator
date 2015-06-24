@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Selenium Page Object Generator</title>
+        <link rel="stylesheet" href="assets/css/popup.css"/>
+    </head>
+    <body>
+        <header>
+            <img src="assets/icons/icon48.png"/>
+            <span>Page Object Generator</span>
+        </header>
+        <div class="preloader separator"></div>
+        <fieldset>
+            <legend>Target</legend>
+            <select id="target"></select>
+            <button class="generate"><span class="fa fa-download"></span>Generate</button>
+            <a class="downloader"></a>
+        </fieldset>
+        <fieldset>
+            <legend>Options</legend>
+            <ul>
+                <li>
+                    <label for="model.name">Model Name:</label>
+                    <input type="text" id="model.name" value="" placeholder="Model Name" />
+                </li>
+                <li>
+                    <label for="model.target">Target Name:</label>
+                    <input type="text" id="model.target" value="" placeholder="Target Name"/>
+                </li>
+            </ul>
+            <span class="options"><span class="fa fa-bars"></span>More Options</span>
+        </fieldset>
+        <fieldset class="share last">
+            <legend>Share</legend>
+            <a class="fa fa-twitter"></a>
+            <a class="fa fa-facebook"></a>
+            <a class="fa fa-google-plus"></a>
+            <!--<a class="fa fa-pinterest"></a>-->
+            <a class="fa fa-linkedin"></a>
+        </fieldset>
+        <script src="assets/js/popup.js"></script>
+    </body>
+</html>

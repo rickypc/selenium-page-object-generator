@@ -1,0 +1,181 @@
+@font-face {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: normal;
+    src: url(../fonts/fontawesome-webfont.eot?v=4.0.3);
+    src: url(../fonts/fontawesome-webfont.eot?#iefix&v=4.0.3) format('embedded-opentype'), url(../fonts/fontawesome-webfont.woff?v=4.0.3) format('woff'), url(../fonts/fontawesome-webfont.ttf?v=4.0.3) format('truetype'), url(../fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular) format('svg');
+}
+body {
+    /* background: #f8f8f8; */
+    color: #545454;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    width: 350px;
+}
+button, input, label, legend, select, span.options {
+    font-size: 0.875em;
+}
+button {
+    background: #2196f3;
+    border-radius: 2px;
+    border-width: 0;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    color: #fff;
+    padding: 5px 10px;
+    text-shadow: none;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+button[disabled] {
+    background: #ddd;
+}
+button.generate:hover {
+    background: #1e88e5;
+}
+button.generate:active {
+    background: #1976d2;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+}
+button.generate span,
+span.options span {
+    margin-right: 7px;
+}
+.downloader {
+    display: none;
+}
+.fa {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+.fa-bars:before {
+    content: "\f0c9";
+}
+.fa-download:before {
+    content: "\f019";
+}
+.fa-facebook:before {
+    content: "\f09a";
+}
+.fa-google-plus:before {
+    content: "\f0d5";
+}
+.fa-linkedin:before {
+    content: "\f0e1";
+}
+.fa-pinterest:before {
+    content: "\f0d2";
+}
+.fa-twitter:before {
+    content: "\f099";
+}
+fieldset {
+    border: 1px solid #ddd;
+    margin: 5px;
+}
+fieldset select {
+    margin-right: 5px;
+    max-width: 200px;
+    width: 200px;
+}
+fieldset span.options {
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    margin: 10px 0 0 0;
+}
+fieldset.share {
+    text-align: center;
+}
+fieldset.share legend {
+    text-align: left;
+}
+fieldset.share a {
+    color: #ccc;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0 10px;
+    text-decoration: none;
+    text-shadow: 0px 2px 3px #fff;
+}
+fieldset span.options:hover,
+fieldset.share a:hover {
+    color: #ED452A;
+}
+fieldset.last {
+    margin-bottom: 7px;
+}
+header {
+    text-align: center;
+}
+header img {
+    vertical-align: middle;
+}
+header span {
+    font-size: 1.125em;
+    font-weight: bold;
+    margin-left: 5px;
+}
+input, select {
+    background: 0 0;
+    border: none;
+    border-bottom: 1px solid #bfbfbf;
+    line-height: 24px;
+    outline: 0;
+    padding: 5px 0;
+}
+input::-webkit-input-placeholder {
+    color: #ddd;
+    font-weight: normal;
+}
+.preloader {
+    height: 1px;
+}
+.separator {
+    border-top: 1px solid #ddd;
+    margin: 5px -5px 5px -3px;
+    width: 100%;
+}
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ul li {
+    margin: 2px 0;
+}
+ul li label {
+    display: inline-block;
+    width: 90px;
+}
+ul li label[for=include] {
+    cursor: pointer;
+    font-size: 13px;
+    font-style: italic;
+    text-align: right;
+    width: 190px;
+}
+ul li input {
+    max-width: 215px;
+    width: 215px;
+}
+ul li input[type=checkbox] {
+    margin-left: 65px;
+    width: 15px;
+}
+ul li.error label {
+    color: #ff0039;
+}
+ul li.error input {
+    border-bottom: 1px solid #ff0039;
+}
+ul li.error input::-webkit-input-placeholder {
+    color: #ffaaaa;
+}

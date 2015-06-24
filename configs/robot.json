@@ -1,0 +1,17 @@
+{
+    "attributes": {
+        "letter": 2,
+        "indent": 1,
+        "separator": ""
+    },
+    "operations": {
+        "extras": {
+            "fill": 1,
+            "fill.submit": 1,
+            "submit": 1,
+            "verify.loaded": 1,
+            "verify.url": 1
+        },
+        "letter": 4
+    }
+}

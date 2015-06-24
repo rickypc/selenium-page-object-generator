@@ -1,0 +1,128 @@
+{{#if copyright.claimant}}
+/*
+All the code that follow is
+Copyright (c) {{copyright.year}}, {{copyright.claimant}}. All Rights Reserved.
+Not for reuse without permission.
+*/
+
+{{/if}}
+{{#if model.namespace}}package {{model.namespace}};
+{{/if}}
+import java.util.List;
+import java.util.Map;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class {{model.name}} {
+    private Map<String, String> data;
+    private WebDriver driver;
+    private int timeout = {{timeout}};
+
+    {{#attributes}}
+    {{#if attribute.strategy}}
+    @FindBy({{attribute.strategy}} = "{{attribute.value}}")
+    @CacheLookup
+    private {{#equals type 'radio'}}List<WebElement>{{else}}WebElement{{/equals}} {{attribute.name}};
+    {{else}}
+    private final String {{attribute.name}} = "{{attribute.value}}";
+    {{/if}}
+    {{/attributes}}
+
+    public {{model.name}}() {
+    }
+
+    public {{model.name}}(WebDriver driver) {
+        this();
+        this.driver = driver;
+    }
+
+    public {{model.name}}(WebDriver driver, Map<String, String> data) {
+        this(driver);
+        this.data = data;
+    }
+
+    public {{model.name}}(WebDriver driver, Map<String, String> data, int timeout) {
+        this(driver, data);
+        this.timeout = timeout;
+    }
+
+    {{#operations}}
+    /**
+     * {{#if argument}}{{argument.documentation}}{{else}}{{operation.documentation}}{{/if}}
+     */
+    public {{default target.modelName @root.model.name}} {{operation.name}}() {
+    {{#if argument}}
+        return {{operation.name}}(data.get("{{argument.key}}"));
+    }
+
+    /**
+     * {{operation.documentation}}
+     */
+    public {{default target.modelName @root.model.name}} {{operation.name}}(String {{argument.name}}) {
+    {{/if}}
+    {{#equals type 'button'}}
+        {{attribute.name}}.click();
+    {{/equals}}
+    {{#equals type 'checkbox'}}
+        if ({{#unless negate}}!{{/unless}}{{attribute.name}}.isSelected()) {
+            {{attribute.name}}.click();
+        }
+    {{/equals}}
+    {{#equals type 'fill'}}
+    {{#fill}}
+        {{operation.name}}();
+    {{/fill}}
+    {{/equals}}
+    {{#equals type 'fill.submit'}}
+        fill();
+        return submit();
+    {{/equals}}
+    {{#equals type 'link'}}
+        {{attribute.name}}.click();
+    {{/equals}}
+    {{#equals type 'radio'}}
+        for (WebElement el : {{attribute.name}}) {
+            if (el.getAttribute("value").equals({{argument.name}})) {
+                if (!el.isSelected()) {
+                    el.click();
+                }
+                break;
+            }
+        }
+    {{/equals}}
+    {{#equals type 'select'}}
+        new Select({{attribute.name}}).{{#if negate}}de{{/if}}selectByVisibleText({{argument.name}});
+    {{/equals}}
+    {{#equals type 'submit'}}
+        {{target.name}}();
+        {{#if target.modelName}}
+        {{target.modelName}} target = new {{target.modelName}}(driver, data, timeout);
+        PageFactory.initElements(driver, target);
+        {{/if}}
+    {{/equals}}
+    {{#equals type 'text'}}
+        {{attribute.name}}.sendKeys({{argument.name}});
+    {{/equals}}
+    {{#equals type 'verify.loaded'}}
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains({{attribute.name}});
+            }
+        });
+    {{/equals}}
+    {{#equals type 'verify.url'}}
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getCurrentUrl().contains({{attribute.name}});
+            }
+        });
+    {{/equals}}
+    {{#unequals type 'fill.submit'}}
+        return {{#if target.modelName}}target{{else}}this{{/if}};
+    {{/unequals}}
+    }
+    {{/operations}}
+}
