@@ -1,4 +1,5 @@
 const ASSETS = 'assets/';
+const BUILD = 'build/';
 const CHROME = 'chrome/';
 const CHROME_CONFIGS = CHROME + ASSETS + 'configs/';
 const CHROME_CSS = CHROME + ASSETS + 'css/';
@@ -14,9 +15,10 @@ const LIBS = 'libs/';
 const SRC = 'src/';
 const TEMPLATES = 'templates/';
 
+var packagejson = require('./package.json');
 var banner = ['/*',
     '    Selenium Page Object Generator - to improve agile testing process velocity.',
-    '    Copyright (C) 2015  Richard Huang <rickypc@users.noreply.github.com>',
+    '    Copyright (C) 2015  ' + packagejson.author,
     '',
     '    This program is free software: you can redistribute it and/or modify',
     '    it under the terms of the GNU Affero General Public License as',
@@ -43,7 +45,6 @@ var jshint = require('gulp-jshint');
 var jsonminify = require('gulp-jsonminify');
 var minifycss = require('gulp-minify-css');
 var minifyhtml = require('gulp-minify-html');
-var packagejson = require('./package.json');
 var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
 var zip = require('gulp-zip');
@@ -53,13 +54,13 @@ function css(base, inputs, output) {
         pipe(concatcss(output)).
         pipe(minifycss({ keepSpecialComments: 1 })).
         pipe(header(banner)).
-        pipe(gulp.dest(DIST));
+        pipe(gulp.dest(BUILD));
 }
 
 function html(input) {
     return gulp.src(SRC + CHROME + input).
         pipe(minifyhtml()).
-        pipe(gulp.dest(DIST + CHROME));
+        pipe(gulp.dest(BUILD + CHROME));
 }
 
 function js(base, inputs, output) {
@@ -69,24 +70,24 @@ function js(base, inputs, output) {
         pipe(concat(output)).
         pipe(uglify()).
         pipe(header(banner)).
-        pipe(gulp.dest(DIST));
+        pipe(gulp.dest(BUILD));
 }
 
 gulp.task('clean', function(cb) {
-    del(DIST, cb);
+    del([ BUILD, DIST ], cb);
 });
 
 gulp.task('chrome:copy:configs', function() {
     return gulp.src(CONFIGS + '**/*').
         pipe(jsonminify()).
-        pipe(gulp.dest(DIST + CHROME_CONFIGS));
+        pipe(gulp.dest(BUILD + CHROME_CONFIGS));
 });
 
 gulp.task('chrome:copy:folders', function() {
     return es.merge(
-        gulp.src(FONTS + '**/*').pipe(gulp.dest(DIST + CHROME_FONTS)),
-        gulp.src(SRC + CHROME_ICONS + '**/*').pipe(gulp.dest(DIST + CHROME_ICONS)),
-        gulp.src(TEMPLATES + '**/*').pipe(gulp.dest(DIST + CHROME_TEMPLATES))
+        gulp.src(FONTS + '**/*').pipe(gulp.dest(BUILD + CHROME_FONTS)),
+        gulp.src(SRC + CHROME_ICONS + '**/*').pipe(gulp.dest(BUILD + CHROME_ICONS)),
+        gulp.src(TEMPLATES + '**/*').pipe(gulp.dest(BUILD + CHROME_TEMPLATES))
     );
 });
 
@@ -101,7 +102,7 @@ gulp.task('chrome:copy:manifest', function() {
         pipe(replace(/"name": "[^"]*",/g, '"name": "' + name + '",')).
         pipe(replace(/"version": "[^"]*"/g, '"version": "' + packagejson.version + '"')).
         pipe(jsonminify()).
-        pipe(gulp.dest(DIST + CHROME));
+        pipe(gulp.dest(BUILD + CHROME));
 });
 
 gulp.task('chrome:css:options', function() {
@@ -120,7 +121,7 @@ gulp.task('chrome:css:popup', function() {
 });
 
 gulp.task('chrome:dist', function() {
-    return gulp.src(DIST + CHROME + '**/*').
+    return gulp.src(BUILD + CHROME + '**/*').
         pipe(zip(packagejson.name + '-' + packagejson.version + '.zip')).
         pipe(gulp.dest(DIST));
 });
