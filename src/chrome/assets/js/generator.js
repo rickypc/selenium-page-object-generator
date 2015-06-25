@@ -32,16 +32,18 @@ window.POG=(function() {
                 var currentSelector = nodeName.toLowerCase();
                 var index = getNodeIndex(node, nodeName);
 
-                if (node.className !== '') {
-                    currentSelector += '.' + node.className.split(/\s+/g).join('.');
-                }
-
-                if (nodeName === 'INPUT' && node.getAttribute('type')) {
-                    currentSelector += '[type=\'' + node.getAttribute('type') + '\']';
-                }
-
                 if (index > 0) {
+                    // it has siblings
                     currentSelector += ':nth-child(' + index + ')';
+                }
+                else {
+                    if (node.className !== '') {
+                        currentSelector += '.' + node.className.split(/\s+/g).join('.');
+                    }
+
+                    if (nodeName === 'INPUT' && node.getAttribute('type')) {
+                        currentSelector += '[type=\'' + node.getAttribute('type') + '\']';
+                    }
                 }
 
                 selector = currentSelector + ' ' + selector;
