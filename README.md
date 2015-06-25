@@ -10,7 +10,7 @@ A nimble and flexible Selenium Page Object Model generator to improve agile test
 
 Installation
 -
-To install the newest released version go to: https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb .
+To install the newest released version, please download it from [Chrome web store](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb).
 
 Development
 -
@@ -44,8 +44,9 @@ $ npm install
 
 License
 -
+Copyright (c) 2015 Richard Huang.
 
-This browser extension is free software, licensed under: GNU Affero General Public License (AGPL-3.0). http://www.gnu.org/licenses/agpl-3.0.en.html
+This browser extension is free software, licensed under: [GNU Affero General Public License (AGPL-3.0)](http://www.gnu.org/licenses/agpl-3.0.en.html).
 
 Screenshot
 ![screenshot](/images/popup.png)
