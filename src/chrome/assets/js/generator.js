@@ -48,7 +48,7 @@ window.POG=(function() {
             }
         }
 
-        return selector.replace(/^html body/, 'body').replace(/^\s+|\s+$/g, '');
+        return selector.replace(/^html body/, 'body').trim();
     }
 
     function getDefinition(input) {
@@ -93,6 +93,7 @@ window.POG=(function() {
         return path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
     }
 
+
     function getHiddens(cloned, original) {
         var clones = cloned.getElementsByTagName('*');
         var originals = original.getElementsByTagName('*');
@@ -111,14 +112,14 @@ window.POG=(function() {
         switch (type) {
             case LETTERS.LOWER:
             case LETTERS.UPPER:
-                value = value.replace(/\./g, '_').replace(/\s+|__|-/g, '_').replace(/^_|_$/g, '');
+                value = value.replace(/\./g, '_').replace(/\s+|__/g, '_').replace(/^_|_$/g, '');
                 value = (type === LETTERS.LOWER) ? value.toLowerCase() : value.toUpperCase();
                 break;
             case LETTERS.CAMEL:
             case LETTERS.NATURAL:
             case LETTERS.PROPER:
-                value = value.replace(/[,!?-]+/g, ' ').replace(/\.|__/g, '_').replace(/^_|_$/g, '').
-                    replace(/\s\s+|\s+_|_\s+/g, ' ').replace(/\w\S*/g, function(word) {
+                value = value.replace(/\./g, ' ').trim().replace(/\s\s+/g, ' ').
+                    replace(/\w\S*/g, function(word) {
                         return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
                     });
 
@@ -187,7 +188,7 @@ window.POG=(function() {
         var sentences = text.match(/[^\r\n.!?]+/gi) || [];
 
         for (var i = 0, j = sentences.length; i < j; i++) {
-            var sentence = sentences[i].replace(/^\s+|\s+$/g, '');
+            var sentence = sentences[i].trim();
 
             if (sentence !== '') {
                 var words = (sentence.match(/\b\w+\b/gi) || []).length;
@@ -443,8 +444,7 @@ window.POG=(function() {
                 }
 
                 // up to 5 words
-                text = text.split(/\s+/g).slice(0, 5).join(' ').
-                    replace(/^\s+|\s+$|[\[\]():,!?]/g, '');
+                text = text.split(/\s+/g).slice(0, 5).join(' ').trim().replace(/[^a-zA-Z0-9\. ]/g, '');
 
                 if (text !== '') {
                     if (texts[text]) {
