@@ -101,8 +101,11 @@ window.POG=(function() {
         var originals = original.getElementsByTagName('*');
         var hiddens = Array.filter(cloned.querySelectorAll(
             '*:not(br):not(img):not(input):not(link):not(option):not(script):not(select):not(style)'),
-            function(item, index) { var sourceIndex = [].indexOf.call(clones, item);
-                return originals[sourceIndex].offsetHeight < 1 });
+            function(item, index) {
+                var sourceIndex = [].indexOf.call(clones, item);
+                return originals[sourceIndex].offsetHeight < 1 ||
+                    !isElementInViewport(item);
+            });
         return hiddens;
     }
 
@@ -257,6 +260,20 @@ window.POG=(function() {
         words.tops.sort(function(a, b) { return words.frequencies[b] - words.frequencies[a] });
 
         return words;
+    }
+
+    function isElementInViewport(el) {
+        if (typeof(jQuery) !== 'undefined' && el instanceof jQuery) {
+            el = el[0];
+        }
+
+        var rect = el.getBoundingClientRect();
+        var windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+        var windowWidth = (window.innerWidth || document.documentElement.clientWidth);
+
+        return ((rect.left > -1) && (rect.top > -1) &&
+            ((rect.left + rect.width) <= windowWidth) &&
+            ((rect.top + rect.height) <= windowHeight));
     }
 
     function removeNodes(nodes) {
