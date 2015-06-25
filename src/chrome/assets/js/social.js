@@ -1,4 +1,3 @@
-;
 (function($) {
     'use strict';
 
@@ -37,7 +36,7 @@
         },
         // all, except fb and g+
         summary: 'Selenium Page Object Generator is a nimble and flexible #Selenium #PageObjectModel #Generator to improve #Agile #Testing process velocity.',
-        target: 'https://chrome.google.com/webstore/detail/selenium-page-object-gene/' + chrome.runtime.id,
+        target: 'https://chrome.google.com/webstore/detail/' + chrome.runtime.id,
         // linkedin
         title: 'Selenium Page Object Generator - to improve agile testing process velocity.'
     };

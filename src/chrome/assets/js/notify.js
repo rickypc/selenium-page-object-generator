@@ -1,4 +1,3 @@
-;
 (function($) {
     'use strict';
 
@@ -42,12 +41,7 @@
         });
 
         function render(message, type) {
-            if (type) {
-                type = ' ' + type
-            }
-            else {
-                type = '';
-            }
+            type = (type) ? ' ' + type : '';
 
             $container.attr('class', 'notify' + type).
                 children('div.content').text(message);
