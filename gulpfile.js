@@ -77,6 +77,10 @@ gulp.task('clean', function(cb) {
     del([ BUILD, DIST ], cb);
 });
 
+gulp.task('chrome:copy', function() {
+    gulp.start('chrome:copy:configs', 'chrome:copy:folders', 'chrome:copy:manifest');
+});
+
 gulp.task('chrome:copy:configs', function() {
     return gulp.src(CONFIGS + '**/*').
         pipe(jsonminify()).
@@ -105,6 +109,10 @@ gulp.task('chrome:copy:manifest', function() {
         pipe(gulp.dest(BUILD + CHROME));
 });
 
+gulp.task('chrome:css', function() {
+    gulp.start('chrome:css:options', 'chrome:css:popup');
+});
+
 gulp.task('chrome:css:options', function() {
     return css(SRC, [
             SRC + CHROME_CSS + 'options.css',
@@ -126,12 +134,20 @@ gulp.task('chrome:dist', function() {
         pipe(gulp.dest(DIST));
 });
 
+gulp.task('chrome:html', function() {
+    gulp.start('chrome:html:options', 'chrome:html:popup');
+});
+
 gulp.task('chrome:html:options', function() {
     return html('options.html');
 });
 
 gulp.task('chrome:html:popup', function() {
     return html('popup.html');
+});
+
+gulp.task('chrome:js', function() {
+    gulp.start('chrome:js:generator', 'chrome:js:options', 'chrome:js:popup');
 });
 
 gulp.task('chrome:js:generator', function() {
@@ -163,14 +179,12 @@ gulp.task('chrome:js:popup', function() {
         ], CHROME_JS + 'popup.js');
 });
 
-gulp.task('chrome', [
-            'chrome:copy:configs', 'chrome:copy:folders', 'chrome:copy:manifest',
-            'chrome:css:options', 'chrome:css:popup',
-            'chrome:html:options', 'chrome:html:popup',
-            'chrome:js:generator', 'chrome:js:options', 'chrome:js:popup'
-        ], function() {
+gulp.task('chrome', [ 'chrome:copy', 'chrome:css', 'chrome:html', 'chrome:js' ], function() {
     gulp.start('chrome:dist');
 });
+
+//gulp.task('watch', function() {
+//});
 
 gulp.task('default', [ 'clean' ], function() {
     gulp.start('chrome');
