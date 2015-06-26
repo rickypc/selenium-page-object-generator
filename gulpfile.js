@@ -77,8 +77,8 @@ gulp.task('clean', function(cb) {
     del([ BUILD, DIST ], cb);
 });
 
-gulp.task('chrome:copy', function() {
-    gulp.start('chrome:copy:configs', 'chrome:copy:folders', 'chrome:copy:manifest');
+gulp.task('chrome:copy', [ 'chrome:copy:configs', 'chrome:copy:folders', 'chrome:copy:manifest' ], function(cb) {
+    cb();
 });
 
 gulp.task('chrome:copy:configs', function() {
@@ -109,8 +109,8 @@ gulp.task('chrome:copy:manifest', function() {
         pipe(gulp.dest(BUILD + CHROME));
 });
 
-gulp.task('chrome:css', function() {
-    gulp.start('chrome:css:options', 'chrome:css:popup');
+gulp.task('chrome:css', [ 'chrome:css:options', 'chrome:css:popup' ], function(cb) {
+    cb();
 });
 
 gulp.task('chrome:css:options', function() {
@@ -134,8 +134,8 @@ gulp.task('chrome:dist', function() {
         pipe(gulp.dest(DIST));
 });
 
-gulp.task('chrome:html', function() {
-    gulp.start('chrome:html:options', 'chrome:html:popup');
+gulp.task('chrome:html', [ 'chrome:html:options', 'chrome:html:popup' ], function(cb) {
+    cb();
 });
 
 gulp.task('chrome:html:options', function() {
@@ -146,8 +146,8 @@ gulp.task('chrome:html:popup', function() {
     return html('popup.html');
 });
 
-gulp.task('chrome:js', function() {
-    gulp.start('chrome:js:generator', 'chrome:js:options', 'chrome:js:popup');
+gulp.task('chrome:js', [ 'chrome:js:generator', 'chrome:js:options', 'chrome:js:popup' ], function(cb) {
+    cb();
 });
 
 gulp.task('chrome:js:generator', function() {
