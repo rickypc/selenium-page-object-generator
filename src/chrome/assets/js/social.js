@@ -5,6 +5,11 @@
         // pinterest
         //cover: 'assets/image/cover.png',
         settings: {
+            envelope: {
+                height: 1,
+                url: 'mailto:?subject={{title}}&body={{summary}} {{url}}',
+                width: 1
+            },
             facebook: {
                 height: 436,
                 url: 'https://www.facebook.com/sharer/sharer.php?u={{url}}',
@@ -100,8 +105,17 @@
                 ga('send', 'event', type, 'click');
                 var features = getFeatures({ context:context, el:$this, type:type });
                 var url = getUrl({ context: context, el: $this, type: type });
+                var win = null;
 
-                return window.open(url, type + '_window', features);
+                if (type === 'envelope') {
+                    win = $('#iframe')[0];
+                    win.src = url;
+                }
+                else {
+                    win = window.open(url, type + '_window', features);
+                }
+
+                return win;
             });
         });
     };

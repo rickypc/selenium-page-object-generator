@@ -20,24 +20,26 @@
             <legend>Options</legend>
             <ul>
                 <li>
-                    <label for="model.name">Model Name:</label>
-                    <input type="text" id="model.name" value="" placeholder="Model Name" />
+                    <label for="model.name">Page Name:</label>
+                    <input type="text" id="model.name" value="" placeholder="PageName (no spaces)" />
                 </li>
                 <li>
-                    <label for="model.target">Target Name:</label>
-                    <input type="text" id="model.target" value="" placeholder="Target Name"/>
+                    <label for="model.target">Destination Page Name:</label>
+                    <input type="text" id="model.target" value="" placeholder="DestinationName (optional)"/>
                 </li>
             </ul>
-            <span class="options"><span class="fa fa-bars"></span>More Options</span>
+            <button class="options"><span class="fa fa-bars"></span>Settings</button>
         </fieldset>
         <fieldset class="share last">
             <legend>Share</legend>
+            <a class="fa fa-envelope"></a>
             <a class="fa fa-twitter"></a>
             <a class="fa fa-facebook"></a>
             <a class="fa fa-google-plus"></a>
             <!--<a class="fa fa-pinterest"></a>-->
             <a class="fa fa-linkedin"></a>
         </fieldset>
+        <iframe id="iframe"></iframe>
         <script src="assets/js/popup.js"></script>
     </body>
 </html>

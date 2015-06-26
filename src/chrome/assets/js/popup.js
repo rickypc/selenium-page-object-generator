@@ -71,7 +71,7 @@ $(document).ready(function() {
         ga('send', 'event', 'popup.target', 'change', $(this).val());
     });
 
-    $('span.options').click(function() {
+    $('button.options').click(function() {
         ga('send', 'event', 'options', 'click');
 
         if (chrome.runtime.openOptionsPage) {
@@ -114,14 +114,14 @@ $(document).ready(function() {
         preloader.on();
 
         if (!validate(elements.model.name)) {
-            notify.error('Model Name is required.');
+            notify.error('Page Name is required.');
             preloader.off();
             return;
         }
 
         var overrides = {
             model: {
-                name: elements.model.name.val(),
+                name: elements.model.name.val().replace(/\s+/g, ''),
                 target: elements.model.target.val()
             }
         };

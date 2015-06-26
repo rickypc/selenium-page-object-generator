@@ -15,15 +15,13 @@ body {
     padding: 0;
     width: 350px;
 }
-button, input, label, legend, select, span.options {
-    font-size: 0.875em;
-}
 button {
     background: #2196f3;
     border-radius: 2px;
     border-width: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     color: #fff;
+    font-size: 1em;
     padding: 5px 10px;
     text-shadow: none;
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -31,16 +29,19 @@ button {
 button[disabled] {
     background: #ddd;
 }
-button.generate:hover {
+button:hover {
     background: #1e88e5;
 }
-button.generate:active {
+button:active {
     background: #1976d2;
     box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
 }
-button.generate span,
-span.options span {
+button span {
     margin-right: 7px;
+}
+button.options {
+    display: block;
+    margin: 10px auto 0 auto;
 }
 .downloader {
     display: none;
@@ -59,6 +60,9 @@ span.options span {
 }
 .fa-download:before {
     content: "\f019";
+}
+.fa-envelope:before {
+    content: "\f0e0";
 }
 .fa-facebook:before {
     content: "\f09a";
@@ -84,12 +88,6 @@ fieldset select {
     max-width: 200px;
     width: 200px;
 }
-fieldset span.options {
-    cursor: pointer;
-    display: inline-block;
-    font-weight: bold;
-    margin: 10px 0 0 0;
-}
 fieldset.share {
     text-align: center;
 }
@@ -105,12 +103,11 @@ fieldset.share a {
     text-decoration: none;
     text-shadow: 0px 2px 3px #fff;
 }
-fieldset span.options:hover,
 fieldset.share a:hover {
     color: #ED452A;
 }
 fieldset.last {
-    margin-bottom: 7px;
+    margin-bottom: 10px;
 }
 header {
     text-align: center;
@@ -122,6 +119,12 @@ header span {
     font-size: 1.125em;
     font-weight: bold;
     margin-left: 5px;
+}
+iframe#iframe {
+    display: none;
+}
+input, label, legend, select {
+    font-size: 0.875em;
 }
 input, select {
     background: 0 0;
