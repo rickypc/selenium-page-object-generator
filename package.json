@@ -1,6 +1,6 @@
 {
   "name": "selenium-page-object-generator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A nimble and flexible Selenium Page Object Model generator to improve agile testing process velocity.",
   "dependencies": {},
   "devDependencies": {
