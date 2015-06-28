@@ -15,13 +15,16 @@ body {
     padding: 0;
     width: 350px;
 }
+button, input, label, legend, select {
+    font-size: 0.875em;
+}
 button {
     background: #2196f3;
     border-radius: 2px;
     border-width: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     color: #fff;
-    font-size: 1em;
+    outline: none;
     padding: 5px 10px;
     text-shadow: none;
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -97,7 +100,7 @@ fieldset.share legend {
 fieldset.share a {
     color: #ccc;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 1.875em;
     font-weight: bold;
     margin: 0 10px;
     text-decoration: none;
@@ -119,12 +122,6 @@ header span {
     font-size: 1.125em;
     font-weight: bold;
     margin-left: 5px;
-}
-iframe#iframe {
-    display: none;
-}
-input, label, legend, select {
-    font-size: 0.875em;
 }
 input, select {
     background: 0 0;

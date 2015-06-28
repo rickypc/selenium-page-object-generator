@@ -150,7 +150,7 @@ $(document).ready(function() {
 
         chrome.storage.local.set(storage, function() {
             preloader.off();
-            elements.notify.text(storage.targets[storage.target].label + ' options saved.');
+            elements.notify.text(storage.targets[storage.target].label + ' settings saved.');
 
             setTimeout(function() {
                 elements.notify.text('');

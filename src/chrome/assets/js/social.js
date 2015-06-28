@@ -59,7 +59,7 @@
             toolbar: 'no'
         };
 
-        if (input.el && input.type) {
+        if (input.type) {
             var setting = input.context.settings[input.type];
             features.height = setting.height;
             features.width = setting.width;
@@ -74,7 +74,7 @@
         input = input || {};
         var url = '';
 
-        if (input.el && input.type) {
+        if (input.type) {
             var context = input.context;
             var setting = context.settings[input.type];
             url = setting.url;
@@ -97,22 +97,25 @@
 
         return this.each(function() {
             var $this = $(this);
+            var type = $this.attr('class').replace(/fa\s+|fa-/g, '');
+            var features = getFeatures({ context:context, type:type });
+            var url = getUrl({ context: context, type: type });
+
+            $this.data({ features: features, type: type, url: url });
+
+            if (type === 'envelope') {
+                $this[0].href = url;
+                $this[0].target = '_blank';
+            }
 
             $this.bind('click', function (e) {
-                e.preventDefault();
+                var data = $(e.target).data();
+                var win = true;
+                ga('send', 'event', data.type, 'click');
 
-                var type = $this.attr('class').replace(/fa\s+|fa-/g, '');
-                ga('send', 'event', type, 'click');
-                var features = getFeatures({ context:context, el:$this, type:type });
-                var url = getUrl({ context: context, el: $this, type: type });
-                var win = null;
-
-                if (type === 'envelope') {
-                    win = $('#iframe')[0];
-                    win.src = url;
-                }
-                else {
-                    win = window.open(url, type + '_window', features);
+                if (data.type !== 'envelope') {
+                    e.preventDefault();
+                    win = window.open(data.url, data.type + '_window', data.features);
                 }
 
                 return win;

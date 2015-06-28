@@ -71,6 +71,8 @@ $(document).ready(function() {
         ga('send', 'event', 'popup.target', 'change', $(this).val());
     });
 
+    validate(elements.model.name);
+
     $('button.options').click(function() {
         ga('send', 'event', 'options', 'click');
 
