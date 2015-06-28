@@ -34,5 +34,9 @@
     "Nimble"
   ],
   "author": "Richard Huang <rickypc@users.noreply.github.com>",
-  "license": "AGPL3"
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rickypc/selenium-page-object-generator.git"
+  }
 }
