@@ -71,8 +71,6 @@ $(document).ready(function() {
         ga('send', 'event', 'popup.target', 'change', $(this).val());
     });
 
-    validate(elements.model.name);
-
     $('button.options').click(function() {
         ga('send', 'event', 'options', 'click');
 
@@ -97,6 +95,9 @@ $(document).ready(function() {
         elements.target.val(storage.target);
         elements.model.name.val(storage.model.name);
         elements.model.target.val(storage.model.target);
+
+        // if it's still empty, let's show the reminder
+        validate(elements.model.name);
     });
 
     chrome.tabs.executeScript(null, {

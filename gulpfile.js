@@ -179,13 +179,15 @@ gulp.task('chrome:js:popup', function() {
         ], CHROME_JS + 'popup.js');
 });
 
-gulp.task('chrome', [ 'chrome:copy', 'chrome:css', 'chrome:html', 'chrome:js' ], function() {
+gulp.task('chrome', [ 'chrome:copy', 'chrome:css', 'chrome:html', 'chrome:js' ], function(cb) {
     gulp.start('chrome:dist');
+    cb();
 });
 
 //gulp.task('watch', function() {
 //});
 
-gulp.task('default', [ 'clean' ], function() {
+gulp.task('default', [ 'clean' ], function(cb) {
     gulp.start('chrome');
+    cb();
 });

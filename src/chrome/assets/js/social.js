@@ -98,22 +98,32 @@
         return this.each(function() {
             var $this = $(this);
             var type = $this.attr('class').replace(/fa\s+|fa-/g, '');
-            var features = getFeatures({ context:context, type:type });
-            var url = getUrl({ context: context, type: type });
-
-            $this.data({ features: features, type: type, url: url });
+            $this.data('type', type);
 
             if (type === 'envelope') {
-                $this[0].href = url;
+                $this[0].href = getUrl({ context: context, type: type });
                 $this[0].target = '_blank';
             }
 
             $this.bind('click', function (e) {
-                var data = $(e.target).data();
+                var $target = $(e.target);
+                var data = $target.data();
                 var win = true;
                 ga('send', 'event', data.type, 'click');
 
                 if (data.type !== 'envelope') {
+                    if (!data.features) {
+                        var features = getFeatures({ context:context, type:type });
+                        $target.data('features', features);
+                        data.features = features;
+                    }
+
+                    if (!data.url) {
+                        var url = getUrl({ context: context, type: type });
+                        $target.data('url', url);
+                        data.url = url;
+                    }
+
                     e.preventDefault();
                     win = window.open(data.url, data.type + '_window', data.features);
                 }
