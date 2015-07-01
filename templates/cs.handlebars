@@ -54,18 +54,20 @@ using System.Collections.Generic;
 {{#if model.namespace}}    {{/if}}    }
 
         {{#operations}}
-{{#if model.namespace}}    {{/if}}    /**
-{{#if model.namespace}}    {{/if}}     * {{#if argument}}{{argument.documentation}}{{else}}{{operation.documentation}}{{/if}}
-{{#if model.namespace}}    {{/if}}     */
+{{#if model.namespace}}    {{/if}}    /// <summary>
+{{#if model.namespace}}    {{/if}}    /// {{#if argument}}{{argument.documentation}}{{else}}{{operation.documentation}}{{/if}}
+{{#if model.namespace}}    {{/if}}    /// </summary>
+{{#if model.namespace}}    {{/if}}    /// <returns>The {{default target.modelName @root.model.name}} class instance.</returns>
 {{#if model.namespace}}    {{/if}}    public {{default target.modelName @root.model.name}} {{operation.name}}() 
 {{#if model.namespace}}    {{/if}}    {
         {{#if argument}}
 {{#if model.namespace}}    {{/if}}        return {{operation.name}}(data["{{argument.key}}"]);
 {{#if model.namespace}}    {{/if}}    }
 
-{{#if model.namespace}}    {{/if}}    /**
-{{#if model.namespace}}    {{/if}}     * {{operation.documentation}}
-{{#if model.namespace}}    {{/if}}     */
+{{#if model.namespace}}    {{/if}}    /// <summary>
+{{#if model.namespace}}    {{/if}}    /// {{operation.documentation}}
+{{#if model.namespace}}    {{/if}}    /// </summary>
+{{#if model.namespace}}    {{/if}}    /// <returns>The {{default target.modelName @root.model.name}} class instance.</returns>
 {{#if model.namespace}}    {{/if}}    public {{default target.modelName @root.model.name}} {{operation.name}}(string {{argument.name}})
 {{#if model.namespace}}    {{/if}}    {
         {{/if}}

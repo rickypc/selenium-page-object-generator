@@ -52,6 +52,8 @@ public class {{model.name}} {
     {{#operations}}
     /**
      * {{#if argument}}{{argument.documentation}}{{else}}{{operation.documentation}}{{/if}}
+     *
+     * @return the {{default target.modelName @root.model.name}} class instance.
      */
     public {{default target.modelName @root.model.name}} {{operation.name}}() {
     {{#if argument}}
@@ -60,6 +62,8 @@ public class {{model.name}} {
 
     /**
      * {{operation.documentation}}
+     *
+     * @return the {{default target.modelName @root.model.name}} class instance.
      */
     public {{default target.modelName @root.model.name}} {{operation.name}}(String {{argument.name}}) {
     {{/if}}
