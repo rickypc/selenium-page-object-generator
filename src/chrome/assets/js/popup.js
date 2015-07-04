@@ -136,10 +136,13 @@ $(document).ready(function() {
 
         chrome.storage.local.set(storage, function() {
             var target = storage.targets[storage.target];
+            overrides.model.include = target.config.model.include;
+            overrides.model.namespace = target.config.model.namespace;
             var input = $.extend({}, target.config, overrides);
 
             processActivePage(input).always(function(context) {
                 ga('send', 'event', 'active.page', 'process', context.url);
+
                 var generated = (Handlebars.compile(target.template))(context);
                 var fileName = context.model.name + '.' + storage.target;
 
