@@ -467,6 +467,7 @@ window.POG=(function() {
                             action = 'Click';
                             buffer.type = 'button';
                             label = 'Button';
+                            text = text || node.value || getNodeText(node);
 
                             if (inputType === 'submit') {
                                 submit.label = label;
