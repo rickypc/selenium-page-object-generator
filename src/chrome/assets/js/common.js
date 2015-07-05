@@ -194,12 +194,23 @@ var common = {
 
         // nodes
         input.nodes = input.nodes || {};
-        input.nodes.selector = input.nodes.selector || 'a,button,input,select';
-        input.nodes.visibility = input.nodes.visiblity || VISIBILITIES.VISIBLE;
+        // using test framework with AngularJS locators support
+        input.nodes.angular = !!input.nodes.angular;
+        input.nodes.root = input.nodes.root || 'body';
+        input.nodes.selector = input.nodes.selector || 'a,button,input,select,textarea';
+        input.nodes.visibility = input.nodes.visiblity || VISIBILITIES.ALL;
 
         // operations
         input.operations = input.operations || {};
         input.operations.extras = input.operations.extras || {};
+
+        // operations.extras
+        input.operations.extras.fill = this.defaults(input.operations.extras.fill, 1);
+        input.operations.extras['fill.submit'] = this.defaults(input.operations.extras['fill.submit'], 1);
+        input.operations.extras.submit = this.defaults(input.operations.extras.submit, 1);
+        input.operations.extras['verify.loaded'] = this.defaults(input.operations.extras['verify.loaded'], 1);
+        input.operations.extras['verify.url'] = this.defaults(input.operations.extras['verify.url'], 1);
+
         input.operations.letter = input.operations.letter || LETTERS.CAMEL;
         input.operations.separator = this.defaults(input.operations.separator, '\n');
 
