@@ -67,20 +67,34 @@
         </fieldset>
         <fieldset>
             <legend>Nodes</legend>
-            <ul>
-                <li>
-                    <label for="nodes.selector">Selector:</label>
-                    <input type="text" id="nodes.selector" value="">
-                </li>
-                <li>
-                    <label for="nodes.visibility">Visibility:</label>
-                    <select id="nodes.visibility">
-                        <!--<option value="1">Hidden</option>-->
-                        <option value="2">Visible</option>
-                        <option value="3">All</option>
-                    </select>
-                </li>
-            </ul>
+            <div class="left">
+                <ul>
+                    <li>
+                        <label for="nodes.angular">Test Framework Has AngularJS Locators Support:</label>
+                        <input type="checkbox" id="nodes.angular">
+                    </li>
+                    <li>
+                        <label for="nodes.root">Root:</label>
+                        <input type="text"  id="nodes.root" value="">
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <ul>
+                    <li>
+                        <label for="nodes.selector">Selector:</label>
+                        <input type="text" id="nodes.selector" value="">
+                    </li>
+                    <li>
+                        <label for="nodes.visibility">Visibility:</label>
+                        <select id="nodes.visibility">
+                            <!--<option value="1">Hidden</option>-->
+                            <option value="2">Visible</option>
+                            <option value="3">All</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
         </fieldset>
         <fieldset>
             <legend>Operations</legend>
@@ -132,7 +146,9 @@
             <textarea id="template"></textarea>
         </fieldset>
         <div class="preloader"></div>
-        <button class="save"><span class="fa fa-save"></span>Save</button><span class="notify"></span>
+        <button class="save"><span class="fa fa-save"></span>Save</button>
+        <button class="restore"><span class="fa fa-undo"></span>Restore To Factory Options</button>
+        <span class="notify"></span>
         <script src="assets/js/options.js"></script>
     </body>
 </html>

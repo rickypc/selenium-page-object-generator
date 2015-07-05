@@ -5,7 +5,6 @@ function getElements() {
             letter: $('[id="attributes.letter"]'),
             separator: $('[id="attributes.separator"]')
         },
-        button: $('button.save'),
         copyright: {
             claimant: $('[id="copyright.claimant"]'),
             year: $('[id="copyright.year"]')
@@ -18,6 +17,8 @@ function getElements() {
             namespace: $('[id="model.namespace"]')
         },
         nodes: {
+            angular: $('[id="nodes.angular"]'),
+            root: $('[id="nodes.root"]'),
             selector: $('[id="nodes.selector"]'),
             visibility: $('[id="nodes.visibility"]')
         },
@@ -33,10 +34,36 @@ function getElements() {
             letter: $('[id="operations.letter"]'),
             separator: $('[id="operations.separator"]')
         },
+        restore: $('button.restore'),
+        save: $('button.save'),
         target: $('#target'),
         template: $('#template'),
         timeout: $('#timeout')
     };
+}
+
+function loadData(elements) {
+    return $.Deferred(function(defer) {
+        common.getStorage().always(function(data) {
+            var storage = data;
+
+            for (var key in storage.targets) {
+                elements.target.append('<option value="' + key + '">' +
+                    storage.targets[key].label + '</option>');
+            }
+
+            elements.target.val(storage.target);
+            elements.target.change(function(e) {
+                e.preventDefault();
+                var value = $(this).val()
+                ga('send', 'event', 'options.target', 'change', value);
+                push(elements, storage.targets[value]);
+            });
+
+            push(elements, storage.targets[storage.target]);
+            defer.resolve(storage);
+        });
+    }).promise();
 }
 
 function pull(elements, target) {
@@ -58,6 +85,8 @@ function pull(elements, target) {
     target.config.model.namespace = elements.model.namespace.val();
     target.config.model.include = elements.model.include.get(0).checked;
 
+    target.config.nodes.angular = elements.nodes.angular.get(0).checked;
+    target.config.nodes.root = elements.nodes.root.val();
     target.config.nodes.selector = elements.nodes.selector.val();
     target.config.nodes.visibility = elements.nodes.visibility.val();
 
@@ -101,6 +130,9 @@ function push(elements, target) {
     elements.model.include.get(0).checked = !!target.config.
         model.include;
 
+    elements.nodes.angular.get(0).checked = !!target.config.
+        nodes.angular;
+    elements.nodes.root.val(target.config.nodes.root);
     elements.nodes.selector.val(target.config.nodes.selector);
     elements.nodes.visibility.val(target.config.nodes.visibility);
 
@@ -139,7 +171,7 @@ $(document).ready(function() {
     var preloader = $('.preloader').preloader();
     var storage = {};
 
-    elements.button.click(function(e) {
+    elements.save.click(function(e) {
         e.preventDefault();
         ga('send', 'event', 'save', 'click');
         preloader.on();
@@ -158,22 +190,28 @@ $(document).ready(function() {
         });
     });
 
-    common.getStorage().always(function(data) {
-        storage = data;
+    elements.restore.click(function(e) {
+        e.preventDefault();
+        ga('send', 'event', 'restore', 'click');
+        preloader.on();
 
-        for (var key in storage.targets) {
-            elements.target.append('<option value="' + key + '">' +
-                storage.targets[key].label + '</option>');
-        }
+        chrome.storage.local.clear(function() {
+            elements.target.unbind('change').empty();
 
-        elements.target.val(storage.target);
-        elements.target.change(function(e) {
-            e.preventDefault();
-            var value = $(this).val()
-            ga('send', 'event', 'options.target', 'change', value);
-            push(elements, storage.targets[value]);
+            // reload the data
+            loadData(elements).done(function(data) {
+                storage = data;
+                preloader.off();
+                elements.notify.text('All options are restored to their original defaults.');
+
+                setTimeout(function() {
+                    elements.notify.text('');
+                }, 5000);
+            });
         });
+    });
 
-        push(elements, storage.targets[storage.target]);
+    loadData(elements).done(function(data) {
+        storage = data;
     });
 });

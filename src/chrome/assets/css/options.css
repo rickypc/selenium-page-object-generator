@@ -16,27 +16,44 @@ body {
     padding: 0;
     width: 800px;
 }
-button.save,
-:enabled:hover:-webkit-any(button) {
-    background: #2196f3;
+:-webkit-any(button) {
     border-radius: 2px;
     border-width: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-    color: #fff;
     font-size: 1em;
     outline: none;
     padding: 5px 10px;
     text-shadow: none;
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-:enabled:hover:-webkit-any(button) {
-    background: #1e88e5;
+button.restore {
+    background: #e53935;
+    color: #fff;
 }
-:enabled:active:-webkit-any(button) {
-    background: #1976d2;
+button.restore:enabled:hover:-webkit-any(button) {
+    background: #d32f2f;
+    color: #fff;
+}
+button.restore:enabled:active:-webkit-any(button) {
+    background: #c62828;
+    color: #fff;
     box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
 }
-button.save span {
+button.save {
+    background: #2196f3;
+    color: #fff;
+}
+button.save:enabled:hover:-webkit-any(button) {
+    background: #1e88e5;
+    color: #fff;
+}
+button.save:enabled:active:-webkit-any(button) {
+    background: #1976d2;
+    color: #fff;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+}
+button.save span,
+button.restore span {
     margin-right: 7px;
 }
 .fa {
@@ -50,6 +67,9 @@ button.save span {
 }
 .fa-save:before {
     content: "\f0c7";
+}
+.fa-undo:before {
+    content: "\f0e2";
 }
 fieldset {
     border: 1px solid #ddd;
@@ -68,6 +88,7 @@ fieldset input[type=text] {
 }
 fieldset input[type=text][id='copyright.claimant'],
 fieldset input[type=text][id='model.namespace'],
+fieldset input[type=text][id='nodes.root'],
 fieldset input[type=text][id='nodes.selector'] {
     width: 280px;
 }
@@ -79,10 +100,14 @@ fieldset label {
     width: 80px;
 }
 fieldset label[for='model.include'],
+fieldset label[for='nodes.angular'],
 fieldset label[for^='operations.fill'],
 fieldset label[for='operations.submit'],
 fieldset label[for^='operations.verify'] {
     width: 300px;
+}
+fieldset label[for='nodes.angular'] {
+    font-size: 13px;
 }
 fieldset .left {
     float: left;
