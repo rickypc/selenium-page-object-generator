@@ -1,6 +1,8 @@
 window.POG=(function() {
     // to compartment any js error on the page
     var ELEMENT_NODE = 1;
+    var NG_PREFIXES = ['ng-','data-ng-','ng_','x-ng-','ng\\:'];
+    var NG_STRATEGIES = [ { handler: getNgModelName, strategy: 'model' } ];
     var SHOW_COMMENT = 128;
 
     // ========================================================================
@@ -41,8 +43,13 @@ window.POG=(function() {
                         currentSelector += '.' + node.className.split(/\s+/g).join('.');
                     }
 
-                    if (nodeName === 'INPUT' && node.getAttribute('type')) {
-                        currentSelector += '[type=\'' + node.getAttribute('type') + '\']';
+                    if (nodeName === 'INPUT') {
+                        if (node.getAttribute('type')) {
+                            currentSelector += '[type=\'' + node.getAttribute('type') + '\']';
+                        }
+                        else if (node.getAttribute('data-type')) {
+                            currentSelector += '[data-type=\'' + node.getAttribute('data-type') + '\']';
+                        }
                     }
                 }
 
@@ -50,7 +57,7 @@ window.POG=(function() {
             }
         }
 
-        return selector.replace(/^html body/, 'body').trim();
+        return selector.replace(/^html[^\b]*\bbody\b/, '').trim();
     }
 
     function getDefinition(input) {
@@ -95,7 +102,6 @@ window.POG=(function() {
         return path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
     }
 
-
     function getHiddens(cloned, original) {
         var clones = cloned.getElementsByTagName('*');
         var originals = original.getElementsByTagName('*');
@@ -107,6 +113,35 @@ window.POG=(function() {
                     !isElementInViewport(item);
             });
         return hiddens;
+    }
+
+    function getLabelText(node) {
+        var label = null;
+        var text = '';
+
+        if (node.id) {
+            label = document.querySelector('label[for="' + node.id + '"]');
+
+            if (label) {
+                text = label.textContent || label.innerText || '';
+                text = text.trim();
+            }
+        }
+
+        if (text === '') {
+            // find label from siblings
+            label = Array.filter([].slice.call(node.parentNode.children),
+                function(item, index) {
+                    return item.nodeName === 'LABEL';
+                });
+
+            if (label.length) {
+                text = label[0].textContent || label[0].innerText || '';
+                text = text.trim();
+            }
+        }
+
+        return text;
     }
 
     function getLetter(value, type) {
@@ -141,35 +176,108 @@ window.POG=(function() {
         return value;
     }
 
+    function getLinkText(node) {
+        var image = node.querySelector('img');
+        var text = '';
+
+        if (image) {
+            text = image.alt || getFileName(image.src);
+        }
+
+        return text.trim();
+    }
+
+    function getLocator(node, angular) {
+        var response = {};
+
+        if (angular) {
+            response = getNgLocator(node);
+        }
+
+        if (!response.strategy) {
+            if (node.id) {
+                response.strategy = 'id';
+                response.value = node.id;
+            }
+            else if (node.name) {
+                response.strategy = 'name';
+                response.value = node.name;
+            }
+            else {
+                response.strategy = 'css';
+                response.value = getCSSSelector(node);
+            }
+        }
+
+        return response;
+    }
+
+    function getNgLocator(node) {
+        var response = {};
+
+        for (var i = 0, j = NG_STRATEGIES.length; i < j; i++) {
+            var item = NG_STRATEGIES[i];
+            var value = item.handler(node);
+
+            if (value) {
+                response.strategy = item.strategy;
+                response.value = value;
+            }
+        }
+
+        return response;
+    }
+
+    function getNgModelName(node) {
+        var name = '';
+
+        for (var i = 0, j = NG_PREFIXES.length; i < j; i++) {
+            name = node.getAttribute(NG_PREFIXES[i] + 'model') || '';
+
+            if (name) {
+                break;
+            }
+        }
+
+        return name.trim();
+    }
+
     function getNodeIndex(node, nodeName) {
-        var count = 1;
-        var sibling = node;
         nodeName = nodeName || node.nodeName;
 
-        while (sibling = sibling.previousSibling) {
-            if (sibling.nodeType === ELEMENT_NODE && sibling.nodeName === nodeName) {
-                count++;
+        var siblings = Array.filter(node.parentNode.children, function(item, index) {
+            return item.nodeName === nodeName;
+        });
+
+        var index = [].indexOf.call(siblings, node);
+        // convert to 1-based index
+        index++;
+
+        return (index === 1 && index === siblings.length) ? 0 : index;
+    }
+
+    function getNodeText(node) {
+        var text = getLabelText(node);
+
+        if (text === '') {
+            var parentNode = node.parentNode;
+
+            if (parentNode) {
+                var clonedParentNode = parentNode.cloneNode(true);
+                var clonedNode = clonedParentNode.querySelector(
+                    node.nodeName.toLowerCase());
+                clonedParentNode.removeChild(clonedNode);
+
+                text = clonedParentNode.textContent || clonedParentNode.innerText || '';
+                text = text.trim();
             }
         }
 
-        // reset count if it doesn't have nextSibling
-        if (count === 1) {
-            var found = false;
-            sibling = node;
-
-            while (sibling = sibling.nextSibling) {
-                if (sibling.nodeType === ELEMENT_NODE && sibling.nodeName === nodeName) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                count = 0;
-            }
+        if (text === '') {
+            text = getNodeText(node.parentNode);
         }
 
-        return count;
+        return text;
     }
 
     function getPageVisibleHTML(original) {
@@ -294,7 +402,8 @@ window.POG=(function() {
 
     function setDefinitions(input) {
         var definitions = [];
-        var nodes = document.querySelectorAll(input.nodes.selector);
+        var root = document.querySelector(input.nodes.root) || document;
+        var nodes = root.querySelectorAll(input.nodes.selector);
 
         if ({}.toString.call(nodes) !== '[object NodeList]') {
             input.definitions = definitions;
@@ -321,45 +430,19 @@ window.POG=(function() {
                 var hasArgument = false;
                 var hasUnset = false;
                 var label = '';
+                var locator = getLocator(node, input.nodes.angular);
                 var text = node.textContent || node.innerText || '';
 
-                if (node.id) {
-                    buffer.attribute.strategy = 'id';
-                    buffer.attribute.value = node.id;
-                }
-                else if (node.name) {
-                    buffer.attribute.strategy = 'name';
-                    buffer.attribute.value = node.name;
-                }
-                else {
-                    buffer.attribute.strategy = 'css';
-                    buffer.attribute.value = getCSSSelector(node);
-                }
-
+                buffer.attribute.strategy = locator.strategy;
+                buffer.attribute.value = locator.value;
                 buffer.sourceIndex = node.sourceIndex || [].indexOf.call(tags, node);
 
                 switch(node.nodeName) {
                     case 'A':
-                        if (text === '' && node.hasChildNodes()) {
-                            for (var k = 0, l = node.childNodes.length; k < l; k++) {
-                                var child = node.childNodes[k];
-
-                                if (child.nodeName === 'IMG') {
-                                    if (child.alt) {
-                                        text = child.alt;
-                                    }
-                                    else if (child.src) {
-                                        text = getFileName(child.src);
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-
                         action = 'Click';
-                        label = 'Link';
                         buffer.type = 'link';
+                        label = 'Link';
+                        text = text || getLinkText(node);
 
                         if (submit.text === '' && text.toLowerCase().indexOf('submit') > -1) {
                             submit.label = label;
@@ -368,26 +451,24 @@ window.POG=(function() {
                         break;
                     case 'BUTTON':
                         action = 'Click';
-                        label = 'Button';
                         buffer.type = 'button';
-                        var buttonType = node.getAttribute('type') || '';
+                        label = 'Button';
 
-                        if (submit.text === '' && (buttonType.toLowerCase() === 'submit' ||
+                        if (submit.text === '' && ((node.type || '').toLowerCase() === 'submit' ||
                                 text.toLowerCase().indexOf('submit') > -1)) {
                             submit.label = label;
                             submit.text = text;
                         }
                         break;
                     case 'INPUT':
-                        var inputType = node.getAttribute('type') || '';
-                        var inputTypeLowered = inputType.toLowerCase();
+                        var inputType = node.type || '';
 
-                        if ('|button|image|submit|'.indexOf('|' + inputTypeLowered + '|') > -1) {
+                        if ('|button|image|submit|'.indexOf('|' + inputType + '|') > -1) {
                             action = 'Click';
-                            label = 'Button';
                             buffer.type = 'button';
+                            label = 'Button';
 
-                            if (inputTypeLowered === 'submit') {
+                            if (inputType === 'submit') {
                                 submit.label = label;
                                 submit.text = text;
                             }
@@ -397,37 +478,20 @@ window.POG=(function() {
                             }
                         }
                         else {
-                            if (inputTypeLowered === 'hidden') {
+                            if (inputType === 'hidden') {
                                 break;
                             }
-
-                            if ('|password|radio|text|'.indexOf('|' + inputTypeLowered + '|') > -1) {
-                                hasArgument = true;
-                            }
-
-                            if (inputTypeLowered === 'checkbox') {
+                            else if (inputType === 'checkbox') {
                                 hasUnset = true;
                             }
-
-                            if (text === '') {
-                                if (buffer.attribute.strategy === 'id') {
-                                    var label = document.
-                                        querySelector('label[for="' + buffer.attribute.value + '"]');
-                                    if (label) {
-                                        text = label.textContent || label.innerText || '';
-                                    }
-                                }
-                                else {
-                                    var parentNode = node.parentNode;
-                                    if (parentNode) {
-                                        text = parentNode.textContent || parentNode.innerText || '';
-                                    }
-                                }
+                            else if ('|email|number|password|radio|search|tel|text|url|'.
+                                    indexOf('|' + inputType + '|') > -1) {
+                                hasArgument = true;
                             }
 
                             label = getLetter(inputType, LETTERS.PROPER);
 
-                            if (inputTypeLowered === 'radio') {
+                            if (inputType === 'radio') {
                                 label = 'Radio Button';
                                 if (buffer.attribute.strategy !== 'name' && node.name) {
                                     buffer.attribute.strategy = 'name';
@@ -435,30 +499,30 @@ window.POG=(function() {
                                 }
                             }
 
+                            if ('|email|number|password|search|tel|url|'.
+                                    indexOf('|' + inputType + '|') > -1) {
+                                inputType = 'text';
+                            }
+
                             action = 'Set';
                             buffer.type = inputType;
+                            text = text || getNodeText(node);
                         }
                         break;
                     case 'SELECT':
-                        if (buffer.attribute.strategy === 'id') {
-                            var label = document.
-                                querySelector('label[for="' + buffer.attribute.value + '"]');
-                            if (label) {
-                                text = label.textContent || label.innerText || '';
-                            }
-                        }
-                        else {
-                            var parentNode = node.parentNode;
-                            if (parentNode) {
-                                text = parentNode.textContent || parentNode.innerText || '';
-                            }
-                        }
-
                         action = 'Set';
+                        buffer.type = 'select';
                         hasArgument = true;
                         hasUnset = true;
                         label = 'Drop Down List';
-                        buffer.type = 'select';
+                        text = getNodeText(node);
+                        break;
+                    case 'TEXTAREA':
+                        action = 'Set';
+                        buffer.type = 'text';
+                        hasArgument = true;
+                        label = 'Textarea';
+                        text = getNodeText(node);
                         break;
                 }
 
@@ -643,7 +707,8 @@ window.POG=(function() {
         }
 
         if (input.operations.extras['verify.url']) {
-            var value = document.location.pathname;
+            // it's better to generate more information than less
+            var value = document.location.href.replace(document.location.origin, '');
 
             var buffer = {
                 attribute: {
