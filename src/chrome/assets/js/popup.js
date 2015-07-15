@@ -71,7 +71,8 @@ $(document).ready(function() {
         ga('send', 'event', 'popup.target', 'change', $(this).val());
     });
 
-    $('button.options').click(function() {
+    $('button.options').click(function(e) {
+        e.preventDefault();
         ga('send', 'event', 'options', 'click');
 
         if (chrome.runtime.openOptionsPage) {

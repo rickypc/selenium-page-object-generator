@@ -64,8 +64,9 @@ window.POG=(function() {
         input = input || {};
         var actionLowered = input.action.toLowerCase();
         var buffer = Object.extend(input.buffer);
-        buffer.attribute = Object.extend(input.buffer.attribute);
-        buffer.operation = Object.extend(input.buffer.operation);
+        // deep copy
+        buffer.attribute = Object.extend(buffer.attribute);
+        buffer.operation = Object.extend(buffer.operation);
         var suffixes = {
             action: (actionLowered === 'click') ? ' on' : '',
             label: (actionLowered === 'set') ? ' Field' : ''
