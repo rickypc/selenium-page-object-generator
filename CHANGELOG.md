@@ -1,3 +1,11 @@
+### 1.1.1 (2015.07.14)
+
+* Cancel default action on Options button click
+* Rearrange object deep copy to die gracefully
+* Use more specific CSS selector base on siblings and element type
+* Consider element value for input button and submit for label text
+* Adjust wording for root selector
+
 ### 1.1.0 (2015.07.04)
 
 * Change default visibility to all (visible and hidden elements)
