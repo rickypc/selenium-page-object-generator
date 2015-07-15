@@ -36,7 +36,7 @@ window.POG=(function() {
 
                 if (index > 0) {
                     // it has siblings
-                    currentSelector += ':nth-child(' + index + ')';
+                    currentSelector += ':nth-of-type(' + index + ')';
                 }
                 else {
                     if (node.className !== '') {
