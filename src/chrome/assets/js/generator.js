@@ -8,6 +8,25 @@ window.POG=(function() {
     // ========================================================================
     // private functions
 
+    function getClosestSibling(node, siblings) {
+        var copies = siblings.slice(0);
+        copies.push(node);
+        var closest = copies.length - 1;
+        var nodeIndex = [].indexOf.call(copies, node);
+        var siblingIndex = closest;
+
+        for (var i = 0, j = copies.length; i < j; i++) {
+            var delta = Math.abs(nodeIndex - i);
+
+            if (delta < closest) {
+                closest = delta;
+                siblingIndex = i;
+            }
+        }
+
+        return (siblingIndex === (copies.length - 1)) ? null : copies[siblingIndex];
+    }
+
     function getComments(root) {
         var comments = [];
         var index = -1;
@@ -45,7 +64,7 @@ window.POG=(function() {
 
                     if (nodeName === 'INPUT') {
                         if (node.getAttribute('type')) {
-                            currentSelector += '[type=\'' + node.getAttribute('type') + '\']';
+                            currentSelector += '[type=\'' + node.type + '\']';
                         }
                         else if (node.getAttribute('data-type')) {
                             currentSelector += '[data-type=\'' + node.getAttribute('data-type') + '\']';
@@ -121,7 +140,23 @@ window.POG=(function() {
         var text = '';
 
         if (node.id) {
-            label = document.querySelector('label[for="' + node.id + '"]');
+            text = getLabelTextFor(node.id);
+        }
+
+        if (text === '' && node.name) {
+            // non-standard, but it happens
+            text = getLabelTextFor(node.name);
+        }
+
+        if (text === '') {
+            // find label from siblings
+            // TODO: should use more aggressive collector
+            labels = Array.filter([].slice.call(node.parentNode.children),
+                function(item, index) {
+                    return item.nodeName === 'LABEL';
+                });
+
+            var label = getClosestSibling(node, labels);
 
             if (label) {
                 text = label.textContent || label.innerText || '';
@@ -129,15 +164,18 @@ window.POG=(function() {
             }
         }
 
-        if (text === '') {
-            // find label from siblings
-            label = Array.filter([].slice.call(node.parentNode.children),
-                function(item, index) {
-                    return item.nodeName === 'LABEL';
-                });
+        return text;
+    }
 
-            if (label.length) {
-                text = label[0].textContent || label[0].innerText || '';
+    function getLabelTextFor(identifier) {
+        var label = null;
+        var text = '';
+
+        if (identifier) {
+            label = document.querySelector('label[for="' + identifier + '"]');
+
+            if (label) {
+                text = label.textContent || label.innerText || '';
                 text = text.trim();
             }
         }

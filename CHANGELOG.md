@@ -1,3 +1,7 @@
+### 1.1.2 (2015.07.16)
+
+* Employ better and broader mechanism to get label text
+
 ### 1.1.1 (2015.07.14)
 
 * Cancel default action on Options button click
