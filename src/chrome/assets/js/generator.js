@@ -90,7 +90,7 @@ window.POG=(function() {
             action: (actionLowered === 'click') ? ' on' : '',
             label: (actionLowered === 'set') ? ' Field' : ''
         };
-        suffixes.documentation = ' ' + getLetter(input.text, LETTERS.NATURAL) +
+        suffixes.documentation = ' ' + getLetter(input.fullText || input.text, LETTERS.NATURAL) +
             ' ' + (input.label + suffixes.label.toLowerCase()) + '.';
         suffixes.name = ' ' + input.text + ' ' + input.label + suffixes.label;
 
@@ -392,9 +392,14 @@ window.POG=(function() {
         return sentences;
     }
 
-    function getSanitizedText(text) {
-        // up to 6 words
-        return text.split(/\s+/g).slice(0, 6).join(' ').trim().replace(/[^a-zA-Z0-9\. ]/g, '');
+    function getSanitizedText(text, max) {
+        var texts = text.split(/\s+/g);
+
+        if (max) {
+            texts = texts.slice(0, max);
+        }
+
+        return texts.join(' ').trim().replace(/[^a-zA-Z0-9\. ]/g, '');
     }
 
     function getWordFrequency(text) {
@@ -557,7 +562,7 @@ window.POG=(function() {
 
                                 var radioValueBuffer = {
                                     attribute: {
-                                        name: getLetter(getSanitizedText(text) + ' Value',
+                                        name: getLetter(getSanitizedText(text, 6) + ' Value',
                                             input.attributes.letter),
                                         value: node.value
                                     },
@@ -599,7 +604,8 @@ window.POG=(function() {
                         break;
                 }
 
-                text = getSanitizedText(text);
+                var fullText = getSanitizedText(text);
+                text = getSanitizedText(text, 6);
 
                 if (text !== '') {
                     if (texts[text]) {
@@ -612,6 +618,7 @@ window.POG=(function() {
                             definition = getDefinition({
                                 action: action,
                                 buffer: definitions[firsts[text]],
+                                fullText: fullText,
                                 hasArgument: hasArgument,
                                 label: label,
                                 letters: {
@@ -627,6 +634,7 @@ window.POG=(function() {
                                 definition = getDefinition({
                                     action: action,
                                     buffer: definitions[unsets[text]],
+                                    fullText: fullText,
                                     hasArgument: hasArgument,
                                     label: label,
                                     letters: {
@@ -655,6 +663,7 @@ window.POG=(function() {
                     definition = getDefinition({
                         action: action,
                         buffer: buffer,
+                        fullText: fullText,
                         hasArgument: hasArgument,
                         label: label,
                         letters: {
@@ -673,6 +682,7 @@ window.POG=(function() {
                         definition = getDefinition({
                             action: action,
                             buffer: buffer,
+                            fullText: fullText,
                             hasArgument: hasArgument,
                             label: label,
                             letters: {
