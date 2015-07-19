@@ -23,11 +23,11 @@ using System.Collections.Generic;
 
         {{#attributes}}
         {{#if attribute.strategy}}
-{{#if @root.model.namespace}}    {{/if}}    [FindsBy(How = How.{{proper attribute.strategy}}{{#equals attribute.strategy 'css'}}Selector{{/equals}}, Using = "{{attribute.value}}")]
+{{#if @root.model.namespace}}    {{/if}}    [FindsBy(How = How.{{proper attribute.strategy}}{{#equals attribute.strategy 'css'}}Selector{{/equals}}, Using = "{{{attribute.value}}}")]
 {{#if @root.model.namespace}}    {{/if}}    [CacheLookup]
 {{#if @root.model.namespace}}    {{/if}}    private {{#equals type 'radio'}}IList<IWebElement>{{else}}IWebElement{{/equals}} {{attribute.name}};
         {{else}}
-{{#if @root.model.namespace}}    {{/if}}    private readonly string {{attribute.name}} = "{{attribute.value}}";
+{{#if @root.model.namespace}}    {{/if}}    private readonly string {{attribute.name}} = "{{{attribute.value}}}";
         {{/if}}
         {{/attributes}}
 

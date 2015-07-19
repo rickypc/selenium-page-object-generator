@@ -23,11 +23,11 @@ public class {{model.name}} {
 
     {{#attributes}}
     {{#if attribute.strategy}}
-    @FindBy({{attribute.strategy}} = "{{attribute.value}}")
+    @FindBy({{attribute.strategy}} = "{{{attribute.value}}}")
     @CacheLookup
     private {{#equals type 'radio'}}List<WebElement>{{else}}WebElement{{/equals}} {{attribute.name}};
     {{else}}
-    private final String {{attribute.name}} = "{{attribute.value}}";
+    private final String {{attribute.name}} = "{{{attribute.value}}}";
     {{/if}}
     {{/attributes}}
 

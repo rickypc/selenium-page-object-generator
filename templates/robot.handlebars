@@ -9,7 +9,7 @@ Documentation  {{#if model.namespace}}{{model.namespace}} {{/if}}{{model.name}} 
 
 *** Variables ***
 {{#attributes}}
-${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} } =  {{indent}}{{#if attribute.strategy}}{{attribute.strategy}}={{/if}}{{attribute.value}}
+${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} } =  {{indent}}{{#if attribute.strategy}}{{attribute.strategy}}={{/if}}{{{attribute.value}}}
 {{/attributes}}
 
 *** Keywords ***
