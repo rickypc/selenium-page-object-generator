@@ -1,3 +1,15 @@
+### 1.2.0 (2015.07.19)
+
+* Consider node attribute as a possible element selector
+* HTML decode attribute value
+* Add message listener once
+* Allow longer text in the documentation
+* Add radio button value in attribute collection
+* Remove radio button argument from operation
+* Templates adjustment
+* Add fallback mechanism for Options button
+* Code restructure
+
 ### 1.1.2 (2015.07.16)
 
 * Employ better and broader mechanism to get label text
