@@ -57,6 +57,7 @@ public class {{model.name}} {
      */
     public {{default target.modelName @root.model.name}} {{operation.name}}() {
     {{#if argument}}
+    {{#unequals type 'radio'}}
         return {{operation.name}}(data.get("{{argument.key}}"));
     }
 
@@ -66,6 +67,7 @@ public class {{model.name}} {
      * @return the {{default target.modelName @root.model.name}} class instance.
      */
     public {{default target.modelName @root.model.name}} {{operation.name}}(String {{argument.name}}) {
+    {{/unequals}}
     {{/if}}
     {{#equals type 'button'}}
         {{attribute.name}}.click();

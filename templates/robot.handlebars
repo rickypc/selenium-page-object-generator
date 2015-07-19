@@ -16,7 +16,9 @@ ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower 
 {{#operations}}
 {{operation.name}}
 {{#if argument}}
+{{#unequals type 'radio'}}
     [Arguments]  ${ {{~argument.name~}} }=${DATA['{{argument.key}}']}
+{{/unequals}}
 {{/if}}
     [Documentation]  {{operation.documentation}}
 {{#equals type 'button'}}
@@ -38,7 +40,7 @@ ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower 
     Click Link  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }
 {{/equals}}
 {{#equals type 'radio'}}
-    Select Radio Button  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }  ${ {{~argument.name~}} }
+    Select Radio Button  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{argument.name~}} }
 {{/equals}}
 {{#equals type 'select'}}
     {{#if negate}}Uns{{else}}S{{/if}}elect From List By Label  ${ {{~#if @root.model.namespace}}{{lower @root.model.namespace}}.{{/if}}{{lower @root.model.name}}.{{attribute.name~}} }  ${ {{~argument.name~}} }

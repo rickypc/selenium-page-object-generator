@@ -251,6 +251,17 @@ window.POG=(function() {
         return response;
     }
 
+    function getLongestName(name, longest) {
+        name = name || '';
+        var length = name.length;
+
+        if (length > longest) {
+            longest = length;
+        }
+
+        return longest;
+    }
+
     function getNgLocator(node) {
         var response = {};
 
@@ -379,6 +390,11 @@ window.POG=(function() {
         sentences.sort(function(a, b) { return sentences.frequencies[b] - sentences.frequencies[a] });
 
         return sentences;
+    }
+
+    function getSanitizedText(text) {
+        // up to 6 words
+        return text.split(/\s+/g).slice(0, 6).join(' ').trim().replace(/[^a-zA-Z0-9\. ]/g, '');
     }
 
     function getWordFrequency(text) {
@@ -530,6 +546,7 @@ window.POG=(function() {
                             }
 
                             label = getLetter(inputType, LETTERS.PROPER);
+                            text = text || getNodeText(node);
 
                             if (inputType === 'radio') {
                                 label = 'Radio Button';
@@ -537,6 +554,23 @@ window.POG=(function() {
                                     buffer.attribute.strategy = 'name';
                                     buffer.attribute.value = node.name;
                                 }
+
+                                var radioValueBuffer = {
+                                    attribute: {
+                                        name: getLetter(getSanitizedText(text) + ' Value',
+                                            input.attributes.letter),
+                                        value: node.value
+                                    },
+                                    operation: {},
+                                    sourceIndex: -1,
+                                    type: 'radio.value'
+                                };
+
+                                // faster array push
+                                definitions[++index] = radioValueBuffer;
+
+                                longestName = getLongestName(radioValueBuffer.attribute.name,
+                                    longestName);
                             }
 
                             if ('|email|number|password|search|tel|url|'.
@@ -546,7 +580,6 @@ window.POG=(function() {
 
                             action = 'Set';
                             buffer.type = inputType;
-                            text = text || getNodeText(node);
                         }
                         break;
                     case 'SELECT':
@@ -566,8 +599,7 @@ window.POG=(function() {
                         break;
                 }
 
-                // up to 5 words
-                text = text.split(/\s+/g).slice(0, 5).join(' ').trim().replace(/[^a-zA-Z0-9\. ]/g, '');
+                text = getSanitizedText(text);
 
                 if (text !== '') {
                     if (texts[text]) {
@@ -635,10 +667,7 @@ window.POG=(function() {
                     // faster array push
                     definitions[++index] = definition;
 
-                    var attributeNameLength = definition.attribute.name.length;
-                    if (attributeNameLength > longestName) {
-                        longestName = attributeNameLength;
-                    }
+                    longestName = getLongestName(definition.attribute.name, longestName);
 
                     if (hasUnset) {
                         definition = getDefinition({

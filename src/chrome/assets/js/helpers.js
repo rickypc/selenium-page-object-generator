@@ -85,14 +85,16 @@ Handlebars.registerHelper('operations', function(options) {
     }
     else {
         var buffer = [];
+        var copies = Array.filter(root.definitions,
+            function(item) { return !!item.operation.name; });
         var index = -1;
-        root.definitions.sort(function(a, b) {
+        copies.sort(function(a, b) {
             return (a.operation.name > b.operation.name) ? 1 :
                 ((b.operation.name > a.operation.name) ? -1 : 0); });
 
-        for (var i = 0, j = root.definitions.length; i < j; i++) {
+        for (var i = 0, j = copies.length; i < j; i++) {
             // faster array push
-            buffer[++index] = options.fn(root.definitions[i]);
+            buffer[++index] = options.fn(copies[i]);
         }
 
         return buffer.join(root.operations.separator);
