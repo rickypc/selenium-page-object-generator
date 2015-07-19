@@ -1,3 +1,4 @@
+window.POGLoaded = !!window.POG;
 window.POG=(function() {
     // to compartment any js error on the page
     var ELEMENT_NODE = 1;
@@ -831,8 +832,10 @@ window.POG=(function() {
     };
 })();
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (!sender.tab && request.input) {
-        sendResponse(POG.generate(request.input));
-    }
-});
+if (!window.POGLoaded) {
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+        if (!sender.tab && request.input) {
+            sendResponse(POG.generate(request.input));
+        }
+    });
+}
