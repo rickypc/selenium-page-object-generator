@@ -9,6 +9,20 @@ window.POG=(function() {
     // ========================================================================
     // private functions
 
+    function getAttributeSelector(name, node) {
+        var response = '';
+        var value = node.getAttribute(name);
+
+        if (value) {
+            var selector = node.nodeName.toLowerCase() + '[' + name + '=\'' + value + '\']';
+            if (document.querySelectorAll(selector).length === 1) {
+                response = selector;
+            }
+        }
+
+        return response;
+    }
+
     function getClosestSibling(node, siblings) {
         var copies = siblings.slice(0);
         copies.push(node);
@@ -245,7 +259,22 @@ window.POG=(function() {
             }
             else {
                 response.strategy = 'css';
-                response.value = getCSSSelector(node);
+
+                if (node.getAttribute('class')) {
+                    response.value = getAttributeSelector('class', node);
+                }
+
+                if (!response.value && node.title) {
+                    response.value = getAttributeSelector('title', node);
+                }
+
+                if (!response.value && node.getAttribute('href')) {
+                    response.value = getAttributeSelector('href', node);
+                }
+
+                if (!response.value) {
+                    response.value = getCSSSelector(node);
+                }
             }
         }
 
@@ -345,6 +374,16 @@ window.POG=(function() {
         return cloned.outerHTML;
     }
 
+    function getSanitizedText(text, max) {
+        var texts = text.split(/\s+/g);
+
+        if (max) {
+            texts = texts.slice(0, max);
+        }
+
+        return texts.join(' ').trim().replace(/[^a-zA-Z0-9\. ]/g, '');
+    }
+
     function getSentences(text, minimumWords) {
         minimumWords = minimumWords || 5;
         var index = -1;
@@ -391,16 +430,6 @@ window.POG=(function() {
         sentences.sort(function(a, b) { return sentences.frequencies[b] - sentences.frequencies[a] });
 
         return sentences;
-    }
-
-    function getSanitizedText(text, max) {
-        var texts = text.split(/\s+/g);
-
-        if (max) {
-            texts = texts.slice(0, max);
-        }
-
-        return texts.join(' ').trim().replace(/[^a-zA-Z0-9\. ]/g, '');
     }
 
     function getWordFrequency(text) {
