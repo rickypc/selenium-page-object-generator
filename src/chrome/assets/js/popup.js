@@ -76,7 +76,12 @@ $(document).ready(function() {
         ga('send', 'event', 'options', 'click');
 
         if (chrome.runtime.openOptionsPage) {
-            chrome.runtime.openOptionsPage();
+            chrome.runtime.openOptionsPage(function() {
+                if (chrome.runtime.lastError) {
+                    // fallback
+                    window.open(chrome.runtime.getURL('options.html'));
+                }
+            });
         }
         else {
             window.open(chrome.runtime.getURL('options.html'));
