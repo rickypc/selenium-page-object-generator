@@ -11,6 +11,7 @@ var VISIBILITIES = { HIDDEN: 1, VISIBLE: 2, ALL: 3 };
  * var filtered = Array.filter([1,2,3,4,5], function(item, index) { return item === 5 });
  */
 Array.filter = function(source, predicate) {
+    source = source || [];
     var index = -1;
     var length = source.length;
     var target = [];
@@ -55,7 +56,7 @@ if (typeof(String.prototype.trim) !== 'function') {
     };
 }
 
-var common = {
+window.common = {
     defaults: function(value, defaultValue) {
         return (this.isEffective(value)) ? value : defaultValue;
     },
