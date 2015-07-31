@@ -1,6 +1,6 @@
 {
   "name": "selenium-page-object-generator",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A nimble and flexible Selenium Page Object Model generator to improve agile testing process velocity.",
   "dependencies": {},
   "devDependencies": {
@@ -10,6 +10,8 @@
     "gulp-concat": "^2.5.2",
     "gulp-concat-css": "^2.2.0",
     "gulp-header": "^1.2.2",
+    "gulp-istanbul": "^0.10.0",
+    "gulp-jasmine": "^2.0.1",
     "gulp-jshint": "^1.11.0",
     "gulp-jsonminify": "^1.0.0",
     "gulp-minify-css": "^1.1.6",
@@ -20,8 +22,7 @@
   },
   "keywords": [
     "Selenium",
-    "Page",
-    "Object",
+    "PageObject",
     "Model",
     "Page",
     "Object",
@@ -31,7 +32,14 @@
     "Testing",
     "Velocity",
     "Flexible",
-    "Nimble"
+    "Nimble",
+    "Java",
+    "C#",
+    "RobotFramework",
+    "Robot",
+    "Framework",
+    "PageFactory",
+    "Factory"
   ],
   "author": "Richard Huang <rickypc@users.noreply.github.com>",
   "license": "AGPL-3.0",

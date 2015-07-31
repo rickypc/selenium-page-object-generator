@@ -32,6 +32,12 @@
                 width: 685
             },
 */
+            star: {
+                height: 350,
+                unencoded: 1,
+                url: '{{url}}/reviews',
+                width: 900
+            },
             twitter: {
                 caller: 'rickypc2000',
                 height: 500,
@@ -60,11 +66,15 @@
         };
 
         if (input.type) {
+            var height = screen.height;
+            var left = window.screenLeft || screen.left;
             var setting = input.context.settings[input.type];
+            var top = window.screenTop || screen.top;
+            var width = screen.width;
             features.height = setting.height;
             features.width = setting.width;
-            features.left = (setting.width / 2);
-            features.top = (setting.height / 2);
+            features.left = (width / 2) - (setting.width / 2);
+            features.top = (height / 2) - (setting.height / 2);
         }
 
         return Object.keys(features).map(function(key) { return key + '=' + features[key]; }).join(',');
@@ -83,10 +93,18 @@
                 url = url.replace(/{{caller}}/g, encodeURIComponent(setting.caller));
             }
 
-            url = url.replace(/{{cover}}/g, encodeURIComponent(context.cover)).
-                      replace(/{{summary}}/g, encodeURIComponent(context.summary)).
-                      replace(/{{title}}/g, encodeURIComponent(context.title)).
-                      replace(/{{url}}/g, encodeURIComponent(context.target));
+            if (!!setting.unencoded) {
+                url = url.replace(/{{cover}}/g, context.cover).
+                          replace(/{{summary}}/g, context.summary).
+                          replace(/{{title}}/g, context.title).
+                          replace(/{{url}}/g, context.target);
+            }
+            else {
+                url = url.replace(/{{cover}}/g, encodeURIComponent(context.cover)).
+                          replace(/{{summary}}/g, encodeURIComponent(context.summary)).
+                          replace(/{{title}}/g, encodeURIComponent(context.title)).
+                          replace(/{{url}}/g, encodeURIComponent(context.target));
+            }
         }
 
         return url;

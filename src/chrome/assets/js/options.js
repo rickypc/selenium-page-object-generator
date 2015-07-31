@@ -55,7 +55,7 @@ function loadData(elements) {
             elements.target.val(storage.target);
             elements.target.change(function(e) {
                 e.preventDefault();
-                var value = $(this).val()
+                var value = $(this).val();
                 ga('send', 'event', 'options.target', 'change', value);
                 push(elements, storage.targets[value]);
             });
@@ -157,9 +157,9 @@ function push(elements, target) {
 
 $(document).ready(function() {
     // Standard Google Universal Analytics code
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    (function(i,s,o,g,r,a,m){i.GoogleAnalyticsObject=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments);},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-325170-7', 'auto');

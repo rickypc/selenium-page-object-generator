@@ -32,10 +32,10 @@ button {
 button[disabled] {
     background: #ddd;
 }
-button:hover {
+button:hover:enabled {
     background: #1e88e5;
 }
-button:active {
+button:active:enabled {
     background: #1976d2;
     box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
 }
@@ -78,6 +78,9 @@ button.options {
 }
 .fa-pinterest:before {
     content: "\f0d2";
+}
+.fa-star:before {
+    content: "\f005";
 }
 .fa-twitter:before {
     content: "\f099";

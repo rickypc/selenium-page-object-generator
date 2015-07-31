@@ -62,6 +62,7 @@ window.common = {
     },
     fetch: function(input) {
         input = input || {};
+        input.items = input.items || {};
 
         return $.Deferred(function(defer) {
             if (!input.items[input.key]) {
@@ -94,7 +95,7 @@ window.common = {
             var storage = {};
 
             chrome.storage.local.get(null, function(items) {
-                storage = items;
+                storage = items || {};
                 storage.model = storage.model || {
                     name: '',
                     target: ''
@@ -162,7 +163,7 @@ window.common = {
                 }
 
                 $.when.apply($, promises).always(function() {
-                    defer.resolve(storage)
+                    defer.resolve(storage);
                 });
             });
         }).promise();
@@ -171,6 +172,7 @@ window.common = {
         return (typeof(input) !== 'undefined' && input !== null);
     },
     setDefaultValues: function(input) {
+        input = input || {};
         // attributes
         input.attributes = input.attributes || {};
         input.attributes.letter = input.attributes.letter || LETTERS.CAMEL;

@@ -151,7 +151,6 @@ window.POG=(function() {
     }
 
     function getLabelText(node) {
-        var label = null;
         var text = '';
 
         if (node.id) {
@@ -427,7 +426,7 @@ window.POG=(function() {
         }
 
         // desc
-        sentences.sort(function(a, b) { return sentences.frequencies[b] - sentences.frequencies[a] });
+        sentences.sort(function(a, b) { return sentences.frequencies[b] - sentences.frequencies[a]; });
 
         return sentences;
     }
@@ -454,8 +453,8 @@ window.POG=(function() {
         }
 
         // desc
-        words.sort(function(a, b) { return words.frequencies[b] - words.frequencies[a] });
-        words.tops.sort(function(a, b) { return words.frequencies[b] - words.frequencies[a] });
+        words.sort(function(a, b) { return words.frequencies[b] - words.frequencies[a]; });
+        words.tops.sort(function(a, b) { return words.frequencies[b] - words.frequencies[a]; });
 
         return words;
     }
@@ -796,12 +795,12 @@ window.POG=(function() {
             var sentences = getSentences(sourceText);
             var words = getWordFrequency(sourceText);
             sentences = getSentenceFrequency(sentences, words);
-            var value = sentences[0];
+            var sentence = sentences[0];
 
             var buffer = {
                 attribute: {
                     name: getLetter('Page Loaded Text', input.attributes.letter),
-                    value: value
+                    value: sentence
                 },
                 operation: {
                     documentation: 'Verify that the page loaded completely.',
@@ -817,12 +816,12 @@ window.POG=(function() {
 
         if (input.operations.extras['verify.url']) {
             // it's better to generate more information than less
-            var value = document.location.href.replace(document.location.origin, '');
+            var uri = document.location.href.replace(document.location.origin, '');
 
             var buffer = {
                 attribute: {
                     name: getLetter('Page Url', input.attributes.letter),
-                    value: value
+                    value: uri
                 },
                 operation: {
                     documentation: 'Verify that current page URL matches the expected URL.',
