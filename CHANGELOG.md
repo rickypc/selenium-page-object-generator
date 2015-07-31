@@ -1,9 +1,10 @@
 ### 1.2.1 (2015.07.30)
 
 * Add rating link in share section
-* Button stay disabled on hover
-* Bugfixes and follow static analysis results
-* Add initial unit tests 
+* Popup will open in the middle of the screen
+* Generate button stay disabled on hover
+* Bug fixes and follow static analysis results
+* Add initial unit tests
 
 ### 1.2.0 (2015.07.19)
 
