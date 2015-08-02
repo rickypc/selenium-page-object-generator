@@ -632,3 +632,235 @@ describe('common.isEffective', function() {
         expect(common.isEffective({ key: 'value' })).toBeTruthy();
     });
 });
+
+describe('common.setDefaultValues', function() {
+    it('should set root hash', function() {
+        expect({}.toString.call(common.setDefaultValues())).toEqual('[object Object]');
+    });
+
+    it('should set attributes hash', function() {
+        expect({}.toString.call(common.setDefaultValues().attributes)).toEqual('[object Object]');
+    });
+
+    it('should set attributes letter to camel case', function() {
+        expect(common.setDefaultValues().attributes.letter).toEqual(LETTERS.CAMEL);
+    });
+
+    it('should set attributes letter to input value', function() {
+        expect(common.setDefaultValues({ attributes: { letter: LETTERS.NATURAL } }).
+            attributes.letter).not.toEqual(LETTERS.CAMEL);
+    });
+
+    it('should set attributes indent to false', function() {
+        expect(common.setDefaultValues().attributes.indent).toBeFalsy();
+    });
+
+    it('should set attributes indent to input value', function() {
+        expect(common.setDefaultValues({ attributes: { indent: true } }).
+            attributes.indent).toBeTruthy();
+    });
+
+    it('should set attributes separator to breakline', function() {
+        expect(common.setDefaultValues().attributes.separator).toEqual('\n');
+    });
+
+    it('should set attributes separator to input value', function() {
+        expect(common.setDefaultValues({ attributes: { separator: 'a' } }).
+            attributes.separator).toEqual('a');
+    });
+
+    it('should set copyright hash', function() {
+        expect({}.toString.call(common.setDefaultValues().copyright)).toEqual('[object Object]');
+    });
+
+    it('should set copyright claimant to empty string', function() {
+        expect(common.setDefaultValues().copyright.claimant).toEqual('');
+    });
+
+    it('should set copyright claimant to input value', function() {
+        expect(common.setDefaultValues({ copyright: { claimant: 'a' } }).
+            copyright.claimant).toEqual('a');
+    });
+
+    it('should set copyright year to this year', function() {
+        expect(common.setDefaultValues().copyright.year).toEqual(new Date().getFullYear());
+    });
+
+    it('should set copyright year to input value', function() {
+        expect(common.setDefaultValues({ copyright: { year: 3000 } }).
+            copyright.year).toEqual(3000);
+    });
+
+    it('should set fill hash', function() {
+        expect({}.toString.call(common.setDefaultValues().fill)).toEqual('[object Object]');
+    });
+
+    it('should set fill separator to empty string', function() {
+        expect(common.setDefaultValues().fill.separator).toEqual('');
+    });
+
+    it('should set fill separator to input value', function() {
+        expect(common.setDefaultValues({ fill: { separator: 'a' } }).
+            fill.separator).toEqual('a');
+    });
+
+    it('should set model hash', function() {
+        expect({}.toString.call(common.setDefaultValues().model)).toEqual('[object Object]');
+    });
+
+    it('should set model include to false', function() {
+        expect(common.setDefaultValues().model.include).toBeFalsy();
+    });
+
+    it('should set model include to input value', function() {
+        expect(common.setDefaultValues({ model: { include: true } }).
+            model.include).toBeTruthy();
+    });
+
+    it('should set model name to empty string', function() {
+        expect(common.setDefaultValues().model.name).toEqual('');
+    });
+
+    it('should set model name to input value', function() {
+        expect(common.setDefaultValues({ model: { name: 'a' } }).
+            model.name).toEqual('a');
+    });
+
+    it('should set model namespace to empty string', function() {
+        expect(common.setDefaultValues().model.namespace).toEqual('');
+    });
+
+    it('should set model namespace to input value', function() {
+        expect(common.setDefaultValues({ model: { namespace: 'a' } }).
+            model.namespace).toEqual('a');
+    });
+
+    it('should set model target to empty string', function() {
+        expect(common.setDefaultValues().model.target).toEqual('');
+    });
+
+    it('should set model target to input value', function() {
+        expect(common.setDefaultValues({ model: { target: 'a' } }).
+            model.target).toEqual('a');
+    });
+
+    it('should set nodes hash', function() {
+        expect({}.toString.call(common.setDefaultValues().model)).toEqual('[object Object]');
+    });
+
+    it('should set nodes angular to false', function() {
+        expect(common.setDefaultValues().nodes.angular).toBeFalsy();
+    });
+
+    it('should set nodes angular to input value', function() {
+        expect(common.setDefaultValues({ nodes: { angular: true } }).
+            nodes.angular).toBeTruthy();
+    });
+
+    it('should set nodes root to default value', function() {
+        expect(common.setDefaultValues().nodes.root).toEqual('body');
+    });
+
+    it('should set nodes root to input value', function() {
+        expect(common.setDefaultValues({ nodes: { root: 'a' } }).
+            nodes.root).toEqual('a');
+    });
+
+    it('should set nodes selector to default value', function() {
+        expect(common.setDefaultValues().nodes.selector).toEqual('a,button,input,select,textarea');
+    });
+
+    it('should set nodes selector to input value', function() {
+        expect(common.setDefaultValues({ nodes: { selector: 'a' } }).
+            nodes.selector).toEqual('a');
+    });
+
+    it('should set nodes visibility to all', function() {
+        expect(common.setDefaultValues().nodes.visibility).toEqual(VISIBILITIES.ALL);
+    });
+
+    it('should set nodes visibility to input value', function() {
+        expect(common.setDefaultValues({ nodes: { visiblity: VISIBILITIES.HIDDEN } }).
+            nodes.visibility).not.toEqual(VISIBILITIES.ALL);
+    });
+
+    it('should set operations hash', function() {
+        expect({}.toString.call(common.setDefaultValues().operations)).toEqual('[object Object]');
+    });
+
+    it('should set operations extras hash', function() {
+        expect({}.toString.call(common.setDefaultValues().operations.extras)).
+            toEqual('[object Object]');
+    });
+
+    it('should set operation extras fill to default value', function() {
+        expect(common.setDefaultValues().operations.extras.fill).toEqual(1);
+    });
+
+    it('should set operations extras fill to input value', function() {
+        expect(common.setDefaultValues({ operations: { extras: { fill: 0 } } }).
+            operations.extras.fill).toEqual(0);
+    });
+
+    it('should set operation extras fill.submit to default value', function() {
+        expect(common.setDefaultValues().operations.extras['fill.submit']).toEqual(1);
+    });
+
+    it('should set operations extras fill.submit to input value', function() {
+        expect(common.setDefaultValues({ operations: { extras: { 'fill.submit': 0 } } }).
+            operations.extras['fill.submit']).toEqual(0);
+    });
+
+    it('should set operation extras submit to default value', function() {
+        expect(common.setDefaultValues().operations.extras.submit).toEqual(1);
+    });
+
+    it('should set operations extras submit to input value', function() {
+        expect(common.setDefaultValues({ operations: { extras: { submit: 0 } } }).
+            operations.extras.submit).toEqual(0);
+    });
+
+    it('should set operation extras verify.loaded to default value', function() {
+        expect(common.setDefaultValues().operations.extras['verify.loaded']).toEqual(1);
+    });
+
+    it('should set operations extras verify.loaded to input value', function() {
+        expect(common.setDefaultValues({ operations: { extras: { 'verify.loaded': 0 } } }).
+            operations.extras['verify.loaded']).toEqual(0);
+    });
+
+    it('should set operation extras verify.url to default value', function() {
+        expect(common.setDefaultValues().operations.extras['verify.url']).toEqual(1);
+    });
+
+    it('should set operations extras verify.url to input value', function() {
+        expect(common.setDefaultValues({ operations: { extras: { 'verify.url': 0 } } }).
+            operations.extras['verify.url']).toEqual(0);
+    });
+
+    it('should set operations letter to camel case', function() {
+        expect(common.setDefaultValues().operations.letter).toEqual(LETTERS.CAMEL);
+    });
+
+    it('should set operations letter to input value', function() {
+        expect(common.setDefaultValues({ operations: { letter: LETTERS.NATURAL } }).
+            operations.letter).not.toEqual(LETTERS.CAMEL);
+    });
+
+    it('should set operations separator to breakline', function() {
+        expect(common.setDefaultValues().operations.separator).toEqual('\n');
+    });
+
+    it('should set operations separator to input value', function() {
+        expect(common.setDefaultValues({ operations: { separator: 'a' } }).
+            operations.separator).toEqual('a');
+    });
+
+    it('should set timeout to default value', function() {
+        expect(common.setDefaultValues().timeout).toEqual(15);
+    });
+
+    it('should set timeout to input value', function() {
+        expect(common.setDefaultValues({ timeout: 10000 }).timeout).toEqual(10000);
+    });
+});

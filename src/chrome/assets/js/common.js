@@ -1,5 +1,5 @@
-var LETTERS = { LOWER: 2, CAMEL: 3, NATURAL: 4, PROPER: 5, UPPER: 6 };
-var VISIBILITIES = { HIDDEN: 1, VISIBLE: 2, ALL: 3 };
+window.LETTERS = { LOWER: 2, CAMEL: 3, NATURAL: 4, PROPER: 5, UPPER: 6 };
+window.VISIBILITIES = { HIDDEN: 1, VISIBLE: 2, ALL: 3 };
 
 /**
  * Faster array filtration based on predicate function.
