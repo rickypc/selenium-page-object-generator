@@ -74,7 +74,12 @@ Handlebars.registerHelper('fill', function(options) {
 });
 
 Handlebars.registerHelper('lower', function(value) {
-    return (value || '').toLowerCase();
+    var response = value;
+    var type = typeof(value);
+    if ('|string|undefined|'.indexOf('|' + type + '|') > -1 || value === null) {
+        response = (value || '').toLowerCase();
+    }
+    return response;
 });
 
 Handlebars.registerHelper('operations', function(options) {
@@ -102,10 +107,15 @@ Handlebars.registerHelper('operations', function(options) {
 });
 
 Handlebars.registerHelper('proper', function(value) {
-    return (value || '').replace(/[,.!?-]+/g, ' ').replace(/\s\s+/g, ' ').
+    var response = value;
+    var type = typeof(value);
+    if ('|string|undefined|'.indexOf('|' + type + '|') > -1 || value === null) {
+        response = (value || '').replace(/[,.!?-]+/g, ' ').replace(/\s\s+/g, ' ').
             replace(/\w\S*/g, function(word) {
-        return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-    });
+                return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+            });
+    }
+    return response;
 });
 
 Handlebars.registerHelper('unequals', function(operand1, operand2, options) {

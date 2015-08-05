@@ -4,6 +4,7 @@
 'use strict';
 
 GLOBAL.window = GLOBAL;
+window.func = function() {};
 window.Handlebars = {
     helpers: {},
     registerHelper: function(name, handler) {
@@ -158,7 +159,6 @@ describe('helpers.default', function() {
     });
 
     it('should return function on function default value', function() {
-        var func = function() {};
         expect(Handlebars.helpers.default(undefined, func)).toEqual(func);
     });
 
@@ -203,7 +203,282 @@ describe('helpers.default', function() {
     });
 
     it('should return function on function value', function() {
-        var func = function() {};
         expect(Handlebars.helpers.default(func, 'a')).toEqual(func);
+    });
+});
+
+describe('helpers.equals', function() {
+    it('should return logic result on equals', function() {
+        var options = {
+            fn: function(item) { return 'yes'; },
+            inverse: function(item) { return 'no'; }
+        };
+        var inverse = spyOn(options, 'inverse').and.callThrough();
+        var logic = spyOn(options, 'fn').and.callThrough();
+        expect(Handlebars.helpers.equals('a', 'a', options)).toEqual('yes');
+        expect(inverse).not.toHaveBeenCalled();
+        expect(logic).toHaveBeenCalled();
+        expect(logic.calls.count()).toEqual(1);
+    });
+
+    it('should return inverse result on unequals', function() {
+        var options = {
+            fn: function(item) { return 'yes'; },
+            inverse: function(item) { return 'no'; }
+        };
+        var inverse = spyOn(options, 'inverse').and.callThrough();
+        var logic = spyOn(options, 'fn').and.callThrough();
+        expect(Handlebars.helpers.equals('a', 'b', options)).toEqual('no');
+        expect(inverse).toHaveBeenCalled();
+        expect(inverse.calls.count()).toEqual(1);
+        expect(logic).not.toHaveBeenCalled();
+    });
+});
+
+describe('helpers.fill', function() {
+    it('should return empty on hash without definitions', function() {
+        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        expect(Handlebars.helpers.fill({ data: { root: {} } })).toEqual('');
+        expect(isEmpty).toHaveBeenCalledWith(undefined);
+    });
+
+    it('should return expected value without negate definitions', function() {
+        var definitions = [
+            { attribute: { name: 'b' }, negate: 0, sourceIndex: 1, type: 'checkbox' },
+            { attribute: { name: 'b' }, negate: 0, sourceIndex: 1, type: 'radio' },
+            { attribute: { name: 'a' }, negate: 1, sourceIndex: 0, type: 'radio' },
+            { attribute: { name: 'a' }, negate: 0, sourceIndex: 0, type: 'select' },
+            { attribute: { name: 'c' }, negate: 0, sourceIndex: 2, type: 'text' }];
+        var options = {
+            data: { root: { definitions: definitions, fill: { separator: '-' } } },
+            fn: function(item) { return item.attribute.name; } };
+        var filter = spyOn(Array, 'filter').and.callThrough();
+        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var join = spyOn(Array.prototype, 'join').and.callThrough();
+        var logic = spyOn(options, 'fn').and.callThrough();
+        var sort = spyOn(Array.prototype, 'sort').and.callThrough();
+        expect(Handlebars.helpers.fill(options)).toEqual('a-b-b-c');
+        expect(filter).toHaveBeenCalled();
+        expect(filter.calls.count()).toEqual(1);
+        expect(isEmpty).toHaveBeenCalledWith(definitions);
+        expect(isEmpty.calls.count()).toEqual(1);
+        expect(join).toHaveBeenCalledWith('-');
+        expect(join.calls.count()).toEqual(1);
+        expect(logic).toHaveBeenCalled();
+        expect(logic.calls.count()).toEqual(4);
+        expect(sort).toHaveBeenCalled();
+        expect(sort.calls.count()).toEqual(1);
+    });
+
+    it('should return expected value with separator', function() {
+        var definitions = [
+            { attribute: { name: 'b' }, negate: 0, sourceIndex: 1, type: 'checkbox' },
+            { attribute: { name: 'b' }, negate: 0, sourceIndex: 1, type: 'radio' },
+            { attribute: { name: 'a' }, negate: 1, sourceIndex: 0, type: 'radio' },
+            { attribute: { name: 'a' }, negate: 0, sourceIndex: 0, type: 'select' },
+            { attribute: { name: 'c' }, negate: 0, sourceIndex: 2, type: 'text' }];
+        var options = {
+            data: { root: { definitions: definitions, fill: { separator: '$$$' } } },
+            fn: function(item) { return item.attribute.name; } };
+        var filter = spyOn(Array, 'filter').and.callThrough();
+        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var join = spyOn(Array.prototype, 'join').and.callThrough();
+        var logic = spyOn(options, 'fn').and.callThrough();
+        var sort = spyOn(Array.prototype, 'sort').and.callThrough();
+        expect(Handlebars.helpers.fill(options)).toEqual('a$$$b$$$b$$$c');
+        expect(filter).toHaveBeenCalled();
+        expect(filter.calls.count()).toEqual(1);
+        expect(isEmpty).toHaveBeenCalledWith(definitions);
+        expect(isEmpty.calls.count()).toEqual(1);
+        expect(join).toHaveBeenCalledWith('$$$');
+        expect(join.calls.count()).toEqual(1);
+        expect(logic).toHaveBeenCalled();
+        expect(logic.calls.count()).toEqual(4);
+        expect(sort).toHaveBeenCalled();
+        expect(sort.calls.count()).toEqual(1);
+    });
+});
+
+describe('helpers.lower', function() {
+    it('should return empty string on undefined value', function() {
+        expect(Handlebars.helpers.lower()).toEqual('');
+    });
+
+    it('should return empty string on null value', function() {
+        expect(Handlebars.helpers.lower(null)).toEqual('');
+    });
+
+    it('should return false on boolean false value', function() {
+        expect(Handlebars.helpers.lower(false)).toBeFalsy();
+    });
+
+    it('should return true on boolean true value', function() {
+        expect(Handlebars.helpers.lower(true)).toBeTruthy();
+    });
+
+    it('should return zero on zero value', function() {
+        expect(Handlebars.helpers.lower(0)).toEqual(0);
+    });
+
+    it('should return number on number value', function() {
+        expect(Handlebars.helpers.lower(1)).toEqual(1);
+    });
+
+    it('should return empty string on empty string value', function() {
+        expect(Handlebars.helpers.lower('')).toEqual('');
+    });
+
+    it('should return lower case string on string value', function() {
+        expect(Handlebars.helpers.lower('AABBCC')).toEqual('aabbcc');
+    });
+
+    it('should return array on array value', function() {
+        expect(Handlebars.helpers.lower([0])).toEqual([0]);
+    });
+
+    it('should return hash on hash value', function() {
+        expect(Handlebars.helpers.lower({'key': 'a'})).toEqual({'key': 'a'});
+    });
+
+    it('should return function on function value', function() {
+        expect(Handlebars.helpers.lower(func)).toEqual(func);
+    });
+});
+
+describe('helpers.operations', function() {
+    it('should return empty on hash without definitions', function() {
+        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        expect(Handlebars.helpers.operations({ data: { root: {} } })).toEqual('');
+        expect(isEmpty).toHaveBeenCalledWith(undefined);
+    });
+
+    it('should return expected value with operation name', function() {
+        var definitions = [
+            { operation: { name: 'b' } },
+            { operation: { name: 'b' } },
+            { operation: { target: 'a' } },
+            { operation: { name: 'a' } },
+            { operation: { name: 'c' } }];
+        var options = {
+            data: { root: { definitions: definitions, operations: { separator: '-' } } },
+            fn: function(item) { return item.operation.name; } };
+        var filter = spyOn(Array, 'filter').and.callThrough();
+        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var join = spyOn(Array.prototype, 'join').and.callThrough();
+        var logic = spyOn(options, 'fn').and.callThrough();
+        var sort = spyOn(Array.prototype, 'sort').and.callThrough();
+        expect(Handlebars.helpers.operations(options)).toEqual('a-b-b-c');
+        expect(filter).toHaveBeenCalled();
+        expect(filter.calls.count()).toEqual(1);
+        expect(isEmpty).toHaveBeenCalledWith(definitions);
+        expect(isEmpty.calls.count()).toEqual(1);
+        expect(join).toHaveBeenCalledWith('-');
+        expect(join.calls.count()).toEqual(1);
+        expect(logic).toHaveBeenCalled();
+        expect(logic.calls.count()).toEqual(4);
+        expect(sort).toHaveBeenCalled();
+        expect(sort.calls.count()).toEqual(1);
+    });
+
+    it('should return expected value with separator', function() {
+        var definitions = [
+            { operation: { name: 'b' } },
+            { operation: { name: 'b' } },
+            { operation: { target: 'a' } },
+            { operation: { name: 'a' } },
+            { operation: { name: 'c' } }];
+        var options = {
+            data: { root: { definitions: definitions, operations: { separator: '$$$' } } },
+            fn: function(item) { return item.operation.name; } };
+        var filter = spyOn(Array, 'filter').and.callThrough();
+        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var join = spyOn(Array.prototype, 'join').and.callThrough();
+        var logic = spyOn(options, 'fn').and.callThrough();
+        var sort = spyOn(Array.prototype, 'sort').and.callThrough();
+        expect(Handlebars.helpers.operations(options)).toEqual('a$$$b$$$b$$$c');
+        expect(filter).toHaveBeenCalled();
+        expect(filter.calls.count()).toEqual(1);
+        expect(isEmpty).toHaveBeenCalledWith(definitions);
+        expect(isEmpty.calls.count()).toEqual(1);
+        expect(join).toHaveBeenCalledWith('$$$');
+        expect(join.calls.count()).toEqual(1);
+        expect(logic).toHaveBeenCalled();
+        expect(logic.calls.count()).toEqual(4);
+        expect(sort).toHaveBeenCalled();
+        expect(sort.calls.count()).toEqual(1);
+    });
+});
+
+describe('helpers.proper', function() {
+    it('should return empty string on undefined value', function() {
+        expect(Handlebars.helpers.proper()).toEqual('');
+    });
+
+    it('should return empty string on null value', function() {
+        expect(Handlebars.helpers.proper(null)).toEqual('');
+    });
+
+    it('should return false on boolean false value', function() {
+        expect(Handlebars.helpers.proper(false)).toBeFalsy();
+    });
+
+    it('should return true on boolean true value', function() {
+        expect(Handlebars.helpers.proper(true)).toBeTruthy();
+    });
+
+    it('should return zero on zero value', function() {
+        expect(Handlebars.helpers.proper(0)).toEqual(0);
+    });
+
+    it('should return number on number value', function() {
+        expect(Handlebars.helpers.proper(1)).toEqual(1);
+    });
+
+    it('should return empty string on empty string value', function() {
+        expect(Handlebars.helpers.proper('')).toEqual('');
+    });
+
+    it('should return proper case string on string value', function() {
+        expect(Handlebars.helpers.proper('ma ME mu Mi mO')).toEqual('Ma Me Mu Mi Mo');
+    });
+
+    it('should return array on array value', function() {
+        expect(Handlebars.helpers.proper([0])).toEqual([0]);
+    });
+
+    it('should return hash on hash value', function() {
+        expect(Handlebars.helpers.proper({'key': 'a'})).toEqual({'key': 'a'});
+    });
+
+    it('should return function on function value', function() {
+        expect(Handlebars.helpers.proper(func)).toEqual(func);
+    });
+});
+
+describe('helpers.unequals', function() {
+    it('should return logic result on unequals', function() {
+        var options = {
+            fn: function(item) { return 'yes'; },
+            inverse: function(item) { return 'no'; }
+        };
+        var inverse = spyOn(options, 'inverse').and.callThrough();
+        var logic = spyOn(options, 'fn').and.callThrough();
+        expect(Handlebars.helpers.unequals('a', 'b', options)).toEqual('yes');
+        expect(inverse).not.toHaveBeenCalled();
+        expect(logic).toHaveBeenCalled();
+        expect(logic.calls.count()).toEqual(1);
+    });
+
+    it('should return inverse result on equals', function() {
+        var options = {
+            fn: function(item) { return 'yes'; },
+            inverse: function(item) { return 'no'; }
+        };
+        var inverse = spyOn(options, 'inverse').and.callThrough();
+        var logic = spyOn(options, 'fn').and.callThrough();
+        expect(Handlebars.helpers.unequals('a', 'a', options)).toEqual('no');
+        expect(inverse).toHaveBeenCalled();
+        expect(inverse.calls.count()).toEqual(1);
+        expect(logic).not.toHaveBeenCalled();
     });
 });
