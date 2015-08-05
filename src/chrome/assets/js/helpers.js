@@ -38,7 +38,7 @@ Handlebars.registerHelper('attributes', function(options) {
 });
 
 Handlebars.registerHelper('default', function(value, defaultValue) {
-    return value || defaultValue;
+    return (typeof(value) !== 'undefined' && value !== null) ? value : defaultValue;
 });
 
 Handlebars.registerHelper('equals', function(operand1, operand2, options) {
