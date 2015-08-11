@@ -16,14 +16,10 @@
                 width: 626
             },
             'google-plus': {
-                height: 600,
-                url: 'https://plus.google.com/share?url={{url}}',
-                width: 600
+                url: 'https://plus.google.com/share?url={{url}}'
             },
             linkedin: {
-                height: 600,
-                url: 'https://www.linkedin.com/shareArticle?mini=true&summary={{summary}}&title={{title}}&url={{url}}',
-                width: 600
+                url: 'https://www.linkedin.com/shareArticle?mini=true&summary={{summary}}&title={{title}}&url={{url}}'
             },
 /*
             pinterest: {
@@ -53,7 +49,6 @@
     };
 
     function getFeatures(input) {
-        input = input || {};
         var features = {
             copyhistory: 'no',
             directories: 'no',
@@ -64,47 +59,39 @@
             'status': 'no',
             toolbar: 'no'
         };
-
-        if (input.type) {
-            var height = screen.height;
-            var left = window.screenLeft || screen.left;
-            var setting = input.context.settings[input.type];
-            var top = window.screenTop || screen.top;
-            var width = screen.width;
-            features.height = setting.height;
-            features.width = setting.width;
-            features.left = (width / 2) - (setting.width / 2);
-            features.top = (height / 2) - (setting.height / 2);
-        }
+        var height = screen.height;
+        var left = window.screenLeft || screen.left;
+        var setting = input.context.settings[input.type] || {};
+        var top = window.screenTop || screen.top;
+        var width = screen.width;
+        features.height = setting.height || 600;
+        features.width = setting.width || 600;
+        features.left = (width / 2) - (features.width / 2);
+        features.top = (height / 2) - (features.height / 2);
 
         return Object.keys(features).map(function(key) { return key + '=' + features[key]; }).join(',');
     }
 
     function getUrl(input) {
-        input = input || {};
-        var url = '';
+        var context = input.context;
+        var setting = context.settings[input.type] || {};
+        var url = setting.url || '';
 
-        if (input.type) {
-            var context = input.context;
-            var setting = context.settings[input.type];
-            url = setting.url;
+        if (typeof(setting.caller) !== 'undefined') {
+            url = url.replace(/{{caller}}/g, encodeURIComponent(setting.caller));
+        }
 
-            if (typeof(setting.caller) !== 'undefined') {
-                url = url.replace(/{{caller}}/g, encodeURIComponent(setting.caller));
-            }
-
-            if (!!setting.unencoded) {
-                url = url.replace(/{{cover}}/g, context.cover).
-                          replace(/{{summary}}/g, context.summary).
-                          replace(/{{title}}/g, context.title).
-                          replace(/{{url}}/g, context.target);
-            }
-            else {
-                url = url.replace(/{{cover}}/g, encodeURIComponent(context.cover)).
-                          replace(/{{summary}}/g, encodeURIComponent(context.summary)).
-                          replace(/{{title}}/g, encodeURIComponent(context.title)).
-                          replace(/{{url}}/g, encodeURIComponent(context.target));
-            }
+        if (!!setting.unencoded) {
+            url = url.replace(/{{cover}}/g, context.cover).
+                      replace(/{{summary}}/g, context.summary).
+                      replace(/{{title}}/g, context.title).
+                      replace(/{{url}}/g, context.target);
+        }
+        else {
+            url = url.replace(/{{cover}}/g, encodeURIComponent(context.cover)).
+                      replace(/{{summary}}/g, encodeURIComponent(context.summary)).
+                      replace(/{{title}}/g, encodeURIComponent(context.title)).
+                      replace(/{{url}}/g, encodeURIComponent(context.target));
         }
 
         return url;
