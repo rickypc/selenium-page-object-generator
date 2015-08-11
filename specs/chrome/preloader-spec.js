@@ -13,8 +13,8 @@ describe('preloader', function() {
         var jsdom = require('jsdom');
         jsdom.env('<html><body><div class="base"></div></body></html>',
                 [__dirname + '/../../jquery-2.1.4.js'], function(err, win) {
-            GLOBAL.window = win
-            GLOBAL.document = win.document
+            GLOBAL.window = win;
+            GLOBAL.document = win.document;
             GLOBAL.jQuery = GLOBAL.$ = require('jquery');
             require(__dirname + '/../../src/chrome/assets/js/preloader.js');
             GLOBAL.base = $('div.base');
