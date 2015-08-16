@@ -25,21 +25,27 @@ window.POG=(function() {
 
     function getClosestSibling(node, siblings) {
         var copies = siblings.slice(0);
-        copies.push(node);
-        var closest = copies.length - 1;
-        var nodeIndex = [].indexOf.call(copies, node);
+        copies.unshift(node);
+        var copiesLength = copies.length;
+        var closest = 1;
+
+        if (closest > copiesLength) {
+            closest = 0;
+        }
+
+        var nodeIndex = 0;
         var siblingIndex = closest;
 
-        for (var i = 0, j = copies.length; i < j; i++) {
+        for (var i = 0; i < copiesLength; i++) {
             var delta = Math.abs(nodeIndex - i);
 
-            if (delta < closest) {
+            if (delta > closest) {
                 closest = delta;
                 siblingIndex = i;
             }
         }
 
-        return (siblingIndex === (copies.length - 1)) ? null : copies[siblingIndex];
+        return (siblingIndex === 0) ? null : copies[siblingIndex];
     }
 
     function getComments(root) {
@@ -154,22 +160,18 @@ window.POG=(function() {
         var text = '';
 
         if (node.id) {
-            text = getLabelTextFor(node.id);
+            text = getLabelTextFor(node, 'id');
         }
 
         if (text === '' && node.name) {
             // non-standard, but it happens
-            text = getLabelTextFor(node.name);
+            text = getLabelTextFor(node, 'name');
         }
 
         if (text === '') {
             // find label from siblings
             // TODO: should use more aggressive collector
-            labels = Array.filter([].slice.call(node.parentNode.children),
-                function(item, index) {
-                    return item.nodeName === 'LABEL';
-                });
-
+            var labels = node.parentNode.querySelectorAll('label');
             var label = getClosestSibling(node, labels);
 
             if (label) {
@@ -181,16 +183,30 @@ window.POG=(function() {
         return text;
     }
 
-    function getLabelTextFor(identifier) {
-        var label = null;
+    function getLabelTextFor(node, attribute) {
+        var identifier = node.getAttribute(attribute) || node[attribute] || '';
         var text = '';
 
         if (identifier) {
-            label = document.querySelector('label[for="' + identifier + '"]');
+            var label = document.querySelector('label[for="' + identifier + '"]');
 
             if (label) {
                 text = label.textContent || label.innerText || '';
                 text = text.trim();
+            }
+
+            if (text === '') {
+                var identifierLowered = identifier.toLowerCase();
+                var labels = Array.filter(document.querySelectorAll('label[for]'), function(item) {
+                    return item.getAttribute('for').toLowerCase() === identifierLowered;
+                });
+
+                label = getClosestSibling(node, labels);
+
+                if (label) {
+                    text = label.textContent || label.innerText || '';
+                    text = text.trim();
+                }
             }
         }
 

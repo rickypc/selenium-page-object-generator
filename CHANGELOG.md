@@ -1,3 +1,10 @@
+### 1.2.2 (2015.08.15)
+
+* Employ more strategies to get label text
+* Remove redundant equal sign in Robot Framework template
+* Bug fixes and follow static analysis results
+* Add more unit tests
+
 ### 1.2.1 (2015.07.30)
 
 * Add rating link in share section
