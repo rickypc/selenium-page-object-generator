@@ -1,6 +1,7 @@
 (function($) {
     'use strict';
 
+    var isOpera = !!navigator.userAgent.match(/Opera|OPR\//);
     var defaults = {
         // pinterest
         //cover: 'assets/image/cover.png',
@@ -31,7 +32,7 @@
             star: {
                 height: 350,
                 unencoded: 1,
-                url: '{{url}}/reviews',
+                url: (isOpera) ? '{{url}}/#feedback-container' : '{{url}}/reviews',
                 width: 900
             },
             twitter: {
@@ -42,8 +43,10 @@
             }
         },
         // all, except fb and g+
-        summary: 'Selenium Page Object Generator is a nimble and flexible #Selenium #PageObjectModel #Generator to improve #Agile #Testing process velocity.',
-        target: 'https://chrome.google.com/webstore/detail/' + chrome.runtime.id,
+        summary: 'Selenium Page Object Generator is a nimble and flexible #Selenium ' +
+            '#PageObjectModel #Generator to improve #Agile #Testing process velocity.',
+        target: (isOpera) ? 'https://addons.opera.com/en/extensions/details/selenium-page-object-generator' :
+            'https://chrome.google.com/webstore/detail/' + chrome.runtime.id,
         // linkedin
         title: 'Selenium Page Object Generator - to improve agile testing process velocity.'
     };

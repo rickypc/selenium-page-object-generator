@@ -6,7 +6,7 @@
 describe('social', function() {
     afterAll(function() {
         GLOBAL.base = GLOBAL.classes = GLOBAL.ga = GLOBAL.analytics = null;
-        GLOBAL.open = GLOBAL.screen = GLOBAL.social = null;
+        GLOBAL.navigator = GLOBAL.open = GLOBAL.screen = GLOBAL.social = null;
     });
 
     beforeAll(function(done) {
@@ -15,6 +15,7 @@ describe('social', function() {
                 [__dirname + '/../../jquery-2.1.4.js'], function(err, win) {
             GLOBAL.window = win;
             GLOBAL.document = win.document;
+            GLOBAL.navigator = { userAgent: 'chrome' };
             GLOBAL.chrome = { runtime: { id: 'a' } };
             GLOBAL.jQuery = GLOBAL.$ = require('jquery');
             require(__dirname + '/../../src/chrome/assets/js/social.js');

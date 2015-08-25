@@ -1,3 +1,9 @@
+### 1.2.3 (2015.08.25)
+
+* Bugfixes
+* Add Opera support
+* Update unit tests
+
 ### 1.2.2 (2015.08.15)
 
 * Employ more strategies to get label text

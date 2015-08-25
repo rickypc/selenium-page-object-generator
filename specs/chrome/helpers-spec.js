@@ -178,8 +178,8 @@ describe('helpers.default', function() {
         expect(Handlebars.helpers.default(1, 'a')).toEqual(1);
     });
 
-    it('should return number on number value', function() {
-        expect(Handlebars.helpers.default('', 'a')).toEqual('');
+    it('should return default string on empty string', function() {
+        expect(Handlebars.helpers.default('', 'a')).toEqual('a');
     });
 
     it('should return string on string value', function() {

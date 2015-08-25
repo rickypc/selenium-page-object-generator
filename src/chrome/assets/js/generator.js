@@ -24,7 +24,7 @@ window.POG=(function() {
     }
 
     function getClosestSibling(node, siblings) {
-        var copies = siblings.slice(0);
+        var copies = [].slice.call(siblings);
         copies.unshift(node);
         var copiesLength = copies.length;
         var closest = 1;
