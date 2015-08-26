@@ -6,7 +6,7 @@ Selenium Page Object Generator
 
 A nimble and flexible [Selenium Page Object Model](https://code.google.com/p/selenium/wiki/PageObjects) generator to improve [agile testing](https://en.wikipedia.org/wiki/Agile_testing) [process velocity](https://en.wikipedia.org/wiki/Velocity_(software_development)).
 
-[Selenium Page Object Generator](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb) is an essential tool to improve your workflow. It will generate [Page Object Model](http://martinfowler.com/bliki/PageObject.html) on active [Chrome](https://www.google.com/chrome/browser/desktop/index.html) tab with a single click, provided that all the options and template are configured. The generated Page Object Model will be saved to pre-configured Chrome download folder.
+Selenium Page Object Generator is an essential tool to improve your workflow. It will generate [Page Object Model](http://martinfowler.com/bliki/PageObject.html) on active [Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Opera](http://www.opera.com/) tab with a single click, provided that all the options and template are configured. The generated Page Object Model will be saved to pre-configured Chrome or Opera download folder.
 
 The template is using [Handlebars.js](http://handlebarsjs.com/) expression, a clean logic-less semantic templating language.
 
@@ -20,11 +20,11 @@ C#: [http://relevantcodes.com/pageobjects-and-pagefactory-design-patterns-in-sel
 
 Robot Framework: [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#taking-resource-files-into-use](http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#taking-resource-files-into-use)
 
-(You need to use Chrome 40+ to try this out)
+(You need to use Chrome 40+ or Opera 15+ to try this out)
 
 Installation
 -
-To install the newest released version, please download it from [Chrome web store](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb).
+To install the newest released version on Chrome browser, please download it from [Chrome web store](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb).
 
 Development Dependencies
 -
