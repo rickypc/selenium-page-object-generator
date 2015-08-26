@@ -26,6 +26,16 @@ Installation
 -
 To install the newest released version, please download it from [Chrome web store](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb).
 
+Development Dependencies
+-
+You’ll need to install [Node.js](https://nodejs.org/) as a local development dependency. The `npm` package manager comes bundled with all recent releases of `Node.js`.
+
+`npm install` will attempt to resolve any `npm` module dependencies that have been declared in the project’s `package.json` file, installing them into the `node_modules` folder.
+
+```bash
+$ npm install
+```
+
 Development
 -
 To build the sources into corresponding packages, run:
@@ -45,16 +55,6 @@ $ gulp
 ```
 
 The `/dist` folder will contain distribution ready packages.
-
-Dependencies
--
-You’ll need to install [Node.js](https://nodejs.org/) as a local development dependency. The `npm` package manager comes bundled with all recent releases of `Node.js`.
-
-`npm install` will attempt to resolve any `npm` module dependencies that have been declared in the project’s `package.json` file, installing them into the `node_modules` folder.
-
-```bash
-$ npm install
-```
 
 License
 -
