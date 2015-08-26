@@ -64,5 +64,11 @@ This browser extension is free software, licensed under: [GNU Affero General Pub
 
 Documentation and other similar content are provided under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
+Licenses and Acknowledgements for Incorporated Software
+-
+
+- [Handlebars](http://handlebarsjs.com/) is an [open source](http://opensource.org) software provided under [MIT license](http://opensource.org/licenses/MIT).
+- [jQuery](https://jquery.com/) is an [open source](http://opensource.org) software provided under [MIT license](http://opensource.org/licenses/MIT).
+
 Screenshot
 ![screenshot](/images/popup.png)
