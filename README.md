@@ -1,5 +1,5 @@
-<a target="_blank" href="https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb">![Try it now in Chrome Web Store](/images/chrome-web-store.png "Click here to install this extension from the Chrome Web Store")</a>
-<a target="_blank" href="https://addons.opera.com/en/extensions/details/selenium-page-object-generator">![Try it now in Opera Addons Catalog](/images/opera-addons-catalog.png "Click here to install this extension from the Opera Addons Catalog")</a>
+<a target="_blank" style="width: 20em;" href="https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb">![Try it now in Chrome Web Store](/images/chrome-web-store.png "Click here to install this extension from the Chrome Web Store")</a>
+<a target="_blank" style="margin-left: 5px; width: 20em;" href="https://addons.opera.com/en/extensions/details/selenium-page-object-generator">![Try it now in Opera Addons Catalog](/images/opera-addons-catalog.png "Click here to install this extension from the Opera Addons Catalog")</a>
 
 
 Selenium Page Object Generator
@@ -25,8 +25,9 @@ Robot Framework: [http://robotframework.org/robotframework/latest/RobotFramework
 
 Installation
 -
-To install the newest released version on Chrome browser, please download it from [Chrome web store](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb).
-To install the newest released version on Opera browser, please download it from [Opera addons catalog](https://addons.opera.com/en/extensions/details/selenium-page-object-generator).
+
+- To install the newest released version on Chrome browser, please download it from [Chrome web store](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb).
+- To install the newest released version on Opera browser, please download it from [Opera addons catalog](https://addons.opera.com/en/extensions/details/selenium-page-object-generator).
 
 Development Dependencies
 -
@@ -73,4 +74,5 @@ Licenses and Acknowledgements for Incorporated Software
 - [jQuery](https://jquery.com/) is an [open source](http://opensource.org) software provided under [MIT license](http://opensource.org/licenses/MIT).
 
 Screenshot
+-
 ![screenshot](/images/screenshot-opera-1.png)
