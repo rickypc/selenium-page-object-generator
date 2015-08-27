@@ -1,4 +1,5 @@
 <a target="_blank" href="https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb">![Try it now in Chrome Web Store](/images/chrome-web-store.png "Click here to install this extension from the Chrome Web Store")</a>
+<a target="_blank" href="https://addons.opera.com/en/extensions/details/selenium-page-object-generator">![Try it now in Opera Addons Catalog](/images/opera-addons-catalog.png "Click here to install this extension from the Opera Addons Catalog")</a>
 
 
 Selenium Page Object Generator
@@ -6,7 +7,7 @@ Selenium Page Object Generator
 
 A nimble and flexible [Selenium Page Object Model](https://code.google.com/p/selenium/wiki/PageObjects) generator to improve [agile testing](https://en.wikipedia.org/wiki/Agile_testing) [process velocity](https://en.wikipedia.org/wiki/Velocity_(software_development)).
 
-Selenium Page Object Generator is an essential tool to improve your workflow. It will generate [Page Object Model](http://martinfowler.com/bliki/PageObject.html) on active [Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Opera](http://www.opera.com/) tab with a single click, provided that all the options and template are configured. The generated Page Object Model will be saved to pre-configured Chrome or Opera download folder.
+Selenium Page Object Generator is an essential tool to improve your workflow. It will generate [Page Object Model](http://martinfowler.com/bliki/PageObject.html) on active [Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Opera](http://www.opera.com/) tab with a single click, provided that all of the options and template are configured. The generated Page Object Model will be saved to pre-configured Chrome or Opera download folder.
 
 The template is using [Handlebars.js](http://handlebarsjs.com/) expression, a clean logic-less semantic templating language.
 
@@ -25,10 +26,11 @@ Robot Framework: [http://robotframework.org/robotframework/latest/RobotFramework
 Installation
 -
 To install the newest released version on Chrome browser, please download it from [Chrome web store](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb).
+To install the newest released version on Opera browser, please download it from [Opera addons catalog](https://addons.opera.com/en/extensions/details/selenium-page-object-generator).
 
 Development Dependencies
 -
-You’ll need to install [Node.js](https://nodejs.org/) as a local development dependency. The `npm` package manager comes bundled with all recent releases of `Node.js`.
+You will need to install [Node.js](https://nodejs.org/) as a local development dependency. The `npm` package manager comes bundled with all recent releases of `Node.js`.
 
 `npm install` will attempt to resolve any `npm` module dependencies that have been declared in the project’s `package.json` file, installing them into the `node_modules` folder.
 
@@ -71,4 +73,4 @@ Licenses and Acknowledgements for Incorporated Software
 - [jQuery](https://jquery.com/) is an [open source](http://opensource.org) software provided under [MIT license](http://opensource.org/licenses/MIT).
 
 Screenshot
-![screenshot](/images/popup.png)
+![screenshot](/images/screenshot-opera-1.png)
