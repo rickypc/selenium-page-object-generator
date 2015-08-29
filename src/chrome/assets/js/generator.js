@@ -361,7 +361,7 @@ window.POG=(function() {
                 var clonedParentNode = parentNode.cloneNode(true);
                 var clonedNode = clonedParentNode.querySelector(
                     node.nodeName.toLowerCase());
-                clonedParentNode.removeChild(clonedNode);
+                clonedNode.parentNode.removeChild(clonedNode);
 
                 text = clonedParentNode.textContent || clonedParentNode.innerText || '';
                 text = text.trim();

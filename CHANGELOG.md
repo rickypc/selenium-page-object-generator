@@ -1,3 +1,8 @@
+### 1.2.4 (2015.08.28)
+
+* Bugfixes
+* Update readme file
+
 ### 1.2.3 (2015.08.25)
 
 * Bugfixes
