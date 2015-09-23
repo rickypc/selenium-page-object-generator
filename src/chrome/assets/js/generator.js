@@ -796,7 +796,8 @@ window.POG=(function() {
                 sourceIndex: -1,
                 target: {
                     modelName: input.model.target,
-                    name: getLetter('Click ' + submit.text + ' ' + submit.label, input.operations.letter)
+                    name: getLetter('Click ' + getSanitizedText(submit.text) + ' ' +
+                        submit.label, input.operations.letter)
                 },
                 type: 'submit'
             };
