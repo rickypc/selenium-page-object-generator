@@ -5,6 +5,7 @@
 
 describe('notify', function() {
     afterAll(function() {
+        window.close();
         GLOBAL.base = GLOBAL.box = GLOBAL.content = GLOBAL.notifier = null;
     });
 
@@ -92,6 +93,6 @@ describe('notify', function() {
         setTimeout(function() {
             expect(box.css('display')).toEqual('none');
             done();
-        }, 750);
-    });
+        }, 1500);
+    }, 1600);
 });

@@ -1,3 +1,6 @@
+//npm WARN deprecated lodash@1.0.2: lodash@<2.0.0 is no longer maintained. Upgrade to lodash@^3.0.0
+//npm WARN prefer global jshint@2.9.1 should be installed with -g
+
 const ASSETS = 'assets/';
 const BUILD = 'build/';
 const CHROME = 'chrome/';
@@ -8,6 +11,7 @@ const CHROME_ICONS = CHROME + ASSETS + 'icons/';
 const CHROME_JS = CHROME + ASSETS + 'js/';
 const CHROME_MANIFEST = CHROME + 'manifest.json';
 const CHROME_TEMPLATES = CHROME + ASSETS + 'templates/';
+const COMMON = 'common/';
 const CONFIGS = 'configs/';
 const FONTS = 'fonts/';
 const DIST = 'dist/';
@@ -35,31 +39,44 @@ var banner = ['/*',
     '*/',
     ''].join('\n');
 
+console.time('Loading Modules');
+
 var concat = require('gulp-concat');
 var concatcss = require('gulp-concat-css');
+var cssnano = require('gulp-cssnano');
 var del = require('del');
 var es = require('event-stream');
 var gulp = require('gulp');
 var header = require('gulp-header');
+var htmlmin = require('gulp-htmlmin');
+var istanbul = require('gulp-istanbul');
+var jasmine = require('gulp-jasmine');
 var jshint = require('gulp-jshint');
 var jsonminify = require('gulp-jsonminify');
-var minifycss = require('gulp-minify-css');
-var minifyhtml = require('gulp-minify-html');
 var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
 var zip = require('gulp-zip');
 
+console.timeEnd('Loading Modules');
+
 function css(base, inputs, output) {
     return gulp.src(inputs, { base: base }).
         pipe(concatcss(output)).
-        pipe(minifycss({ keepSpecialComments: 1 })).
+        pipe(cssnano({ discardComments: { removeAllButFirst: true } })).
         pipe(header(banner)).
         pipe(gulp.dest(BUILD));
 }
 
 function html(input) {
     return gulp.src(SRC + CHROME + input).
-        pipe(minifyhtml()).
+        pipe(htmlmin({
+            collapseWhitespace: true,
+            removeAttributeQuotes: true,
+            removeComments: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true
+        })).
         pipe(gulp.dest(BUILD + CHROME));
 }
 
@@ -152,8 +169,8 @@ gulp.task('chrome:js', [ 'chrome:js:generator', 'chrome:js:options', 'chrome:js:
 
 gulp.task('chrome:js:generator', function() {
     return js(SRC, [
-            SRC + CHROME_JS + 'common.js',
-            SRC + CHROME_JS + 'generator.js'
+            SRC + COMMON + 'common.js',
+            SRC + COMMON + 'generator.js'
         ], CHROME_JS + 'generator.js');
 });
 
@@ -161,7 +178,7 @@ gulp.task('chrome:js:options', function() {
     return js(SRC, [
             LIBS + 'jquery-2.1.4.js',
             SRC + CHROME_JS + 'preloader.js',
-            SRC + CHROME_JS + 'common.js',
+            SRC + COMMON + 'common.js',
             SRC + CHROME_JS + 'options.js'
         ], CHROME_JS + 'options.js');
 });
@@ -173,15 +190,54 @@ gulp.task('chrome:js:popup', function() {
             SRC + CHROME_JS + 'preloader.js',
             SRC + CHROME_JS + 'notify.js',
             SRC + CHROME_JS + 'social.js',
-            SRC + CHROME_JS + 'common.js',
-            SRC + CHROME_JS + 'helpers.js',
+            SRC + COMMON + 'common.js',
+            SRC + COMMON + 'helpers.js',
             SRC + CHROME_JS + 'popup.js'
         ], CHROME_JS + 'popup.js');
+});
+
+gulp.task('chrome:js:lint', function() {
+    return gulp.src(SRC + CHROME_JS + '*.js', { base: SRC }).
+        pipe(jshint()).
+        //pipe(jshint('.jshintrc')).
+        pipe(jshint.reporter('default'));
+});
+
+gulp.task('chrome:js:test', function(cb) {
+    gulp.src(SRC + CHROME_JS + '*.js', { base: SRC }).
+        pipe(istanbul({ includeUntested: true })).
+        pipe(istanbul.hookRequire()).
+        on('finish', function() {
+            gulp.src('specs/chrome/*-spec.js').
+                pipe(jasmine({ includeStackTrace: true, verbose: true })).
+                pipe(istanbul.writeReports({
+                    dir: 'lcov/chrome',
+                    reporters: [ 'lcov' ],
+                    reportOpts: { dir: 'lcov/chrome' }
+                })).
+                on('end', cb);
+        });
 });
 
 gulp.task('chrome', [ 'chrome:copy', 'chrome:css', 'chrome:html', 'chrome:js' ], function(cb) {
     gulp.start('chrome:dist');
     cb();
+});
+
+gulp.task('common:test', function(cb) {
+    gulp.src(SRC + COMMON + '*.js', { base: SRC }).
+        pipe(istanbul({ includeUntested: true })).
+        pipe(istanbul.hookRequire()).
+        on('finish', function() {
+            gulp.src('specs/common/*-spec.js').
+                pipe(jasmine({ includeStackTrace: true, verbose: true })).
+                pipe(istanbul.writeReports({
+                    dir: 'lcov/common',
+                    reporters: [ 'lcov' ],
+                    reportOpts: { dir: 'lcov/common' }
+                })).
+                on('end', cb);
+        });
 });
 
 //gulp.task('watch', function() {

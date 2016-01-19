@@ -9,6 +9,8 @@ A nimble and flexible [Selenium Page Object Model](https://code.google.com/p/sel
 
 Selenium Page Object Generator is an essential tool to improve your workflow. It will generate [Page Object Model](http://martinfowler.com/bliki/PageObject.html) on active [Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Opera](http://www.opera.com/) tab with a single click, provided that all of the options and template are configured. The generated Page Object Model will be saved to pre-configured Chrome or Opera download folder.
 
+Selenium Page Object Generator is also available in command line by installing [Node.JS](https://nodejs.org/en/) package from [NPM Registry](https://www.npmjs.com/package/selenium-page-object-generator).
+
 The template is using [Handlebars.js](http://handlebarsjs.com/) expression, a clean logic-less semantic templating language.
 
 This is an early BETA release, it expected to have rough edges, and limited functionality. It currently support 3 different targets: [Java](https://en.wikipedia.org/wiki/Java_(programming_language)), [C#](https://en.wikipedia.org/wiki/C_Sharp_(programming_language)), and [Robot Framework](http://robotframework.org/).
@@ -21,13 +23,41 @@ C#: [http://relevantcodes.com/pageobjects-and-pagefactory-design-patterns-in-sel
 
 Robot Framework: [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#taking-resource-files-into-use](http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#taking-resource-files-into-use)
 
-(You need to use Chrome 40+ or Opera 15+ to try this out)
+(You need to use Chrome 40+ or Opera 15+ or Node.JS 5.x to try this out)
 
 Installation
 -
 
 - To install the newest released version on Chrome browser, please download it from [Chrome web store](https://chrome.google.com/webstore/detail/epgmnmcjdhapiojbohkkemlfkegmbebb).
 - To install the newest released version on Opera browser, please download it from [Opera addons catalog](https://addons.opera.com/en/extensions/details/selenium-page-object-generator).
+- To install the newest released version on command line, please install [Node.js](https://nodejs.org/) and run command below:
+
+```bash
+$ npm install selenium-page-object-generator
+```
+
+Command Line Usage
+-
+Selenium Page Object Generator accepts the following command line arguments:
+
+```bash
+selenium-page-object-generator [options]
+
+  -h, --help                                 Show this help message and exit.
+  -v, --version                              Show program's version number and exit.
+  -t, --target {cs,java,robot}               Generator target
+  -n, --name [PageName]                      Page name (no-spaces)
+  -d, --destination [DestinationPageName]    Destination page name (no-spaces) (optional)
+  -s, --source [source.html]                 Source file
+```
+
+Examples
+-
+To generate Java page object:
+
+```bash
+$ node_modules/.bin/selenium-page-object-generator -t java -n MySite -s source.html
+```
 
 Development Dependencies
 -

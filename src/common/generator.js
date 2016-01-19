@@ -65,7 +65,7 @@ window.POG=(function() {
 
         for (; node && node.nodeType === ELEMENT_NODE; node = node.parentNode) {
 
-            if (node.id) {
+            if (node && node.id) {
                 selector = '#' + node.id + ' ' + selector;
                 break;
             }
@@ -146,24 +146,24 @@ window.POG=(function() {
     function getHiddens(cloned, original) {
         var clones = cloned.getElementsByTagName('*');
         var originals = original.getElementsByTagName('*');
-        var hiddens = Array.filter(cloned.querySelectorAll(
+        var hiddens = (cloned) ? Array.filter(cloned.querySelectorAll(
             '*:not(br):not(img):not(input):not(link):not(option):not(script):not(select):not(style)'),
             function(item, index) {
                 var sourceIndex = [].indexOf.call(clones, item);
                 return originals[sourceIndex].offsetHeight < 1 ||
                     !isElementInViewport(item);
-            });
+            }) : [];
         return hiddens;
     }
 
     function getLabelText(node) {
         var text = '';
 
-        if (node.id) {
+        if (node && node.id) {
             text = getLabelTextFor(node, 'id');
         }
 
-        if (text === '' && node.name) {
+        if (text === '' && node && node.name) {
             // non-standard, but it happens
             text = getLabelTextFor(node, 'name');
         }
@@ -171,7 +171,8 @@ window.POG=(function() {
         if (text === '') {
             // find label from siblings
             // TODO: should use more aggressive collector
-            var labels = node.parentNode.querySelectorAll('label');
+            var labels = (node && node.parentNode) ?
+                node.parentNode.querySelectorAll('label') : [];
             var label = getClosestSibling(node, labels);
 
             if (label) {
@@ -340,9 +341,10 @@ window.POG=(function() {
     function getNodeIndex(node, nodeName) {
         nodeName = nodeName || node.nodeName;
 
-        var siblings = Array.filter(node.parentNode.children, function(item, index) {
-            return item.nodeName === nodeName;
-        });
+        var siblings = (node && node.parentNode) ?
+            Array.filter(node.parentNode.children, function(item, index) {
+                return item.nodeName === nodeName;
+            }) : [];
 
         var index = [].indexOf.call(siblings, node);
         // convert to 1-based index
@@ -355,21 +357,22 @@ window.POG=(function() {
         var text = getLabelText(node);
 
         if (text === '') {
-            var parentNode = node.parentNode;
+            var parentNode = (node) ? node.parentNode : null;
 
             if (parentNode) {
                 var clonedParentNode = parentNode.cloneNode(true);
                 var clonedNode = clonedParentNode.querySelector(
                     node.nodeName.toLowerCase());
                 clonedNode.parentNode.removeChild(clonedNode);
+                sanitizeNode(clonedParentNode, parentNode);
 
                 text = clonedParentNode.textContent || clonedParentNode.innerText || '';
-                text = text.trim();
+                text = getSentences(text.trim())[0] || '';
             }
         }
 
         if (text === '') {
-            text = getNodeText(node.parentNode);
+            text = (node) ? getNodeText(node.parentNode) : '';
         }
 
         return text;
@@ -378,14 +381,7 @@ window.POG=(function() {
     function getPageVisibleHTML(original) {
         original = original || document.body;
         var cloned = original.cloneNode(true);
-        var comments = getComments(cloned);
-        var excludes = cloned.querySelectorAll('img,input,link,option,script,select,style');
-        var hiddens = getHiddens(cloned, original);
-
-        removeNodes(comments);
-        removeNodes(excludes);
-        removeNodes(hiddens);
-
+        sanitizeNode(cloned, original);
         return cloned.outerHTML;
     }
 
@@ -492,7 +488,8 @@ window.POG=(function() {
     function removeNodes(nodes) {
         var type = {}.toString.call(nodes);
 
-        if (type !== '[object Array]' && type !== '[object NodeList]') {
+        if (type !== '[object Array]' &&
+                !(type === '[object NodeList]' || type === '[object Object]')) {
             return;
         }
 
@@ -501,16 +498,29 @@ window.POG=(function() {
 
         while(++index < length) {
             var node = nodes[index];
-            (node.parentNode || { removeChild: function() {} }).removeChild(node);
+            if (node) {
+                (node.parentNode || { removeChild: function() {} }).removeChild(node);
+            }
         }
+    }
+
+    function sanitizeNode(clonedNode, originalNode) {
+        var comments = getComments(clonedNode);
+        var excludes = (clonedNode) ?
+            clonedNode.querySelectorAll('img,input,link,option,script,select,style') : [];
+        var hiddens = getHiddens(clonedNode, originalNode);
+        removeNodes(comments);
+        removeNodes(excludes);
+        removeNodes(hiddens);
     }
 
     function setDefinitions(input) {
         var definitions = [];
         var root = document.querySelector(input.nodes.root) || document;
-        var nodes = root.querySelectorAll(input.nodes.selector);
+        var nodes = (root) ? root.querySelectorAll(input.nodes.selector) : [];
+        var type = {}.toString.call(nodes);
 
-        if ({}.toString.call(nodes) !== '[object NodeList]') {
+        if (!(type === '[object NodeList]' || type === '[object Object]')) {
             input.definitions = definitions;
             return input;
         }
@@ -813,6 +823,12 @@ window.POG=(function() {
             var words = getWordFrequency(sourceText);
             sentences = getSentenceFrequency(sentences, words);
             var sentence = sentences[0];
+
+            // !robot
+            if (input.attributes.letter !== LETTERS.LOWER && input.attributes.indent !== 1 &&
+                    input.attributes.separator !== '') {
+                sentence = sentence.replace(/"/g, '\\"');
+            }
 
             var buffer = {
                 attribute: {

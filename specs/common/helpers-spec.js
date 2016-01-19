@@ -5,7 +5,7 @@
 
 GLOBAL.window = GLOBAL;
 window.func = function() {};
-window.Handlebars = {
+GLOBAL.Handlebars = {
     helpers: {},
     registerHelper: function(name, handler) {
         this.helpers[name] = handler;
@@ -17,11 +17,11 @@ window.Handlebars = {
     }
 };
 
-require(__dirname + '/../../src/chrome/assets/js/helpers.js');
+require(__dirname + '/../../src/common/helpers.js');
 
 describe('helpers.attributes', function() {
     it('should return empty on hash without definitions', function() {
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         expect(Handlebars.helpers.attributes({ data: { root: {} } })).toEqual('');
         expect(isEmpty).toHaveBeenCalledWith(undefined);
     });
@@ -37,7 +37,7 @@ describe('helpers.attributes', function() {
                             definitions: definitions } },
             fn: function(item) { return item.attribute.name; } };
         var filter = spyOn(Array, 'filter').and.callThrough();
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         var join = spyOn(Array.prototype, 'join').and.callThrough();
         var logic = spyOn(options, 'fn').and.callThrough();
         var sort = spyOn(Array.prototype, 'sort').and.callThrough();
@@ -66,7 +66,7 @@ describe('helpers.attributes', function() {
             fn: function(item) { return '|' + item.indent + '|' + item.attribute.name; } };
         var extend = spyOn(Object, 'extend').and.callThrough();
         var filter = spyOn(Array, 'filter').and.callThrough();
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         var join = spyOn(Array.prototype, 'join').and.callThrough();
         var logic = spyOn(options, 'fn').and.callThrough();
         var sort = spyOn(Array.prototype, 'sort').and.callThrough();
@@ -98,7 +98,7 @@ describe('helpers.attributes', function() {
                             definitions: definitions } },
             fn: function(item) { return item.attribute.name; } };
         var filter = spyOn(Array, 'filter').and.callThrough();
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         var join = spyOn(Array.prototype, 'join').and.callThrough();
         var logic = spyOn(options, 'fn').and.callThrough();
         var sort = spyOn(Array.prototype, 'sort').and.callThrough();
@@ -237,7 +237,7 @@ describe('helpers.equals', function() {
 
 describe('helpers.fill', function() {
     it('should return empty on hash without definitions', function() {
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         expect(Handlebars.helpers.fill({ data: { root: {} } })).toEqual('');
         expect(isEmpty).toHaveBeenCalledWith(undefined);
     });
@@ -253,7 +253,7 @@ describe('helpers.fill', function() {
             data: { root: { definitions: definitions, fill: { separator: '-' } } },
             fn: function(item) { return item.attribute.name; } };
         var filter = spyOn(Array, 'filter').and.callThrough();
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         var join = spyOn(Array.prototype, 'join').and.callThrough();
         var logic = spyOn(options, 'fn').and.callThrough();
         var sort = spyOn(Array.prototype, 'sort').and.callThrough();
@@ -281,7 +281,7 @@ describe('helpers.fill', function() {
             data: { root: { definitions: definitions, fill: { separator: '$$$' } } },
             fn: function(item) { return item.attribute.name; } };
         var filter = spyOn(Array, 'filter').and.callThrough();
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         var join = spyOn(Array.prototype, 'join').and.callThrough();
         var logic = spyOn(options, 'fn').and.callThrough();
         var sort = spyOn(Array.prototype, 'sort').and.callThrough();
@@ -347,7 +347,7 @@ describe('helpers.lower', function() {
 
 describe('helpers.operations', function() {
     it('should return empty on hash without definitions', function() {
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         expect(Handlebars.helpers.operations({ data: { root: {} } })).toEqual('');
         expect(isEmpty).toHaveBeenCalledWith(undefined);
     });
@@ -363,7 +363,7 @@ describe('helpers.operations', function() {
             data: { root: { definitions: definitions, operations: { separator: '-' } } },
             fn: function(item) { return item.operation.name; } };
         var filter = spyOn(Array, 'filter').and.callThrough();
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         var join = spyOn(Array.prototype, 'join').and.callThrough();
         var logic = spyOn(options, 'fn').and.callThrough();
         var sort = spyOn(Array.prototype, 'sort').and.callThrough();
@@ -391,7 +391,7 @@ describe('helpers.operations', function() {
             data: { root: { definitions: definitions, operations: { separator: '$$$' } } },
             fn: function(item) { return item.operation.name; } };
         var filter = spyOn(Array, 'filter').and.callThrough();
-        var isEmpty = spyOn(window.Handlebars.Utils, 'isEmpty').and.callThrough();
+        var isEmpty = spyOn(Handlebars.Utils, 'isEmpty').and.callThrough();
         var join = spyOn(Array.prototype, 'join').and.callThrough();
         var logic = spyOn(options, 'fn').and.callThrough();
         var sort = spyOn(Array.prototype, 'sort').and.callThrough();

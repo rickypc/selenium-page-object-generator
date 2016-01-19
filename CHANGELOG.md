@@ -1,3 +1,12 @@
+### 1.2.6 (2016.01.19)
+
+* Bugfixes
+* Add executable for offline support via Node.JS
+* Restructure the files between common and browser specific functionalities
+* Update dependencies
+* Adjust the tests
+* Add DOM tree walker polyfill
+
 ### 1.2.5 (2015.09.22)
 
 * Bugfixes
