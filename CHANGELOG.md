@@ -1,3 +1,8 @@
+### 1.2.7 (2016.01.19)
+
+* Update copyright year
+* Cleanups
+
 ### 1.2.6 (2016.01.19)
 
 * Bugfixes

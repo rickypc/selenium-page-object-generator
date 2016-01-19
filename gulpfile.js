@@ -1,6 +1,3 @@
-//npm WARN deprecated lodash@1.0.2: lodash@<2.0.0 is no longer maintained. Upgrade to lodash@^3.0.0
-//npm WARN prefer global jshint@2.9.1 should be installed with -g
-
 const ASSETS = 'assets/';
 const BUILD = 'build/';
 const CHROME = 'chrome/';
@@ -22,7 +19,7 @@ const TEMPLATES = 'templates/';
 var packagejson = require('./package.json');
 var banner = ['/*',
     '    Selenium Page Object Generator - to improve agile testing process velocity.',
-    '    Copyright (C) 2015  ' + packagejson.author,
+    '    Copyright (C) 2015-2016  ' + packagejson.author,
     '',
     '    This program is free software: you can redistribute it and/or modify',
     '    it under the terms of the GNU Affero General Public License as',
