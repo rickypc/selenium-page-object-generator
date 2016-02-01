@@ -1,3 +1,7 @@
+### 1.2.8 (2016.01.31)
+
+* Bugfixes on issue #6
+
 ### 1.2.7 (2016.01.19)
 
 * Update copyright year
@@ -14,7 +18,7 @@
 
 ### 1.2.5 (2015.09.22)
 
-* Bugfixes
+* Bugfixes on issue #3
 
 ### 1.2.4 (2015.08.28)
 

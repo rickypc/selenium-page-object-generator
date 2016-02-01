@@ -88,7 +88,8 @@ window.POG=(function() {
                             currentSelector += '[type=\'' + node.type + '\']';
                         }
                         else if (node.getAttribute('data-type')) {
-                            currentSelector += '[data-type=\'' + node.getAttribute('data-type') + '\']';
+                            currentSelector += '[data-type=\'' +
+                                node.getAttribute('data-type') + '\']';
                         }
                     }
                 }
@@ -134,7 +135,7 @@ window.POG=(function() {
         buffer.operation.documentation = input.action + suffixes.action +
             suffixes.documentation;
         buffer.operation.name = getLetter(input.action + suffixes.name,
-            input.letters.operation);
+            input.letters.operation, input.action);
 
         return buffer;
     }
@@ -147,12 +148,11 @@ window.POG=(function() {
         var clones = cloned.getElementsByTagName('*');
         var originals = original.getElementsByTagName('*');
         var hiddens = (cloned) ? Array.filter(cloned.querySelectorAll(
-            '*:not(br):not(img):not(input):not(link):not(option):not(script):not(select):not(style)'),
-            function(item, index) {
-                var sourceIndex = [].indexOf.call(clones, item);
-                return originals[sourceIndex].offsetHeight < 1 ||
-                    !isElementInViewport(item);
-            }) : [];
+            '*:not(br):not(img):not(input):not(link):not(option):not(script):not(select):not(style)'
+        ), function(item, index) {
+            var sourceIndex = [].indexOf.call(clones, item);
+            return originals[sourceIndex].offsetHeight < 1 || !isElementInViewport(item);
+        }) : [];
         return hiddens;
     }
 
@@ -214,10 +214,20 @@ window.POG=(function() {
         return text;
     }
 
-    function getLetter(value, type) {
+    function getLetter(value, type, action) {
+        action = action || '';
         type = type || LETTERS.CAMEL;
         type = parseInt(type);
         value = value || '';
+
+        if (type !== LETTERS.NATURAL) {
+            // move number prefix to the end of the value
+            var oldValue = value.replace(action, '').trim();
+            var numberPrefix = /^([\d.]+)/.exec(oldValue);
+            if (numberPrefix) {
+                value = value.replace(numberPrefix[0], '') + ' ' + numberPrefix[0];
+            }
+        }
 
         switch (type) {
             case LETTERS.LOWER:
@@ -226,20 +236,19 @@ window.POG=(function() {
                 value = (type === LETTERS.LOWER) ? value.toLowerCase() : value.toUpperCase();
                 break;
             case LETTERS.CAMEL:
-            case LETTERS.NATURAL:
             case LETTERS.PROPER:
                 value = value.replace(/\./g, ' ').trim().replace(/\s\s+/g, ' ').
                     replace(/\w\S*/g, function(word) {
                         return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-                    });
-
-                if (type === LETTERS.CAMEL || type === LETTERS.PROPER) {
-                    value = value.replace(/\s+/g, '');
-
-                    if (type === LETTERS.CAMEL) {
-                        value = value.charAt(0).toLowerCase() + value.substr(1);
-                    }
+                    }).replace(/\s+/g, '');
+                if (type === LETTERS.CAMEL) {
+                    value = value.charAt(0).toLowerCase() + value.substr(1);
                 }
+                break;
+            case LETTERS.NATURAL:
+                value = value.trim().replace(/\s\s+/g, ' ').replace(/\w\S*/g, function(word) {
+                        return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+                    });
                 break;
         }
 
@@ -438,7 +447,9 @@ window.POG=(function() {
         }
 
         // desc
-        sentences.sort(function(a, b) { return sentences.frequencies[b] - sentences.frequencies[a]; });
+        sentences.sort(function(a, b) {
+            return sentences.frequencies[b] - sentences.frequencies[a];
+        });
 
         return sentences;
     }
@@ -450,11 +461,12 @@ window.POG=(function() {
         words.frequencies = {};
         words.tops = [];
 
-        text.toLowerCase().split(/[\s*\.*\,\;\+?\#\|:\-\/\\\[\]\(\)\{\}$%&0-9*]/).map(function(k, v) {
-            if (k && k.length > 1) {
-                words.frequencies[k]++ || (words.frequencies[k] = 1);
-            }
-        });
+        text.toLowerCase().split(/[\s*\.*\,\;\+?\#\|:\-\/\\\[\]\(\)\{\}$%&0-9*]/).
+            map(function(k, v) {
+                if (k && k.length > 1) {
+                    words.frequencies[k]++ || (words.frequencies[k] = 1);
+                }
+            });
 
         for (var word in words.frequencies) {
             words[++index] = word;
@@ -588,10 +600,11 @@ window.POG=(function() {
                                 submit.label = label;
                                 submit.text = text;
                             }
-                            else if (submit.text === '' && text.toLowerCase().indexOf('submit') > -1) {
-                                submit.label = label;
-                                submit.text = text;
-                            }
+                            else if (submit.text === '' && text.toLowerCase().
+                                indexOf('submit') > -1) {
+                                    submit.label = label;
+                                    submit.text = text;
+                                }
                         }
                         else {
                             if (inputType === 'hidden') {
