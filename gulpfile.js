@@ -19,7 +19,7 @@ const TEMPLATES = 'templates/';
 var packagejson = require('./package.json');
 var banner = ['/*',
     '    Selenium Page Object Generator - to improve agile testing process velocity.',
-    '    Copyright (C) 2015-2016  ' + packagejson.author,
+    '    Copyright (c) 2015, 2016 ' + packagejson.author,
     '',
     '    This program is free software: you can redistribute it and/or modify',
     '    it under the terms of the GNU Affero General Public License as',

@@ -14,7 +14,13 @@ window.POG=(function() {
         var value = node.getAttribute(name);
 
         if (value) {
-            var selector = node.nodeName.toLowerCase() + '[' + name + '=\'' + value + '\']';
+            var selector = node.nodeName.toLowerCase();
+            if (name === 'class') {
+                selector += '.' + value.split(/\s+/g).join('.');
+            }
+            else {
+                selector += '[' + name + '=\'' + value + '\']';
+            }
             if (document.querySelectorAll(selector).length === 1) {
                 response = selector;
             }
@@ -373,7 +379,7 @@ window.POG=(function() {
                 var clonedNode = clonedParentNode.querySelector(
                     node.nodeName.toLowerCase());
                 clonedNode.parentNode.removeChild(clonedNode);
-                sanitizeNode(clonedParentNode, parentNode);
+                clonedParentNode = sanitizeNode(clonedParentNode, parentNode);
 
                 text = clonedParentNode.textContent || clonedParentNode.innerText || '';
                 text = getSentences(text.trim())[0] || '';
@@ -390,12 +396,12 @@ window.POG=(function() {
     function getPageVisibleHTML(original) {
         original = original || document.body;
         var cloned = original.cloneNode(true);
-        sanitizeNode(cloned, original);
+        cloned = sanitizeNode(cloned, original);
         return cloned.outerHTML;
     }
 
     function getSanitizedText(text, max) {
-        var texts = text.split(/\s+/g);
+        var texts = (text || '').split(/\s+/g);
 
         if (max) {
             texts = texts.slice(0, max);
@@ -523,7 +529,14 @@ window.POG=(function() {
         var hiddens = getHiddens(clonedNode, originalNode);
         removeNodes(comments);
         removeNodes(excludes);
+        var excludedNode = clonedNode.cloneNode(true);
         removeNodes(hiddens);
+        // ng:view template doesn't have height,
+        // hence it will considered as hidden
+        if (clonedNode.textContent.trim() === '') {
+            clonedNode = excludedNode;
+        }
+        return clonedNode;
     }
 
     function setDefinitions(input) {
@@ -835,7 +848,7 @@ window.POG=(function() {
             var sentences = getSentences(sourceText);
             var words = getWordFrequency(sourceText);
             sentences = getSentenceFrequency(sentences, words);
-            var sentence = sentences[0];
+            var sentence = sentences[0] || '';
 
             // !robot
             if (input.attributes.letter !== LETTERS.LOWER && input.attributes.indent !== 1 &&
@@ -862,7 +875,7 @@ window.POG=(function() {
 
         if (input.operations.extras['verify.url']) {
             // it's better to generate more information than less
-            var uri = document.location.href.replace(document.location.origin, '');
+            var uri = location.href.replace(document.location.origin, '');
 
             var buffer = {
                 attribute: {

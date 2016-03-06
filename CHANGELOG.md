@@ -1,3 +1,7 @@
+### 1.2.9 (2016.03.06)
+
+* Bugfixes on issue #7
+
 ### 1.2.8 (2016.01.31)
 
 * Bugfixes on issue #6
