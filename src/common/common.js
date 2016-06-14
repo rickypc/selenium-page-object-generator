@@ -114,7 +114,8 @@
                     storage.targets = storage.targets || {
                         cs: { label: 'C#' },
                         java: { label: 'Java' },
-                        robot: { label: 'Robot Framework' }
+                        robot: { label: 'Robot Framework' },
+			xtend: { label: 'Xtend'}
                     };
 
                     // first timer
