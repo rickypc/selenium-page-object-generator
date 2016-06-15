@@ -15,36 +15,7 @@ window.POG=(function() {
     function replaceAt( string, index, character) {
 	return string.substr(0, index) + character + string.substr(index+character.length);
     }
-
     
-    function escapeSelector(selector)
-    {
-	if(selector.slice(-1) === ".")
-	{
-	    
-	    selector = selector.slice(0,-1);
-	}
-	selector = selector.replace(/\.\./g, ".");
-
-
-	var indices = [];
-	for(var i=0; i < selector.length;i++) {
-	    if (selector[i] === "'") indices.push(i);
-	}
-
-	
-	for(var j=1; j < indices.length-1;j++)
-	{
-//	    selector = replaceAt(selector,indices[j],"\\'")
-	}
-	
-
-	
-	
-
-	
-	return selector; 
-    }
 
 
     
@@ -61,20 +32,18 @@ window.POG=(function() {
             else {
                 selector += '[' + name + '=\'' + value + '\']';
             }
-
-
-	    var escaped_selector = escapeSelector(selector);
-
+	    //Surrounding with try to catch the exceptions that occur and crash the program on
+	    //certain web pages. 
 	    try
 	    {
-		if (document.querySelectorAll(escaped_selector).length === 1) {
-                    response = escaped_selector;
+		if (document.querySelectorAll(selector).length === 1) {
+                    response = selector;
 		}
 	    }
 	    catch (e) {
 		
 		console.log(e);
-		console.log("Bad selector: " + escaped_selector);
+		console.log("Bad selector: " + selector);
 	    }
 	    
             
