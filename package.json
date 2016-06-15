@@ -11,7 +11,7 @@
     "array-uniq": "^1.0.2",
     "del": "^2.2.0",
     "event-stream": "^3.3.1",
-    "gulp": "^3.9.1",
+    "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
     "gulp-concat-css": "^2.2.0",
     "gulp-cssnano": "^2.1.0",

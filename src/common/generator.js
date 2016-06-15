@@ -8,18 +8,7 @@ window.POG=(function() {
 
     // ========================================================================
     // private functions
-
-
-
-
-    function replaceAt( string, index, character) {
-	return string.substr(0, index) + character + string.substr(index+character.length);
-    }
     
-
-
-    
-
     function getAttributeSelector(name, node) {
         var response = '';
         var value = node.getAttribute(name);

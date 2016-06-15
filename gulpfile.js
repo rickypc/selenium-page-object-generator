@@ -67,12 +67,12 @@ function css(base, inputs, output) {
 function html(input) {
     return gulp.src(SRC + CHROME + input).
         pipe(htmlmin({
-            collapseWhitespace: false,
-            removeAttributeQuotes: false,
-            removeComments: false,
-            removeRedundantAttributes: false,
-            removeScriptTypeAttributes: false,
-            removeStyleLinkTypeAttributes: false
+            collapseWhitespace: true,
+            removeAttributeQuotes: true,
+            removeComments: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true
         })).
         pipe(gulp.dest(BUILD + CHROME));
 }
@@ -80,9 +80,9 @@ function html(input) {
 function js(base, inputs, output) {
     return gulp.src(inputs, { base: base }).
         //pipe(jshint('.jshintrc')).
-        pipe(jshint.reporter('default')).
+        //pipe(jshint.reporter('default')).
         pipe(concat(output)).
-        //pipe(uglify()).
+        pipe(uglify()).
         pipe(header(banner)).
         pipe(gulp.dest(BUILD));
 }
