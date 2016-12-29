@@ -1,0 +1,8 @@
+.editorconfig
+build
+dist
+fonts
+images
+lcov
+specs
+src/chrome/
