@@ -1,3 +1,8 @@
+### 1.2.10 (2016.12.28)
+
+* Bugfixes on issue #14.
+  Thanks to @jpvantuyl
+
 ### 1.2.9 (2016.03.06)
 
 * Bugfixes on issue #7
