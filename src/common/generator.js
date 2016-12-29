@@ -8,7 +8,7 @@ window.POG=(function() {
 
     // ========================================================================
     // private functions
-
+    
     function getAttributeSelector(name, node) {
         var response = '';
         var value = node.getAttribute(name);
@@ -21,9 +21,21 @@ window.POG=(function() {
             else {
                 selector += '[' + name + '=\'' + value + '\']';
             }
-            if (document.querySelectorAll(selector).length === 1) {
-                response = selector;
-            }
+	    //Surrounding with try to catch the exceptions that occur and crash the program on
+	    //certain web pages. 
+	    try
+	    {
+		if (document.querySelectorAll(selector).length === 1) {
+                    response = selector;
+		}
+	    }
+	    catch (e) {
+		
+		console.log(e);
+		console.log("Bad selector: " + selector);
+	    }
+	    
+            
         }
 
         return response;
