@@ -533,7 +533,7 @@ window.POG=(function() {
         removeNodes(hiddens);
         // ng:view template doesn't have height,
         // hence it will considered as hidden
-        if (clonedNode.textContent.trim() === '') {
+        if (typeof clonedNode.textContent === 'string' && clonedNode.textContent.trim() === '') {
             clonedNode = excludedNode;
         }
         return clonedNode;
