@@ -19,6 +19,7 @@ window.POG=(function() {
                 selector += '.' + value.trim().split(/\s+/g).join('.');
             }
             else {
+                value = value.replace(/\r?\n|\r/g, '');
                 selector += '[' + name + '=\'' + value + '\']';
             }
             if (document.querySelectorAll(selector).length === 1) {
