@@ -108,6 +108,13 @@ window.POG=(function() {
         return selector.replace(/^html[^\b]*\bbody\b/, '').trim();
     }
 
+    function getValidVariableName(name) {
+        if (name.length && !/[$_a-zA-Z]/.test(name[0])) {
+            return '_' + name;
+        }
+        return name;
+    }
+
     function getDefinition(input) {
         input = input || {};
         var actionLowered = input.action.toLowerCase();
@@ -138,7 +145,7 @@ window.POG=(function() {
                 input.letters.attribute);
         }
 
-        buffer.attribute.name = getLetter(input.text, input.letters.attribute);
+        buffer.attribute.name = getValidVariableName(getLetter(input.text, input.letters.attribute));
         buffer.operation.documentation = input.action + suffixes.action +
             suffixes.documentation;
         buffer.operation.name = getLetter(input.action + suffixes.name,
