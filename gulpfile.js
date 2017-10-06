@@ -240,7 +240,6 @@ gulp.task('common:test', function(cb) {
 //gulp.task('watch', function() {
 //});
 
-gulp.task('default', [ 'clean' ], function(cb) {
-    gulp.start('chrome');
+gulp.task('default', [ 'clean' , 'chrome'], function(cb) {
     cb();
 });
