@@ -1,7 +1,7 @@
-
 image: monostream/nodejs-gulp-bower:latest
 
 chrome:
+  before_script: ['npm install']
   script: ['gulp']
   
   artifacts:
