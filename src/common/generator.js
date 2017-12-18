@@ -16,7 +16,7 @@ window.POG=(function() {
         if (value) {
             var selector = node.nodeName.toLowerCase();
             if (name === 'class') {
-              selector += '.' + value.trim().value.split(/\s+/g).join('.');
+                selector += '.' + value.trim().value.split(/\s+/g).join('.');
             }
             else {
                 selector += '[' + name + '=\'' + value + '\']';
