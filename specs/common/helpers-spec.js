@@ -3,9 +3,9 @@
 
 'use strict';
 
-GLOBAL.window = GLOBAL;
+global.window = global;
 window.func = function() {};
-GLOBAL.Handlebars = {
+global.Handlebars = {
     helpers: {},
     registerHelper: function(name, handler) {
         this.helpers[name] = handler;
@@ -47,7 +47,7 @@ describe('helpers.attributes', function() {
         expect(isEmpty).toHaveBeenCalledWith(definitions);
         expect(isEmpty.calls.count()).toEqual(1);
         expect(join).toHaveBeenCalledWith('-');
-        expect(join.calls.count()).toEqual(1);
+        expect(join.calls.count()).toEqual(4);
         expect(logic).toHaveBeenCalled();
         expect(logic.calls.count()).toEqual(4);
         expect(sort).toHaveBeenCalled();
@@ -79,8 +79,8 @@ describe('helpers.attributes', function() {
         expect(isEmpty.calls.count()).toEqual(1);
         expect(join).toHaveBeenCalledWith('-');
         expect(join).toHaveBeenCalledWith(' ');
-        // 3 indent calls + 1 buffer call
-        expect(join.calls.count()).toEqual(4);
+        // 3 - calls + 5 empty space call
+        expect(join.calls.count()).toEqual(8);
         expect(logic).toHaveBeenCalled();
         expect(logic.calls.count()).toEqual(4);
         expect(sort).toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('helpers.attributes', function() {
         expect(isEmpty).toHaveBeenCalledWith(definitions);
         expect(isEmpty.calls.count()).toEqual(1);
         expect(join).toHaveBeenCalledWith('$$$');
-        expect(join.calls.count()).toEqual(1);
+        expect(join.calls.count()).toEqual(4);
         expect(logic).toHaveBeenCalled();
         expect(logic.calls.count()).toEqual(4);
         expect(sort).toHaveBeenCalled();
@@ -263,7 +263,7 @@ describe('helpers.fill', function() {
         expect(isEmpty).toHaveBeenCalledWith(definitions);
         expect(isEmpty.calls.count()).toEqual(1);
         expect(join).toHaveBeenCalledWith('-');
-        expect(join.calls.count()).toEqual(1);
+        expect(join.calls.count()).toEqual(4);
         expect(logic).toHaveBeenCalled();
         expect(logic.calls.count()).toEqual(4);
         expect(sort).toHaveBeenCalled();
@@ -291,7 +291,7 @@ describe('helpers.fill', function() {
         expect(isEmpty).toHaveBeenCalledWith(definitions);
         expect(isEmpty.calls.count()).toEqual(1);
         expect(join).toHaveBeenCalledWith('$$$');
-        expect(join.calls.count()).toEqual(1);
+        expect(join.calls.count()).toEqual(4);
         expect(logic).toHaveBeenCalled();
         expect(logic.calls.count()).toEqual(4);
         expect(sort).toHaveBeenCalled();
@@ -373,7 +373,7 @@ describe('helpers.operations', function() {
         expect(isEmpty).toHaveBeenCalledWith(definitions);
         expect(isEmpty.calls.count()).toEqual(1);
         expect(join).toHaveBeenCalledWith('-');
-        expect(join.calls.count()).toEqual(1);
+        expect(join.calls.count()).toEqual(4);
         expect(logic).toHaveBeenCalled();
         expect(logic.calls.count()).toEqual(4);
         expect(sort).toHaveBeenCalled();
@@ -401,7 +401,7 @@ describe('helpers.operations', function() {
         expect(isEmpty).toHaveBeenCalledWith(definitions);
         expect(isEmpty.calls.count()).toEqual(1);
         expect(join).toHaveBeenCalledWith('$$$');
-        expect(join.calls.count()).toEqual(1);
+        expect(join.calls.count()).toEqual(4);
         expect(logic).toHaveBeenCalled();
         expect(logic.calls.count()).toEqual(4);
         expect(sort).toHaveBeenCalled();
