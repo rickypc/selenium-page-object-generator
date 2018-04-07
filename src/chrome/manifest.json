@@ -24,7 +24,7 @@
     "manifest_version": 2,
 
     "minimum_chrome_version": "40",
- 
+
     "name": "",
 
     "options_ui": {
@@ -34,6 +34,7 @@
 
     "permissions": [
         "activeTab",
+        "downloads",
         "storage"
     ],
 
