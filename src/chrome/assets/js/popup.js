@@ -4,12 +4,12 @@ window.URL = window.URL || window.webkitURL;
 function download(element, fileName, content) {
     // revoke previous download path
     window.URL.revokeObjectURL(element.href);
-    element.download = fileName;
     element.href = window.URL.createObjectURL(new Blob([ content ],
         { type: MIME_TYPE }));
-    element.dataset.disabled = false;
-    element.dataset.downloadurl = [ MIME_TYPE, fileName, element.href ].join(':');
-    element.click();
+    chrome.downloads.download({
+        filename: fileName,
+        url: element.href
+    });
 }
 
 function getElements() {
@@ -20,7 +20,8 @@ function getElements() {
             name: $('[id="model.name"]'),
             target: $('[id="model.target"]')
         },
-        target: $('#target')
+        target: $('#target'),
+        version: $('span.version')
     };
 }
 
@@ -89,6 +90,8 @@ $(document).ready(function() {
     });
 
     $('fieldset.share a').social();
+
+    elements.version.text('ver. ' + chrome.app.getDetails().version);
 
     common.getStorage().always(function(data) {
         storage = data;
