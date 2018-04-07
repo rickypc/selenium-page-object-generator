@@ -126,6 +126,10 @@ header span {
     font-weight: bold;
     margin-left: 5px;
 }
+header span.version {
+    font-size: 0.750em;
+    font-weight: normal;
+}
 input, select {
     background: 0 0;
     border: none;
