@@ -16,9 +16,10 @@ window.POG=(function() {
         if (value) {
             var selector = node.nodeName.toLowerCase();
             if (name === 'class') {
-                selector += '.' + value.split(/\s+/g).join('.');
+                selector += '.' + value.trim().split(/\s+/g).join('.');
             }
             else {
+                value = value.replace(/\r?\n|\r/g, '');
                 selector += '[' + name + '=\'' + value + '\']';
             }
             if (document.querySelectorAll(selector).length === 1) {
@@ -533,7 +534,7 @@ window.POG=(function() {
         removeNodes(hiddens);
         // ng:view template doesn't have height,
         // hence it will considered as hidden
-        if (clonedNode.textContent.trim() === '') {
+        if ((clonedNode.textContent || '').trim() === '') {
             clonedNode = excludedNode;
         }
         return clonedNode;
