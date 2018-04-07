@@ -6,27 +6,27 @@
 describe('preloader', function() {
     afterAll(function() {
         window.close();
-        GLOBAL.base = GLOBAL.preloader = GLOBAL.track = GLOBAL.first = null;
-        GLOBAL.firstColors = GLOBAL.second = GLOBAL.secondColors = null;
+        global.base = global.preloader = global.track = global.first = null;
+        global.firstColors = global.second = global.secondColors = null;
     });
 
     beforeAll(function(done) {
         var jsdom = require('jsdom');
         jsdom.env('<html><body><div class="base"></div></body></html>',
                 [__dirname + '/../../jquery-2.1.4.js'], function(err, win) {
-            GLOBAL.window = win;
-            GLOBAL.document = win.document;
-            GLOBAL.jQuery = GLOBAL.$ = require('jquery');
+            global.window = win;
+            global.document = win.document;
+            global.jQuery = global.$ = require('jquery');
             require(__dirname + '/../../src/chrome/assets/js/preloader.js');
-            GLOBAL.base = $('div.base');
-            GLOBAL.classes = ['first', 'second', 'third', 'fourth'];
-            GLOBAL.colors = ['{{colors.[1]}}', '{{colors.[2]}}', '{{colors.[3]}}', '{{colors.[0]}}'];
-            GLOBAL.preloader = base.preloader({ fadeIn: 0, fadeOut: 0 });
-            GLOBAL.track = base.children('div.preloader-track');
-            GLOBAL.first = track.find('div.first-half');
-            GLOBAL.firstColors = first.children('div.color');
-            GLOBAL.second = track.find('div.second-half');
-            GLOBAL.secondColors = second.children('div.color');
+            global.base = $('div.base');
+            global.classes = ['first', 'second', 'third', 'fourth'];
+            global.colors = ['{{colors.[1]}}', '{{colors.[2]}}', '{{colors.[3]}}', '{{colors.[0]}}'];
+            global.preloader = base.preloader({ fadeIn: 0, fadeOut: 0 });
+            global.track = base.children('div.preloader-track');
+            global.first = track.find('div.first-half');
+            global.firstColors = first.children('div.color');
+            global.second = track.find('div.second-half');
+            global.secondColors = second.children('div.color');
             done();
         });
     });
