@@ -6,22 +6,22 @@
 describe('notify', function() {
     afterAll(function() {
         window.close();
-        GLOBAL.base = GLOBAL.box = GLOBAL.content = GLOBAL.notifier = null;
+        global.base = global.box = global.content = global.notifier = null;
     });
 
     beforeAll(function(done) {
         var jsdom = require('jsdom');
         jsdom.env('<html><body><div class="base"></div></body></html>',
                 [__dirname + '/../../jquery-2.1.4.js'], function(err, win) {
-            GLOBAL.window = win;
-            GLOBAL.document = win.document;
-            GLOBAL.jQuery = GLOBAL.$ = require('jquery');
+            global.window = win;
+            global.document = win.document;
+            global.jQuery = global.$ = require('jquery');
             require(__dirname + '/../../src/chrome/assets/js/notify.js');
-            GLOBAL.base = $('div.base');
-            GLOBAL.notifier = base.notify({ hide: { speed: 0 }, show: { speed: 0 }, timeout: 100 });
-            GLOBAL.box = base.next('div.notify');
-            GLOBAL.arrow = box.children('div.arrow');
-            GLOBAL.content = box.children('div.content');
+            global.base = $('div.base');
+            global.notifier = base.notify({ hide: { speed: 0 }, show: { speed: 0 }, timeout: 100 });
+            global.box = base.next('div.notify');
+            global.arrow = box.children('div.arrow');
+            global.content = box.children('div.content');
             done();
         });
     });
