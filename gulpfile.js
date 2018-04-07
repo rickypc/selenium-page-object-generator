@@ -87,8 +87,8 @@ function js(base, inputs, output) {
         pipe(gulp.dest(BUILD));
 }
 
-gulp.task('clean', function(cb) {
-    del([ BUILD, DIST ], cb);
+gulp.task('clean', function() {
+    return del([ BUILD, DIST ]);
 });
 
 gulp.task('chrome:copy', [ 'chrome:copy:configs', 'chrome:copy:folders', 'chrome:copy:manifest' ], function(cb) {
@@ -240,6 +240,8 @@ gulp.task('common:test', function(cb) {
 //gulp.task('watch', function() {
 //});
 
-gulp.task('default', [ 'clean', 'chrome' ], function(cb) {
+gulp.task('default', [ 'clean' ], function(cb) {
+    // wait until clean task is completed
+    gulp.start('chrome');
     cb();
 });
