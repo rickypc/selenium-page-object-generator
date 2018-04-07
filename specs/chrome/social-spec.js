@@ -5,31 +5,31 @@
 
 describe('social', function() {
     afterAll(function() {
-        GLOBAL.base = GLOBAL.classes = GLOBAL.ga = GLOBAL.analytics = null;
-        GLOBAL.navigator = GLOBAL.open = GLOBAL.screen = GLOBAL.social = null;
+        global.base = global.classes = global.ga = global.analytics = null;
+        global.navigator = global.open = global.screen = global.social = null;
     });
 
     beforeAll(function(done) {
         var jsdom = require('jsdom');
         jsdom.env('<html><body><div class="base"></div></body></html>',
                 [__dirname + '/../../jquery-2.1.4.js'], function(err, win) {
-            GLOBAL.window = win;
-            GLOBAL.document = win.document;
-            GLOBAL.navigator = { userAgent: 'chrome' };
-            GLOBAL.chrome = { runtime: { id: 'a' } };
-            GLOBAL.jQuery = GLOBAL.$ = require('jquery');
+            global.window = win;
+            global.document = win.document;
+            global.navigator = { userAgent: 'chrome' };
+            global.chrome = { runtime: { id: 'a' } };
+            global.jQuery = global.$ = require('jquery');
             require(__dirname + '/../../src/chrome/assets/js/social.js');
-            GLOBAL.base = $('div.base');
-            GLOBAL.classes = ['fa-envelope', 'fa-twitter', 'fa-facebook',
+            global.base = $('div.base');
+            global.classes = ['fa-envelope', 'fa-twitter', 'fa-facebook',
                               'fa-google-plus', 'fa-linkedin', 'fa-star', 'fa-unknown'];
-            GLOBAL.ga = function() {};
-            GLOBAL.analytics = spyOn(GLOBAL, 'ga').and.callThrough();
-            GLOBAL.open = spyOn(window, 'open').and.callFake(function() {});
+            global.ga = function() {};
+            global.analytics = spyOn(global, 'ga').and.callThrough();
+            global.open = spyOn(window, 'open').and.callFake(function() {});
             for (var i=0, j=classes.length; i<j; i++) {
                 base.append('<a class="fa ' + classes[i] + '">');
             }
-            GLOBAL.screen = { height: 0, left: 0, top: 0, width: 0 };
-            GLOBAL.social = base.children('a').social();
+            global.screen = { height: 0, left: 0, top: 0, width: 0 };
+            global.social = base.children('a').social();
             done();
         });
     });
