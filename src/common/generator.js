@@ -22,8 +22,13 @@ window.POG=(function() {
                 value = value.replace(/\r?\n|\r/g, '');
                 selector += '[' + name + '=\'' + value + '\']';
             }
-            if (document.querySelectorAll(selector).length === 1) {
-                response = selector;
+            try {
+                var elements = document.querySelectorAll(selector);
+                if (elements.length === 1) {
+                    response = selector;
+                }
+            } catch (ex) {
+                // bad selector. skipping.
             }
         }
 
