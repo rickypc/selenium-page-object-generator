@@ -1,8 +1,24 @@
-image: monostream/nodejs-gulp-bower:latest
+image: node:latest
 
-chrome:
-  before_script: ['npm install']
+stages:
+  - setup
+  - test
+  - build
+
+setup:
+  stage: setup
+  script: ['npm install']
+
+test:common:
+  stage: test
+  script: ['gulp common:test']
+
+test:chrome:
+  stage: test
+  script: ['gulp chrome:js:test']
+
+build:chrome:
+  stage: build
   script: ['gulp']
-  
   artifacts:
     paths: ['build/chrome']
