@@ -3,7 +3,7 @@
 
 'use strict';
 
-GLOBAL.window = GLOBAL;
+global.window = global;
 String.prototype.trim = null;
 var common = require(__dirname + '/../../src/common/common.js');
 
