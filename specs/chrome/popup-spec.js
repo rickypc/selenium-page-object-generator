@@ -10,11 +10,11 @@ xdescribe('popup', function() {
     });
 
     beforeAll(function(done) {
-        var jsdom = require('jsdom');
+        var jsdom = require('jsdom/lib/old-api.js');
         jsdom.env('<html><body><button class="generate"></button><a class="downloader"></a>' +
                 '<input type="text" id="model.name"/><input type="text" id="model.target"/>' +
                 '<select id="target"></select></body></html>',
-                [__dirname + '/../../jquery-2.1.4.js'], function(err, win) {
+                [__dirname + '/../../jquery-3.3.1.js'], function(err, win) {
             GLOBAL.window = win;
             GLOBAL.document = win.document;
             GLOBAL.chrome = {
