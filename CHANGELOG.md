@@ -1,3 +1,8 @@
+### 1.3.1 (2018.04.07)
+
+* Uses latest jQuery and Handlebars library
+* Uses jsdom old API
+
 ### 1.3.0 (2018.04.07)
 
 * Replaces deprecated GLOBAL to global in the specs
