@@ -74,17 +74,25 @@ Development
 To build the sources into corresponding packages, run:
 
 ```bash
-$ gulp
+$ npm run build
 ```
 
 The `/build` folder and `/dist` folder are created. All built files are placed in the `build` folder, and the distribution ready packages are placed in `dist` folder.
+
+Run Unit Tests
+-
+To make sure we did not break anything, let's run:
+
+```bash
+$ npm test
+```
 
 Distribution
 -
 Once the changes are in-place and ready for distribution, update `package.json` with new version, and run:
 
 ```bash
-$ gulp
+$ npm run build
 ```
 
 The `/dist` folder will contain distribution ready packages.
