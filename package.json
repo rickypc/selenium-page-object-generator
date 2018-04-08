@@ -61,5 +61,9 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:rickypc/selenium-page-object-generator.git"
+  },
+  "scripts": {
+    "test": "gulp common:test && gulp chrome:js:test",
+    "build": "gulp default"
   }
 }
