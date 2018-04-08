@@ -1,7 +1,10 @@
 .editorconfig
+.gitlab-ci.yml
 build
+builds
 dist
 fonts
+gulpfile.js
 images
 lcov
 specs
