@@ -183,7 +183,7 @@ gulp.task('chrome:js:options', function() {
 gulp.task('chrome:js:popup', function() {
     return js(SRC, [
             LIBS + 'jquery-3.3.1.js',
-            LIBS + 'handlebars-v3.0.3.js',
+            LIBS + 'handlebars-v4.0.11.js',
             SRC + CHROME_JS + 'preloader.js',
             SRC + CHROME_JS + 'notify.js',
             SRC + CHROME_JS + 'social.js',
