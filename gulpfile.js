@@ -19,7 +19,7 @@ const TEMPLATES = 'templates/';
 var packagejson = require('./package.json');
 var banner = ['/*',
     '    Selenium Page Object Generator - to improve agile testing process velocity.',
-    '    Copyright (c) 2015, 2016 ' + packagejson.author,
+    '    Copyright (c) 2015, 2016, 2018 ' + packagejson.author,
     '',
     '    This program is free software: you can redistribute it and/or modify',
     '    it under the terms of the GNU Affero General Public License as',
@@ -173,7 +173,7 @@ gulp.task('chrome:js:generator', function() {
 
 gulp.task('chrome:js:options', function() {
     return js(SRC, [
-            LIBS + 'jquery-2.1.4.js',
+            LIBS + 'jquery-3.3.1.js',
             SRC + CHROME_JS + 'preloader.js',
             SRC + COMMON + 'common.js',
             SRC + CHROME_JS + 'options.js'
@@ -182,7 +182,7 @@ gulp.task('chrome:js:options', function() {
 
 gulp.task('chrome:js:popup', function() {
     return js(SRC, [
-            LIBS + 'jquery-2.1.4.js',
+            LIBS + 'jquery-3.3.1.js',
             LIBS + 'handlebars-v3.0.3.js',
             SRC + CHROME_JS + 'preloader.js',
             SRC + CHROME_JS + 'notify.js',
