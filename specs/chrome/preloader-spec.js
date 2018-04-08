@@ -11,9 +11,9 @@ describe('preloader', function() {
     });
 
     beforeAll(function(done) {
-        var jsdom = require('jsdom');
+        var jsdom = require('jsdom/lib/old-api.js');
         jsdom.env('<html><body><div class="base"></div></body></html>',
-                [__dirname + '/../../jquery-2.1.4.js'], function(err, win) {
+                [__dirname + '/../../jquery-3.3.1.js'], function(err, win) {
             global.window = win;
             global.document = win.document;
             global.jQuery = global.$ = require('jquery');
