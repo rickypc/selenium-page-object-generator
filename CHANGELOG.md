@@ -1,3 +1,22 @@
+### 1.3.0 (2018.04.07)
+
+* Replaces deprecated GLOBAL to global in the specs
+* Adjust the spy call counting in the specs
+* Bugfixes on textContent is not a valid string
+  Thanks to @jeshan
+* Bugfixes on default gulp task is not build anything
+  Thanks to @jeshan
+* Add gitlab-ci config
+  Thanks to @jeshan
+* Bugfixes on invalid C# / Java variable name literals
+  Thanks to @jeshan
+* Bugfixes on trim whitespaces on value
+  Thanks to @jeshan and @bartonhammond
+* Fixes potential security vulnerabilities by using latest version of dependencies
+* Bugfixes on invalid selector
+* Uses Chrome API for download and adjust permissions requirement
+* Display current extension version on the popup
+
 ### 1.2.10 (2016.12.28)
 
 * Bugfixes on issue #14.
