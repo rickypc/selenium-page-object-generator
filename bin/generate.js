@@ -35,7 +35,7 @@ var jsdom = require('jsdom/lib/old-api.js');
 var mkdirp = require('mkdirp');
 var commonDir = path.join(rootDir, 'src', 'common');
 var common = require(path.join(commonDir, 'common.js'));
-global.Handlebars = require(path.join(rootDir, 'libs', 'handlebars-v3.0.3.js'));
+global.Handlebars = require(path.join(rootDir, 'libs', 'handlebars-v4.0.11.js'));
 require(path.join(commonDir, 'helpers.js'));
 
 var overrides = {
