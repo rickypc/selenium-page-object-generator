@@ -13,7 +13,7 @@ Selenium Page Object Generator is also available in command line by installing [
 
 The template is using [Handlebars.js](http://handlebarsjs.com/) expression, a clean logic-less semantic templating language.
 
-This is an early BETA release, it expected to have rough edges, and limited functionality. It currently support 3 different targets: [Java](https://en.wikipedia.org/wiki/Java_(programming_language)), [C#](https://en.wikipedia.org/wiki/C_Sharp_(programming_language)), and [Robot Framework](http://robotframework.org/).
+This is an early BETA release, it expected to have rough edges, and limited functionality. It currently support 3 different targets: [Java](https://en.wikipedia.org/wiki/Java_(programming_language)), [C#](https://en.wikipedia.org/wiki/C_Sharp_(programming_language)), [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language)) and [Robot Framework](http://robotframework.org/).
 
 For more information on how to use the generated Page Object file:
 
@@ -22,6 +22,8 @@ Java: [https://code.google.com/p/selenium/wiki/PageFactory#The](https://code.goo
 C#: [http://relevantcodes.com/pageobjects-and-pagefactory-design-patterns-in-selenium/#post-5229](http://relevantcodes.com/pageobjects-and-pagefactory-design-patterns-in-selenium/#post-5229)
 
 Robot Framework: [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#taking-resource-files-into-use](http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#taking-resource-files-into-use)
+
+Ruby: [https://github.com/cheezy/page-object](https://github.com/cheezy/page-object)
 
 (You need to use Chrome 40+ or Opera 15+ or Node.JS 5.x to try this out)
 
@@ -45,7 +47,7 @@ selenium-page-object-generator [options]
 
   -h, --help                                 Show this help message and exit.
   -v, --version                              Show program's version number and exit.
-  -t, --target {cs,java,robot}               Generator target
+  -t, --target {cs,java,robot, rb}           Generator target
   -n, --name [PageName]                      Page name (no-spaces)
   -d, --destination [DestinationPageName]    Destination page name (no-spaces) (optional)
   -s, --source [source.html]                 Source file

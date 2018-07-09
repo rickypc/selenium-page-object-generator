@@ -386,7 +386,8 @@ describe('common.getStorage', function() {
                 targets: {
                     cs: { label: 'C#', config: values, template: '{{template}}' },
                     java: { label: 'Java', config: values, template: '{{template}}' },
-                    robot: { label: 'Robot Framework', config: values, template: '{{template}}' }
+                    robot: { label: 'Robot Framework', config: values, template: '{{template}}' },
+                    rb: { label: 'Ruby', config: values, template: '{{template}}' }
                 }
             });
         });
@@ -406,7 +407,8 @@ describe('common.getStorage', function() {
             handler({ targets: {
                 cs: { config: { timeout: 90 }, label: 'C#' },
                 java: { config: { timeout: 90 }, label: 'Java' },
-                robot: { config: { timeout: 90 }, label: 'Robot Framework' }
+                robot: { config: { timeout: 90 }, label: 'Robot Framework' },
+                rb: { config: { timeout: 90 }, label: 'Ruby' }
             } });
         });
         var response = common.common.getStorage();
@@ -428,7 +430,8 @@ describe('common.getStorage', function() {
                 targets: {
                     cs: { label: 'C#', config: values, template: '{{template}}' },
                     java: { label: 'Java', config: values, template: '{{template}}' },
-                    robot: { label: 'Robot Framework', config: values, template: '{{template}}' }
+                    robot: { label: 'Robot Framework', config: values, template: '{{template}}' },
+                    rb: { label: 'Ruby', config: values, template: '{{template}}' }
                 }
             });
         });
@@ -448,7 +451,8 @@ describe('common.getStorage', function() {
             handler({ targets: {
                 cs: { label: 'C#', template: '{{cached}}' },
                 java: { label: 'Java', template: '{{cached}}' },
-                robot: { label: 'Robot Framework', template: '{{cached}}' }
+                robot: { label: 'Robot Framework', template: '{{cached}}' },
+                rb: { label: 'Robot Framework', template: '{{cached}}' }
             } });
         });
         var response = common.common.getStorage();
@@ -470,7 +474,8 @@ describe('common.getStorage', function() {
                 targets: {
                     cs: { label: 'C#', config: values, template: '{{cached}}' },
                     java: { label: 'Java', config: values, template: '{{cached}}' },
-                    robot: { label: 'Robot Framework', config: values, template: '{{cached}}' }
+                    robot: { label: 'Robot Framework', config: values, template: '{{cached}}' },
+                    rb: { label: 'Ruby', config: values, template: '{{cached}}' }
                 }
             });
         });
@@ -507,7 +512,8 @@ describe('common.getStorage', function() {
                 targets: {
                     cs: { label: 'C#' },
                     java: { label: 'Java' },
-                    robot: { label: 'Robot Framework' }
+                    robot: { label: 'Robot Framework' },
+                    rb: { label: 'Ruby' }
                 }
             });
         });
@@ -548,7 +554,8 @@ describe('common.getStorage', function() {
                 targets: {
                     cs: { label: 'C#', template: '{{template}}' },
                     java: { label: 'Java', template: '{{template}}' },
-                    robot: { label: 'Robot Framework', template: '{{template}}' }
+                    robot: { label: 'Robot Framework', template: '{{template}}' },
+                    rb: { label: 'Ruby', template: '{{template}}' }
                 }
             });
         });
@@ -590,7 +597,8 @@ describe('common.getStorage', function() {
                 targets: {
                     cs: { config: values, label: 'C#' },
                     java: { config: values, label: 'Java' },
-                    robot: { config: values, label: 'Robot Framework' }
+                    robot: { config: values, label: 'Robot Framework' },
+                    rb: { config: values, label: 'Ruby' }
                 }
             });
         });
@@ -667,6 +675,16 @@ describe('common.setDefaultValues', function() {
             attributes.indent).toBeTruthy();
     });
 
+    it('should set attributes name format to false', function() {
+        expect(common.common.setDefaultValues().attributes.nameFormat).toBeFalsy();
+    });
+
+
+    it('should set attributes name format to input value', function() {
+        expect(common.common.setDefaultValues({ attributes: { nameFormat: true } }).
+            attributes.nameFormat).toBeTruthy();
+    });
+
     it('should set attributes separator to breakline', function() {
         expect(common.common.setDefaultValues().attributes.separator).toEqual('\n');
     });
@@ -674,6 +692,15 @@ describe('common.setDefaultValues', function() {
     it('should set attributes separator to input value', function() {
         expect(common.common.setDefaultValues({ attributes: { separator: 'a' } }).
             attributes.separator).toEqual('a');
+    });
+
+    it('should set attributes custom attribute to breakline', function() {
+        expect(common.common.setDefaultValues().attributes.customAttribute).toEqual('\n');
+    });
+
+    it('should set attributes custom attribute input value', function() {
+        expect(common.common.setDefaultValues({ attributes: { customAttribute: 'data-automations' } }).
+            attributes.customAttribute).toEqual('data-automations');
     });
 
     it('should set copyright hash', function() {
@@ -846,6 +873,15 @@ describe('common.setDefaultValues', function() {
 
     it('should set operations extras verify.url to input value', function() {
         expect(common.common.setDefaultValues({ operations: { extras: { 'verify.url': 0 } } }).
+            operations.extras['verify.url']).toEqual(0);
+    });
+
+    it('should set operation extras goto.page to default value', function() {
+        expect(common.common.setDefaultValues().operations.extras['goto.page']).toEqual(1);
+    });
+
+    it('should set operations extras goto.page to input value', function() {
+        expect(common.common.setDefaultValues({ operations: { extras: { 'goto.page': 0 } } }).
             operations.extras['verify.url']).toEqual(0);
     });
 

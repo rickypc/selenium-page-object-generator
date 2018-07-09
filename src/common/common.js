@@ -90,6 +90,15 @@
                 }
             }).promise();
         },
+
+        /**
+         * Get value for a given key
+         *
+         * @param {String} configKey
+         *   The key we are checking
+         * @param {Object} defaultValue
+         *   The value to put if configKey wasn't custom specify by the user
+         */
         getDefaultValue: function(configKey, defaultValue) {
             var env = (typeof(process) !== 'undefined' && process.env) ? process.env : null;
             var prefix = 'npm_package_config_';
@@ -114,7 +123,8 @@
                     storage.targets = storage.targets || {
                         cs: { label: 'C#' },
                         java: { label: 'Java' },
-                        robot: { label: 'Robot Framework' }
+                        robot: { label: 'Robot Framework' },
+                        rb: { label: 'Ruby' }
                     };
 
                     // first timer
@@ -191,8 +201,14 @@
             if (!input.attributes.indent) {
                 input.attributes.indent = !!this.getDefaultValue('attributes_indent', false);
             }
+            input.attributes.nameFormat = !!input.attributes.nameFormat;
+            if (!input.attributes.nameFormat) {
+                input.attributes.nameFormat = !!this.getDefaultValue('attributes_nameFormat', false);
+            }
             input.attributes.separator = this.defaults(input.attributes.separator,
                 this.getDefaultValue('attributes_separator', '\n'));
+            input.attributes.customAttribute = this.defaults(input.attributes.customAttribute,
+                this.getDefaultValue('attributes_customAttribute', '\n'));
 
             // copyright
             input.copyright = input.copyright || {};
@@ -249,6 +265,9 @@
             input.operations.extras['verify.url'] =
                 this.defaults(input.operations.extras['verify.url'],
                 this.getDefaultValue('extras_verify_url', 1));
+            input.operations.extras['goto.page'] =
+                this.defaults(input.operations.extras['goto.page'],
+                this.getDefaultValue('extras_goto_page', 1));
 
             input.operations.letter = input.operations.letter ||
                 this.getDefaultValue('operations_letter', root.LETTERS.CAMEL);

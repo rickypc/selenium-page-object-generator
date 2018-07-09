@@ -1,0 +1,115 @@
+{{#if copyright.claimant}}
+/*
+All the code that follow is
+Copyright (c) {{copyright.year}}, {{copyright.claimant}}. All Rights Reserved.
+Not for reuse without permission.
+*/
+{{/if}}
+class {{model.name}}
+  include PageObject
+
+    {{#attributes}}
+    {{#if attribute.strategy}}
+    {{#equals type 'button'}}
+    {{#if attribute.index}}
+    button(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}', :index => {{attribute.index}})
+    {{else}}
+    button(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}')
+    {{/if}}
+    {{/equals}}
+    {{#equals type 'div'}}
+    {{#if attribute.index}}
+    div(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}', :index => {{attribute.index}})
+    {{else}}
+    div(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}')
+    {{/if}}
+    {{/equals}}
+    {{#equals type 'span'}}
+    {{#if attribute.index}}
+    span(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}', :index => {{attribute.index}})
+    {{else}}
+    span(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}')
+    {{/if}}
+    {{/equals}}
+    {{#equals type 'link'}}
+    {{#if attribute.index}}
+    link(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}', :index => {{attribute.index}})
+    {{else}}
+    link(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}')
+    {{/if}}
+    {{/equals}}
+    {{#equals type 'text'}}
+    {{#if attribute.index}}
+    input(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}', :index => {{attribute.index}})
+    {{else}}
+    input(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}')
+    {{/if}}
+    {{/equals}}
+    {{#equals type 'checkbox'}}
+    {{#if attribute.index}}
+    checkbox(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}', :index => {{attribute.index}})
+    {{else}}
+    checkbox(:{{{attribute.name}}}, :{{attribute.strategy}} => '{{{attribute.value}}}')
+    {{/if}}
+    {{/equals}}
+    {{else}}
+    {{attribute.name}} = "{{{attribute.value}}}"
+    {{/if}}
+    {{/attributes}}
+
+
+    {{#operations}}
+    # {{operation.documentation}}
+
+    def {{operation.name}}()
+    {{#equals type 'button'}}
+        self.{{attribute.name}}_element.when_present(10).click
+    {{/equals}}
+    {{#equals type 'text'}}
+        self.{{attribute.name}} = "placeholder"
+    {{/equals}}
+    {{#equals type 'checkbox'}}
+        self.{{attribute.name}}_element.when_present(10).click
+    {{/equals}}
+    {{#equals type 'link'}}
+        self.{{attribute.name}}_element.when_present(10).click
+    {{/equals}}
+    {{#equals type 'div'}}
+        self.{{attribute.name}}_element.when_present(10)
+    {{/equals}}
+    {{#equals type 'span'}}
+        self.{{attribute.name}}_element.when_present(10)
+    {{/equals}}
+    {{#equals type 'radio'}}
+        self.{{attribute.name}}_element.when_present(10).click
+    {{/equals}}
+    {{#equals type 'select'}}
+        self.{{attribute.name}}_element.when_present(10).click
+    {{/equals}}
+    {{#equals type 'verify.loaded'}}
+        self.{{attribute.name}}_element.check_exists
+    {{/equals}}
+    {{#equals type 'goto.page'}}
+        $mh_base_url + page_url
+    {{/equals}}
+    {{#equals type 'fill'}}
+    {{#fill}}
+        self.{{attribute.name}} = "placeholder"
+    {{/fill}}
+    {{/equals}}
+    {{#equals type 'fill.submit'}}
+        self.fill()
+        self.submit()
+    {{/equals}}
+    {{#equals type 'submit'}}
+        self.{{target.name}}();
+    {{/equals}}
+    {{#equals type 'verify.url'}}
+        assert(@browser.url.include?({{attribute.name}}), "The page URL is #{@browser.url} when it shouldn't")
+    {{/equals}}
+    end
+
+    {{/operations}}
+
+
+end

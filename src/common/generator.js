@@ -1,9 +1,9 @@
 window.POGLoaded = !!window.POG;
-window.POG=(function() {
+window.POG = (function () {
     // to compartment any js error on the page
     var ELEMENT_NODE = 1;
-    var NG_PREFIXES = ['ng-','data-ng-','ng_','x-ng-','ng\\:'];
-    var NG_STRATEGIES = [ { handler: getNgModelName, strategy: 'model' } ];
+    var NG_PREFIXES = ['ng-', 'data-ng-', 'ng_', 'x-ng-', 'ng\\:'];
+    var NG_STRATEGIES = [{handler: getNgModelName, strategy: 'model'}];
     var SHOW_COMMENT = 128;
 
     // ========================================================================
@@ -120,6 +120,23 @@ window.POG=(function() {
         return name;
     }
 
+    /**
+     * Build a definition
+     *
+     * For a given element, we create attribute and relevant methods based on the element type
+     *
+     * @param {Associative Array} input
+     *
+     * Element properties
+     *
+     * @return {Associative Array} buffer
+     *   Object that contains the attribute name (Object.attribute.name), the method name (Object.operation.name)
+     *   documentation for each method (buffer.operation.documentation) based on the element type
+     *
+     * In order to build the method documentation we use "action" key
+     * In order to build the method name we use "label" key
+     *
+     */
     function getDefinition(input) {
         input = input || {};
         var actionLowered = input.action.toLowerCase();
@@ -127,9 +144,11 @@ window.POG=(function() {
         // deep copy
         buffer.attribute = Object.extend(buffer.attribute);
         buffer.operation = Object.extend(buffer.operation);
+
+        // Based on action type use the following suffixes to the documentation and method name
         var suffixes = {
             action: (actionLowered === 'click') ? ' on' : '',
-            label: (actionLowered === 'set') ? ' Field' : ''
+            label: (actionLowered === 'set') ? ' Field' : (actionLowered === 'see') ? ' visible?' : ''
         };
         suffixes.documentation = ' ' + getLetter(input.fullText || input.text, LETTERS.NATURAL) +
             ' ' + (input.label + suffixes.label.toLowerCase()) + '.';
@@ -153,9 +172,12 @@ window.POG=(function() {
         buffer.attribute.name = getValidVariableName(getLetter(input.text, input.letters.attribute));
         buffer.operation.documentation = input.action + suffixes.action +
             suffixes.documentation;
-        buffer.operation.name = getLetter(input.action + suffixes.name,
-            input.letters.operation, input.action);
-
+        //If the action is "see" we want to create a method with suffix "_visible?" so we don't put the action in the method name
+        buffer.operation.name = (actionLowered === 'see')
+            ? getLetter(suffixes.name,
+                input.letters.operation, suffixes.name)
+            : getLetter(input.action + suffixes.name,
+                input.letters.operation, input.action);
         return buffer;
     }
 
@@ -168,7 +190,7 @@ window.POG=(function() {
         var originals = original.getElementsByTagName('*');
         var hiddens = (cloned) ? Array.filter(cloned.querySelectorAll(
             '*:not(br):not(img):not(input):not(link):not(option):not(script):not(select):not(style)'
-        ), function(item, index) {
+        ), function (item, index) {
             var sourceIndex = [].indexOf.call(clones, item);
             return originals[sourceIndex].offsetHeight < 1 || !isElementInViewport(item);
         }) : [];
@@ -217,7 +239,7 @@ window.POG=(function() {
 
             if (text === '') {
                 var identifierLowered = identifier.toLowerCase();
-                var labels = Array.filter(document.querySelectorAll('label[for]'), function(item) {
+                var labels = Array.filter(document.querySelectorAll('label[for]'), function (item) {
                     return item.getAttribute('for').toLowerCase() === identifierLowered;
                 });
 
@@ -256,18 +278,17 @@ window.POG=(function() {
                 break;
             case LETTERS.CAMEL:
             case LETTERS.PROPER:
-                value = value.replace(/\./g, ' ').trim().replace(/\s\s+/g, ' ').
-                    replace(/\w\S*/g, function(word) {
-                        return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-                    }).replace(/\s+/g, '');
+                value = value.replace(/\./g, ' ').trim().replace(/\s\s+/g, ' ').replace(/\w\S*/g, function (word) {
+                    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+                }).replace(/\s+/g, '');
                 if (type === LETTERS.CAMEL) {
                     value = value.charAt(0).toLowerCase() + value.substr(1);
                 }
                 break;
             case LETTERS.NATURAL:
-                value = value.trim().replace(/\s\s+/g, ' ').replace(/\w\S*/g, function(word) {
-                        return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-                    });
+                value = value.trim().replace(/\s\s+/g, ' ').replace(/\w\S*/g, function (word) {
+                    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+                });
                 break;
         }
 
@@ -285,7 +306,21 @@ window.POG=(function() {
         return text.trim();
     }
 
-    function getLocator(node, angular) {
+    /**
+     * Get the Element locator
+     *
+     * For a given element, we extract the element locator based on angular attribute, custom attribute or regular
+     * HTML attributes (id, name, css etc.)
+     *
+     * @param {HTML Element} node
+     * @param {Boolean} angular
+     * @param {String} customAttribute
+     *
+     * @return {Associative Array} response
+     *   Object that contains the attribute type (Object.strategy) and the attribute value (response.value)
+     *
+     */
+    function getLocator(node, angular, customAttribute) {
         var response = {};
 
         if (angular) {
@@ -293,7 +328,11 @@ window.POG=(function() {
         }
 
         if (!response.strategy) {
-            if (node.id) {
+            if (customAttribute && node.getAttribute(customAttribute)) {
+                response.strategy = customAttribute.replace("-","_");
+                response.value = node.getAttribute(customAttribute);
+            }
+            else if (node.id) {
                 response.strategy = 'id';
                 response.value = node.id;
             }
@@ -370,7 +409,7 @@ window.POG=(function() {
         nodeName = nodeName || node.nodeName;
 
         var siblings = (node && node.parentNode) ?
-            Array.filter(node.parentNode.children, function(item, index) {
+            Array.filter(node.parentNode.children, function (item, index) {
                 return item.nodeName === nodeName;
             }) : [];
 
@@ -466,7 +505,7 @@ window.POG=(function() {
         }
 
         // desc
-        sentences.sort(function(a, b) {
+        sentences.sort(function (a, b) {
             return sentences.frequencies[b] - sentences.frequencies[a];
         });
 
@@ -480,12 +519,11 @@ window.POG=(function() {
         words.frequencies = {};
         words.tops = [];
 
-        text.toLowerCase().split(/[\s*\.*\,\;\+?\#\|:\-\/\\\[\]\(\)\{\}$%&0-9*]/).
-            map(function(k, v) {
-                if (k && k.length > 1) {
-                    words.frequencies[k]++ || (words.frequencies[k] = 1);
-                }
-            });
+        text.toLowerCase().split(/[\s*\.*\,\;\+?\#\|:\-\/\\\[\]\(\)\{\}$%&0-9*]/).map(function (k, v) {
+            if (k && k.length > 1) {
+                words.frequencies[k]++ || (words.frequencies[k] = 1);
+            }
+        });
 
         for (var word in words.frequencies) {
             words[++index] = word;
@@ -496,8 +534,12 @@ window.POG=(function() {
         }
 
         // desc
-        words.sort(function(a, b) { return words.frequencies[b] - words.frequencies[a]; });
-        words.tops.sort(function(a, b) { return words.frequencies[b] - words.frequencies[a]; });
+        words.sort(function (a, b) {
+            return words.frequencies[b] - words.frequencies[a];
+        });
+        words.tops.sort(function (a, b) {
+            return words.frequencies[b] - words.frequencies[a];
+        });
 
         return words;
     }
@@ -520,17 +562,20 @@ window.POG=(function() {
         var type = {}.toString.call(nodes);
 
         if (type !== '[object Array]' &&
-                !(type === '[object NodeList]' || type === '[object Object]')) {
+            !(type === '[object NodeList]' || type === '[object Object]')) {
             return;
         }
 
         var index = -1;
         var length = nodes.length;
 
-        while(++index < length) {
+        while (++index < length) {
             var node = nodes[index];
             if (node) {
-                (node.parentNode || { removeChild: function() {} }).removeChild(node);
+                (node.parentNode || {
+                    removeChild: function () {
+                    }
+                }).removeChild(node);
             }
         }
     }
@@ -552,9 +597,24 @@ window.POG=(function() {
         return clonedNode;
     }
 
+    /**
+     * Create the Page Object content
+     *
+     * Based on a given options, it extract all the relevant data from the page and creates
+     * the page object file content
+     *
+     * @param {Associative Array} input
+     *
+     * Object that contains chosen options by the user
+     *
+     * @return {Associative Array} input
+     *   Object that contains the Page Object content
+     *
+     */
     function setDefinitions(input) {
         var definitions = [];
         var root = document.querySelector(input.nodes.root) || document;
+        // nodes contains all the elements we find on the page that fit our options selection
         var nodes = (root) ? root.querySelectorAll(input.nodes.selector) : [];
         var type = {}.toString.call(nodes);
 
@@ -567,14 +627,15 @@ window.POG=(function() {
         var hasField = false;
         var index = -1;
         var longestName = 0;
-        var submit = { label: '', text: '' };
+        var submit = {label: '', text: ''};
         var tags = document.getElementsByTagName('*');
         var texts = {};
         var unsets = {};
         var visibleOnly = (parseInt(input.nodes.visibility) === VISIBILITIES.VISIBLE);
 
+        // for each element we found on the page do the following
         for (var i = 0, j = nodes.length; i < j; i++) {
-            var buffer = { attribute: {}, operation: {} };
+            var buffer = {attribute: {}, operation: {}};
             var definition = {};
             var node = nodes[i];
 
@@ -583,19 +644,32 @@ window.POG=(function() {
                 var hasArgument = false;
                 var hasUnset = false;
                 var label = '';
-                var locator = getLocator(node, input.nodes.angular);
+                // If the user entered a custom attribute, try to look for this attribute on the element
+                var locator = (input.attributes.customAttribute !== '')
+                    ? getLocator(node, input.nodes.angular, input.attributes.customAttribute)
+                    : getLocator(node, input.nodes.angular);
                 var text = node.textContent || node.innerText || '';
 
+                //locator.strategy is the attribute of the element
                 buffer.attribute.strategy = locator.strategy;
+                //locator.value is the value of this attribute
                 buffer.attribute.value = locator.value;
                 buffer.sourceIndex = node.sourceIndex || [].indexOf.call(tags, node);
 
-                switch(node.nodeName) {
+                /*
+                Switch case which determine the element page object format:
+                - node.nodeName is the element type (A, BUTTON, DIV etc.)
+                - action will determine which method we will create for each Page Object
+                - label will add a word to the end of the method name
+                - text will effect the Page Object name (if nameFormat is true we will use the element inner text
+                  to set the name, if not, we will use the attribute value.
+                 */
+                switch (node.nodeName) {
                     case 'A':
                         action = 'Click';
                         buffer.type = 'link';
-                        label = 'Link';
-                        text = text || getLinkText(node);
+                        label = '';
+                        text = ((input.attributes.nameFormat === true) ? text || getLinkText(node) : locator.value).toLowerCase();
 
                         if (submit.text === '' && text.toLowerCase().indexOf('submit') > -1) {
                             submit.label = label;
@@ -605,7 +679,7 @@ window.POG=(function() {
                     case 'BUTTON':
                         action = 'Click';
                         buffer.type = 'button';
-                        label = 'Button';
+                        label = '';
 
                         if (submit.text === '' && ((node.type || '').toLowerCase() === 'submit' ||
                                 text.toLowerCase().indexOf('submit') > -1)) {
@@ -620,17 +694,17 @@ window.POG=(function() {
                             action = 'Click';
                             buffer.type = 'button';
                             label = 'Button';
-                            text = text || node.value || getNodeText(node);
+                            text = ((input.attributes.nameFormat === true) ? text || node.value || getNodeText(node) : locator.value).toLowerCase();
+
 
                             if (inputType === 'submit') {
                                 submit.label = label;
                                 submit.text = text;
                             }
-                            else if (submit.text === '' && text.toLowerCase().
-                                indexOf('submit') > -1) {
-                                    submit.label = label;
-                                    submit.text = text;
-                                }
+                            else if (submit.text === '' && text.toLowerCase().indexOf('submit') > -1) {
+                                submit.label = label;
+                                submit.text = text;
+                            }
                         }
                         else {
                             if (inputType === 'hidden') {
@@ -639,13 +713,12 @@ window.POG=(function() {
                             else if (inputType === 'checkbox') {
                                 hasUnset = true;
                             }
-                            else if ('|email|number|password|radio|search|tel|text|url|'.
-                                    indexOf('|' + inputType + '|') > -1) {
+                            else if ('|email|number|password|radio|search|tel|text|url|'.indexOf('|' + inputType + '|') > -1) {
                                 hasArgument = true;
                             }
 
                             label = getLetter(inputType, LETTERS.PROPER);
-                            text = text || getNodeText(node);
+                            text = ((input.attributes.nameFormat === true) ? text || getNodeText(node) : locator.value).toLowerCase();
 
                             if (inputType === 'radio') {
                                 label = 'Radio Button';
@@ -672,8 +745,7 @@ window.POG=(function() {
                                     longestName);
                             }
 
-                            if ('|email|number|password|search|tel|url|'.
-                                    indexOf('|' + inputType + '|') > -1) {
+                            if ('|email|number|password|search|tel|url|'.indexOf('|' + inputType + '|') > -1) {
                                 inputType = 'text';
                             }
 
@@ -687,21 +759,37 @@ window.POG=(function() {
                         hasArgument = true;
                         hasUnset = true;
                         label = 'Drop Down List';
-                        text = getNodeText(node);
+                        text = ((input.attributes.nameFormat === true) ? getNodeText(node) : locator.value).toLowerCase();
                         break;
                     case 'TEXTAREA':
                         action = 'Set';
                         buffer.type = 'text';
                         hasArgument = true;
                         label = 'Textarea';
-                        text = getNodeText(node);
+                        text = ((input.attributes.nameFormat === true) ? getNodeText(node) : locator.value).toLowerCase();
+                        break;
+                    case 'DIV':
+                        action = 'See';
+                        buffer.type = 'div';
+                        label = '';
+                        text = ((input.attributes.nameFormat === true) ? getNodeText(node) : locator.value).toLowerCase();
+                        break;
+                    case 'SPAN':
+                        action = 'See';
+                        buffer.type = 'span';
+                        label = '';
+                        text = ((input.attributes.nameFormat === true) ? getNodeText(node) : locator.value).toLowerCase();
                         break;
                 }
 
-                var fullText = getSanitizedText(text);
-                text = getSanitizedText(text, 6);
+                var fullText = (input.attributes.nameFormat === true) ? getSanitizedText(text) : text;
+                text = (input.attributes.nameFormat === true) ? getSanitizedText(text, 6) : text;
 
                 if (text !== '') {
+                    /*
+                    if we already have an attribute with the same name, so we need to add a number to the
+                     name and change the index to make it unique.
+                     */
                     if (texts[text]) {
                         texts[text]++;
 
@@ -742,7 +830,7 @@ window.POG=(function() {
                                 definitions[unsets[text]] = definition;
                             }
                         }
-
+                        buffer.attribute.index = texts[text] - 1;
                         text = text + ' ' + texts[text];
                     }
                     else {
@@ -865,7 +953,7 @@ window.POG=(function() {
 
             // !robot
             if (input.attributes.letter !== LETTERS.LOWER && input.attributes.indent !== 1 &&
-                    input.attributes.separator !== '') {
+                input.attributes.separator !== '') {
                 sentence = sentence.replace(/"/g, '\\"');
             }
 
@@ -876,7 +964,7 @@ window.POG=(function() {
                 },
                 operation: {
                     documentation: 'Verify that the page loaded completely.',
-                    name: getLetter('Verify Page Loaded', input.operations.letter)
+                    name: getLetter('loaded?', input.operations.letter)
                 },
                 sourceIndex: -1,
                 type: 'verify.loaded'
@@ -917,7 +1005,7 @@ window.POG=(function() {
     // POG namespace
 
     return {
-        generate: function(input) {
+        generate: function (input) {
             input = input || {};
             var output = Object.extend(input);
 
@@ -933,7 +1021,7 @@ window.POG=(function() {
 })();
 
 if (!window.POGLoaded) {
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         if (!sender.tab && request.input) {
             sendResponse(POG.generate(request.input));
         }
