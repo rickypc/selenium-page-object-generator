@@ -1,3 +1,8 @@
+/* Block helpers for templates
+Block helpers make it possible to define custom iterators and other functionality that can invoke
+the passed block with a new context.
+*/
+
 Handlebars.registerHelper('attributes', function(options) {
     var root = options.data.root;
 

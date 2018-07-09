@@ -103,6 +103,7 @@ fieldset label[for='model.include'],
 fieldset label[for='nodes.angular'],
 fieldset label[for^='operations.fill'],
 fieldset label[for='operations.submit'],
+fieldset label[for='operations.goto.page'],
 fieldset label[for^='operations.verify'] {
     width: 300px;
 }

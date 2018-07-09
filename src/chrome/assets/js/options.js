@@ -3,7 +3,9 @@ function getElements() {
         attributes: {
             indent: $('[id="attributes.indent"]'),
             letter: $('[id="attributes.letter"]'),
-            separator: $('[id="attributes.separator"]')
+            separator: $('[id="attributes.separator"]'),
+            nameFormat: $('[id="attributes.nameFormat"]'),
+            customAttribute: $('[id="attributes.customAttribute"]')
         },
         copyright: {
             claimant: $('[id="copyright.claimant"]'),
@@ -29,7 +31,8 @@ function getElements() {
                 'fill.submit': $('[id="operations.fill.submit"]'),
                 submit: $('[id="operations.submit"]'),
                 'verify.loaded': $('[id="operations.verify.loaded"]'),
-                'verify.url': $('[id="operations.verify.url"]')
+                'verify.url': $('[id="operations.verify.url"]'),
+                'goto.page': $('[id="operations.goto.page"]')
             },
             letter: $('[id="operations.letter"]'),
             separator: $('[id="operations.separator"]')
@@ -72,7 +75,9 @@ function pull(elements, target) {
     }
 
     target.config.attributes.indent = elements.attributes.indent.get(0).checked;
+    target.config.attributes.nameFormat = elements.attributes.nameFormat.get(0).checked;
     target.config.attributes.letter = elements.attributes.letter.val();
+    target.config.attributes.customAttribute = elements.attributes.customAttribute.val();
     target.config.attributes.separator = elements.attributes.separator.val().
         replace(/\\n/g, '\n');
 
@@ -90,6 +95,9 @@ function pull(elements, target) {
     target.config.nodes.selector = elements.nodes.selector.val();
     target.config.nodes.visibility = elements.nodes.visibility.val();
 
+    /*
+    set the default value of the options in the popup options to be checked
+     */
     target.config.operations.extras.fill = elements.operations.extras.fill.
         get(0).checked;
     target.config.operations.extras['fill.submit'] = elements.operations.
@@ -100,6 +108,8 @@ function pull(elements, target) {
         extras['verify.loaded'].get(0).checked;
     target.config.operations.extras['verify.url'] = elements.operations.
         extras['verify.url'].get(0).checked;
+    target.config.operations.extras['goto.page'] = elements.operations.
+        extras['goto.page'].get(0).checked;
 
     target.config.operations.letter = elements.operations.letter.val();
     target.config.operations.separator = elements.operations.separator.val().
@@ -116,9 +126,13 @@ function push(elements, target) {
 
     elements.attributes.indent.get(0).checked = !!target.config.
         attributes.indent;
+    elements.attributes.nameFormat.get(0).checked = !!target.config.
+        attributes.nameFormat;
     elements.attributes.letter.val(target.config.attributes.letter);
     elements.attributes.separator.val(target.config.attributes.
         separator.replace(/\n/g, '\\n'));
+
+    elements.attributes.customAttribute.val(target.config.attributes.customAttribute);
 
     elements.copyright.claimant.val(target.config.copyright.claimant);
     elements.copyright.year.val(target.config.copyright.year);
@@ -146,6 +160,8 @@ function push(elements, target) {
         operations.extras['verify.loaded'];
     elements.operations.extras['verify.url'].get(0).checked = !!target.config.
         operations.extras['verify.url'];
+    elements.operations.extras['goto.page'].get(0).checked = !!target.config.
+        operations.extras['goto.page'];
 
     elements.operations.letter.val(target.config.operations.letter);
     elements.operations.separator.val(target.config.operations.
