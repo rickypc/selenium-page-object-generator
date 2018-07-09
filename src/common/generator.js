@@ -148,7 +148,7 @@ window.POG = (function () {
         // Based on action type use the following suffixes to the documentation and method name
         var suffixes = {
             action: (actionLowered === 'click') ? ' on' : '',
-            label: (actionLowered === 'set') ? ' Field' : ''
+            label: (actionLowered === 'set') ? ' Field' : (actionLowered === 'see') ? ' visible?' : ''
         };
         suffixes.documentation = ' ' + getLetter(input.fullText || input.text, LETTERS.NATURAL) +
             ' ' + (input.label + suffixes.label.toLowerCase()) + '.';
@@ -172,9 +172,12 @@ window.POG = (function () {
         buffer.attribute.name = getValidVariableName(getLetter(input.text, input.letters.attribute));
         buffer.operation.documentation = input.action + suffixes.action +
             suffixes.documentation;
-        buffer.operation.name = getLetter(input.action + suffixes.name,
-            input.letters.operation, input.action);
-
+        //If the action is "see" we want to create a method with suffix "_visible?" so we don't put the action in the method name
+        buffer.operation.name = (actionLowered === 'see')
+            ? getLetter(suffixes.name,
+                input.letters.operation, suffixes.name)
+            : getLetter(input.action + suffixes.name,
+                input.letters.operation, input.action);
         return buffer;
     }
 
@@ -665,7 +668,7 @@ window.POG = (function () {
                     case 'A':
                         action = 'Click';
                         buffer.type = 'link';
-                        label = 'Link';
+                        label = '';
                         text = ((input.attributes.nameFormat === true) ? text || getLinkText(node) : locator.value).toLowerCase();
 
                         if (submit.text === '' && text.toLowerCase().indexOf('submit') > -1) {
@@ -676,7 +679,7 @@ window.POG = (function () {
                     case 'BUTTON':
                         action = 'Click';
                         buffer.type = 'button';
-                        label = 'Button';
+                        label = '';
 
                         if (submit.text === '' && ((node.type || '').toLowerCase() === 'submit' ||
                                 text.toLowerCase().indexOf('submit') > -1)) {
@@ -961,7 +964,7 @@ window.POG = (function () {
                 },
                 operation: {
                     documentation: 'Verify that the page loaded completely.',
-                    name: getLetter('Verify Page Loaded', input.operations.letter)
+                    name: getLetter('loaded?', input.operations.letter)
                 },
                 sourceIndex: -1,
                 type: 'verify.loaded'

@@ -1,5 +1,5 @@
 {
-    "author": "",
+    "author": "Shir Cohen",
 
     "browser_action": {
         "default_icon": {
@@ -8,10 +8,9 @@
         },
         "default_popup": "popup.html"
     },
-
     "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'",
 
-    "description": "",
+    "description": "Page Object generator for Ruby",
 
     "homepage_url": "https://github.com/rickypc/selenium-page-object-generator",
 
@@ -25,7 +24,7 @@
 
     "minimum_chrome_version": "40",
 
-    "name": "",
+    "name": "Ruby generator",
 
     "options_ui": {
         "chrome_style": true,
@@ -40,5 +39,5 @@
 
     "short_name": "PO Generator",
 
-    "version": ""
+    "version": "1.0"
 }
